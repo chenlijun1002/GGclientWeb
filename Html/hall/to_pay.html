@@ -1,0 +1,415 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+  <link rel="stylesheet" href="css/hall_detail.css" />
+  <title>去支付页面</title>
+  <style>
+    .to-pay  .chargeBox_mitImg {
+      background-color: #30B936;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="to-pay" id="productInfo" v-cloak>
+    <p class="bread"><a href="../hall/hall.html" >租号大厅</a> &gt;<a :href="'../hall/hall_detail.html?id='+productInfo.ProductNumber" >商品详情</a> &gt;<a>租号订单</a> &gt;</p>
+    <div class="game-info">
+      <img :src="img" class="fl-left" />
+      <div class="infos">
+        <p class="ellipsis" :title="productInfo.Description" style="color: rgba(0,0,0,1);">{{productInfo.Description}}</p>
+        <p>游戏区服：{{productInfo.GameName}}/{{productInfo.GameClassNameQ}} / {{productInfo.GameClassNameF}}</p>
+        <p>角色名称：{{productInfo.ProductName}}</p>
+        <p>单价：<b class="color-red" id="price">{{parseFloat(productInfo.AddPrice).toFixed(2)}}</b>元/小时</p>
+        <!-- <p>起租时间：<span class="color-red">{{productInfo.QzTime}}</span>小时</p> -->
+        <p v-if="productInfo.ReachTime=='允许' || (productInfo.Song!=''&& productInfo.IsSong==1)">
+          优惠活动：<i v-if="productInfo.ReachTime=='允许'" class="tip qing">到时不下线</i> <i v-if="productInfo.Song!=''&&productInfo.IsSong==1" class="tip orange">{{ a(productInfo.Song)}}</i>
+        </p>
+      </div>
+    </div>
+    <ul class="list-a">
+      <li>
+        租号时长：
+        <span id="jiajian">
+          <img src="/Content/public/icons/minus_1.jpg" class="minus" />
+          <b class="count" id="Time">{{productInfo.QzTime}}</b>
+          <img src="/Content/public/icons/plus_1.jpg" class="plus" />
+        </span>
+        <span style="font-size: 14px;color: #000;">（ 起租时长：{{productInfo.QzTime}}小时 ）</span>
+      </li>
+      <!-- <li>租号限制：租号 <b class="color-red">{{productInfo.RiseRentCount}}</b>次及以上才可以租用此号</li> -->
+      <!-- <li>租号价格：￥ <b class="color-red" id="price">{{parseFloat(productInfo.AddPrice).toFixed(2)}}</b>元</li> -->
+      <li>租号押金：￥ <b class="color-red" id="bail">{{parseFloat(productInfo.Bail).toFixed(2)}}</b>元 <span class="color-orange"> &nbsp; (您的押金会在订单结束后24小时后退还)</span></li>
+    </ul>
+    <ul class="list-b">
+      <li>应付总额：￥ <b class="color-red" id="sumPrice">0.00</b><span>元</span><span style="font-size: 14px;color: #000;margin-left: 8px;">（ 账户可用余额：<span id="balance">0.00</span> 元  ）</span></li>
+      <!-- <li>可用余额：￥ <b  id="balance">0.00</b>元</li> -->
+      <li>
+        <input type="checkbox" id="agreeProtocol" checked /><label for="agreeProtocol">我已阅读并同意 <a href="javascript:$('#yhxy').removeClass('hide')" class="color-orange">《GG租号平台用户协议》</a></label>
+      </li>
+      <li style="margin-top: 20px;">
+        <input id="payPay" v-show="istoPayValue" type="button" style="vertical-align:top;width: 200px;height: 40px;text-align: center; font-family: 'Microsoft YaHei';" class="btn btn-lg-x btn-red-f" value="去付款" />
+        <div @click="insufficient" v-show="!istoPayValue" type="button" style="width: 200px;height: 40px;text-align: center;" class="btn btn-lg-x btn-red-pay">余额不足，请点击充值</div>
+      </li>
+    </ul>
+    <!-- 确认订单 -->
+    <div id="ConfirmationOrders" class="form-box active" v-if="ConfirmationOrders">
+      <div class="box-content box_Orders">
+        <div class="ConfirmationOrders_head">
+          <div class="ConfirmationOrders_h5">
+            游戏账号信息确认
+          </div>
+          <div class="ConfirmationOrders_p">
+            请确认一下信息无误后再进行付款！
+          </div>
+        </div>
+        <div class="ConfirmationOrders_ul">
+          <div class="ConfirmationOrders_li">
+            游戏名称：{{productInfo.GameName}}
+          </div>
+          <div class="ConfirmationOrders_li">
+            游戏区服：{{productInfo.GameClassNameQ}} / {{productInfo.GameClassNameF}}
+          </div>
+          <div class="ConfirmationOrders_li">
+            角色名称：{{productInfo.ProductName}}
+          </div>
+          <div class="ConfirmationOrders_li">
+            租赁时长：<span class="color-red">{{productInfo.Time}}</span>小时
+          </div>
+          <div class="ConfirmationOrders_li" v-for="item in attributeValueList">
+            {{item.AttributeName}}：{{item.AttributeValue}}
+          </div>
+        </div>
+        <div class="ConfirmationOrders_text">
+          <img src="/Content/public/img/tishi.png" />
+          <p style="line-height: 46px;"> 段位等级可能随其他租客的体验有较小的差异，请谅解！</p>
+
+        </div>
+        <div class="ConfirmationOrders_footer">
+          <a class="a_d" v-on:click="ConfirmationPayment">确认支付</a>
+          <a class="a_q" v-on:click="ConfirmationOrders=false;_hmt.push(['_trackEvent', '下单页', '点击量', '取消支付']);"> 取消</a>
+        </div>
+      </div>
+    </div>
+    <!-- 余额不足时显示 -->
+    <div class="modal-pay hide" id="cz">
+      <div class="m-content">
+        <div class="cont-head">
+          <span class="t-btm">余额不足，请先充值</span>
+          <img src="/Content/public/img/icon-close-1.jpg" class="close" onclick="gb()" />
+        </div>
+        <div class="cont-body b-mg-s">
+          <a href="../pay/charge.html" class="btn btn-lg btn-red">充值</a>
+          <a href="javascript:;" class="btn btn-lg btn-red-outline" onclick="gb()">取消</a>
+        </div>
+      </div>
+    </div>
+    <!-- 查看用户协议 -->
+    <div class="modal-pay hide" id="yhxy">
+      <div class="m-content protocal">
+        <div class="cont-head">
+          <span class="t-btm">用户协议</span>
+          <img src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAA7AAD/7gAOQWRvYmUAZMAAAAAB/9sAhAAHBQUFBQUHBQUHCQYFBgkLCAcHCAsNCgoLCgoNEAwMDAwMDBAMDg8QDw4MFBQVFRQUHRwcHB0gICAgICAgICAgAQcHBw0MDRkQEBkbFhIWGyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICD/wAARCAAOAA0DAREAAhEBAxEB/8QAXwABAQEAAAAAAAAAAAAAAAAAAQQHAQEAAAAAAAAAAAAAAAAAAAAAEAACAQIFAgcBAAAAAAAAAAABAgMREiExEwQFADJBcSJCUhQVBhEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A3jeb2TgJJN1vJGn4idi1x9UkEjYhAPdG3h8fLIEHnBA3IVQzM6yDjyVsWBQ1YxLlqNdcWyqAMsegTHAvK6nLTI+5cSfQhZSIY4R3ULC1pWXuxrTLDoJRt9j+czndyH+cMiyJFpvhGLg0Zal2gWtYHKmFbeg//9k="
+            class="close" onclick="gb()" />
+        </div>
+        <div class="cont-body self-scroll-bar">
+          <p>湖南南澳网络科技有限公司（以下简称“GG租号”）依据出租协议的规定为用户提供服务，出租协议在用户和GG租号之间具有合同上的法律效力。我们在此特别提醒您认真阅读、充分理解出租协议各条款，特别是其中所涉及的免除及限制GG租号责任的条款以及对用户权利限制条款。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第一章 &nbsp;GG租号提供的服务内容</strong></p>
+          <p>&nbsp;</p>
+          <p>第一条 &nbsp;GG租号提供的服务是由湖南南澳网络科技有限公司基于APP或网站为技术平台所产生，具体服务内容：信息租借，例如：游戏账号或者影视账号。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第二章 &nbsp;用户需要满足哪些条件。</strong></p>
+          <p>&nbsp;</p>
+          <p>第三条 GG租号用户是指符合中华人民共和国法律规定的具有完全民事权利和民事行为能力，能够独立承担民事责任的自然人。在使用GG租号服务前，用户必须先在GG租号平台上进行注册。</p>
+          <p>第四条 &nbsp;用户承诺以下事项：</p>
+          <p>1、用户必须依照GG租号要求提供最新、真实、有效及完整的资料。</p>
+          <p>2、用户有义务维护并更新资料，确保其最新、真实、有效及完整。若用户提供任何过时、错误、虚假或不完整的资料，GG平台将暂停或终止用户的账户，并拒绝用户使用GG租号服务的部份或全部的功能。针对这种情况，如果出现任何损失，GG租号不会承担任何责任，一律由用户承担。</p>
+          <p>3、如果因为用户未及时更新相关资料，导致GG租号平台无法提供服务时发生错误所造成的损失，一律由用户承担，GG租号平台或者其他任何互联网平台不承担任何责任。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第三章 &nbsp;用户的守法义务及承诺</strong></p>
+          <p>&nbsp;</p>
+          <p>第五条 &nbsp;用户必须承诺绝不为任何非法目的或方式使用GG租号服务，并且必须遵守中国相关法律、法规及一切使用互联网的国际惯例，遵守所有与GG租号服务有关的网络协议、规则和程序。</p>
+          <p>第六条 &nbsp;用户同意并保证不得利用GG租号服务从事侵害他人权益或违法的行为，若有违反者应负所有法律责任。上述行为包括：</p>
+          <p>1、反对宪法所确定的基本原则，危害国家安全、泄漏国家秘密、颠覆国家政权、破坏国家统一的。</p>
+          <p>2、侵害他人名誉、隐私权、商业秘密、商标权、著作权、专利权、其他知识产权及其他权益。</p>
+          <p>3、违反依法律或合约所应负之保密义务。</p>
+          <p>4、冒用他人名义使用GG租号服务。</p>
+          <p>5、从事任何不法交易行为，如贩卖枪支、毒品、禁药、盗版软件或其他违禁物。</p>
+          <p>6、提供赌博资讯或以任何方式引诱他人参与赌博。</p>
+          <p>7、涉嫌洗钱、套现或进行传销活动的。</p>
+          <p>8、 从事任何可能含有电脑病毒或是可能侵害GG租号平台系統、资料等行为。</p>
+          <p>9、 利用GG租号平台进行可能对互联网或移动网正常运转造成不利影响之行为。</p>
+          <p>10、 侵犯GG租号的商业利益，包括发布非经许可的商业广告。</p>
+          <p>11、 利用GG租号平台上传、展示或传播虚假的、骚扰性的、中伤他人的、辱骂性的、恐吓性的、庸俗淫秽的或其他任何非法的信息资料。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第四章 &nbsp;隐私权保护及授权条款</strong></p>
+          <p>&nbsp;</p>
+          <p>第七条 &nbsp;GG租号平台提供的是虚拟物品的租借，依靠互联网信息技术平台，为广大用户提供租借服务，其中租借的内容涉及到个人游戏账号和密码，用户自愿把账号和密码提供给GG租号平台，GG租号平台有义务和责任对用户提供的信息进行保密不透露给其他任何人！</p>
+          <p>第八条 GG租号平台依据租号协议，把相关订单信息展示给该订单相关的用户，其中包括游戏账号和密码！</p>
+          <p>第九条 由于账号租借的特殊性，出租的用户自愿承担使用GG租号平台进行出租的所带来的风险，包括账号密码被盗取、账号里的虚拟物品被破坏，游戏账号被破坏等事项，出租用户愿意承担一切可能遭受到的损失，与GG租号平台或者apple store等其它互联网平台无关！</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第五章 &nbsp;知识产权的保护</strong></p>
+          <p>&nbsp;</p>
+          <p>第十条 &nbsp;GG租号平台上所有内容，包括著作、图片、档案、资讯、资料、平台架构、平台画面的安排、网页设计，均由GG租号或其他权利人依法拥有其知识产权，包括商标权、专利权、著作权、商业秘密等。</p>
+          <p>第十一条 &nbsp;非经GG租号平台或者相关用户的同意，任何人不得擅自使用、修改、复制、公开传播、改变、散布、发行侵犯他人权利的内容。</p>
+          <p>第十二条 &nbsp;尊重知识产权是用户应尽的义务，GG租号平台将尽力保护每个用户的知识产权或版权内容。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script>    
+    var params = new Object();
+    var _userInfo;
+    var id = "";    
+    var QzTime = 1;
+    var type = 1;
+    var balance = 0;
+    $(function() {
+      $('#user_balance_lable').html('');
+      _userInfo = GetLoginUserCookie();
+      if (_userInfo == null) {
+        layer.msg("您暂未登陆,请登陆!");
+        return;
+      }
+
+      params.userid = _userInfo.UserID;
+      params.id = GetQueryString('id');      
+      HttpGet("/product/OrderPreview", params).then(function(result) {        
+        console.log(result)
+        if (result.Code == "0") {
+          product.productInfo = result.product;
+          product.type = result.type;
+          product.img = result.img;
+          id = product.productInfo.ProductID;
+          type = result.type;
+          balance = result.balance;
+          QzTime = product.productInfo.QzTime;         
+          $("#balance").text(balance);                        
+          switch (result.type) {
+            case '1':
+              $("#sumPrice").text((product.productInfo.AddPrice * product.productInfo.QzTime + product.productInfo.Bail).toFixed(2));
+              var PayyeValue = (product.productInfo.AddPrice * product.productInfo.QzTime + product.productInfo.Bail).toFixed(2);
+              if (PayyeValue <= balance) {
+                product.istoPayValue = true;
+              } else {
+                product.istoPayValue = false;
+              }
+              $('#jiajian').on('click', 'img', function(e) {                             
+                e.preventDefault();
+                var count = parseFloat($('#Time').html());               
+                if ($(e.target).hasClass('minus')) {                  
+                  if (count > QzTime) {
+                    $(e.target).next().html(--count);
+                    var sumPriceValue = parseFloat(parseFloat($("#price").text()) * parseFloat($("#Time").text()) + parseFloat($("#bail").text())).toFixed(2);
+                    $("#sumPrice").text(sumPriceValue);
+                  }
+                } else {
+                  if (count < 9999) {
+                    $(e.target).prev().html(++count);
+                    var sumPriceValue = parseFloat(parseFloat($("#price").text()) * parseFloat($("#Time").text()) + parseFloat($("#bail").text())).toFixed(2);
+                    $("#sumPrice").text(sumPriceValue);
+                  }
+                }
+                if(sumPriceValue){
+                  if (sumPriceValue <= balance) {
+                    product.istoPayValue = true;
+                  } else {
+                    product.istoPayValue = false;
+                  }
+                }               
+              });
+              break;
+            case '2':
+              $("#price").html(product.productInfo.BaoYePrice.toFixed(2));
+              //$("#Time").html("5");
+              product.productInfo.QzTime=5;
+              $("#sumPrice").text((product.productInfo.BaoYePrice + product.productInfo.Bail).toFixed(2));
+              if (product.productInfo.BaoYePrice + product.productInfo.Bail <= balance) {
+                product.istoPayValue = true;
+              } else {
+                product.istoPayValue = false;
+              }
+              break;
+            case '3':
+              $("#price").html(product.productInfo.BaoTimePrice.toFixed(2));
+              //$("#Time").html("10");
+              product.productInfo.QzTime=10;
+              $("#sumPrice").text((product.productInfo.BaoTimePrice + product.productInfo.Bail).toFixed(2));
+              if (product.productInfo.BaoTimePrice + product.productInfo.Bail <= balance) {
+                product.istoPayValue = true;
+              } else {
+                product.istoPayValue = false;
+              }
+              break;
+            case '4':
+              $("#price").html(product.productInfo.BaoDayPrice.toFixed(2));
+              //$("#Time").html("24");
+              product.productInfo.QzTime=24;
+              $("#sumPrice").text((product.productInfo.BaoDayPrice + product.productInfo.Bail).toFixed(2));
+              if (product.productInfo.BaoDayPrice + product.productInfo.Bail <= balance) {
+                product.istoPayValue = true;
+              } else {
+                product.istoPayValue = false;
+              }
+              break;
+            case '5':
+              $("#price").html(product.productInfo.BaoWeekPrice.toFixed(2));
+             // $("#Time").html("168");
+              product.productInfo.QzTime=168;
+              $("#sumPrice").text((product.productInfo.BaoWeekPrice + product.productInfo.Bail).toFixed(2));              
+              if (product.productInfo.BaoWeekPrice + product.productInfo.Bail <= balance) {
+                product.istoPayValue = true;
+              } else {
+                product.istoPayValue = false;
+              }
+              break;
+            default:
+              break;
+          }
+        }
+      }).catch(function(result) {});
+      //去支付
+      $("#payPay").click(function() {      
+        product.productInfo.Time=$('#Time').text()-0;
+        _hmt.push(['_trackEvent', '下单页面', '点击量', '去付款']);
+        if (_userInfo == null) {
+          layer.msg("您暂未登陆,请登陆!");
+          return;
+        }
+        if (!$('#agreeProtocol').is(':checked')) {
+          layer.msg('请同意《GG租号须知》');
+          return;
+        }
+        HttpGet("/product/ProductDetail", {
+          id: GetQueryString('id').match(/(\S*),/)[1]
+        }).then(function(result) {
+          if (result.Code == "0") {
+            product._data.attributeValueList = result.attributeValue;
+            product._data.ConfirmationOrders = true;
+          }
+        }).catch(function(result) {});
+
+      });
+    });
+
+    var product = new Vue({
+      el: '#productInfo',
+      data: {
+        items: [],
+        productInfo: '',
+        type: '',
+        img: '',
+        attributeValueList: [],
+        ConfirmationOrders: false,
+        istoPayValue: true,
+        ScanningRecharge: false
+      },
+      methods: {
+        a: function(t) {
+          var ja = JSON.parse(t);
+          var song = "";
+          $(ja).each(function(k, v) {
+            if (song == "") {
+              song = "租" + v.split(':')[0] + "送" + v.split(':')[1];
+            } else {
+              song = song + "/租" + v.split(':')[0] + "送" + v.split(':')[1];
+            }
+          })
+          return song;
+        },
+        ConfirmationPayment: function() {          
+          location.href = 'pay_state.html?id=' + id + "," + type + "," + $("#Time").html();
+        },
+        //余额不足  去充值
+        insufficient: function() {
+          // parent.window.Open("余额充值", "../pay/chargeBox.html", '600px', '580px');          
+          parent.window.Open("余额充值", "../pay/chargeBox.html?type=toPayModal", '532px', '575px','to-pay-modal');
+          // layer.open({
+          //   skin:'to-pay-modal',
+          //   title: '余额充值',
+          //   area: ['532px', '575px'],
+          //   shade: 0.5,            
+          //   content: '9999',
+          //   success: function(layero, index) {
+
+          //   }
+          // });
+        }
+      }
+    });
+
+    //充值成功后的回调
+    parent.SuccessfulRecharge = function() {
+      parent.GetUserBalance();
+      HttpGet("/product/OrderPreview", params).then(function(result) {
+        if (result.Code == "0") {
+          balance = result.balance;
+          $("#balance").text(balance);
+          var sumPriceValue = parseFloat(parseFloat($("#price").text()) * parseFloat($("#Time").text()) + parseFloat($("#bail").text())).toFixed(2);
+          if (sumPriceValue < balance) {
+            product.istoPayValue = true;
+          } else {
+            product.istoPayValue = false;
+          }
+          parent.window.CloseOpen();
+          parent.window.ShowAlert("充值成功", 7);
+        }
+
+      }).catch(function(result) {});
+    }
+
+    function gb() {
+      $(".close").parent().parent().parent().hide();
+    };
+
+    function GoToUrl(e){
+      console.log(window.parent)
+      window.parent.GoToUrl($(e).attr('data-href'));
+      //window.parent.sfa.src=$(id).attr('data-href');
+    }
+  </script>
+</body>
+
+</html>

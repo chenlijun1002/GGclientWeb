@@ -1,0 +1,167 @@
+.form-row {
+  position: relative;
+  width: 400px;
+  margin: 10px auto; }
+  .form-row > label {
+    display: inline-block;
+    width: 125px;
+    text-align: right; }
+    .form-row > label + input {
+      padding-left: 8px; }
+  .form-row input {
+    height: 36px;
+    border: 1px solid #ddd; }
+  .form-row .len-long {
+    width: 260px; }
+  .form-row .len-short {
+    width: 140px; }
+  .form-row .vali {
+    position: relative;
+    top: 1px;
+    width: 115px;
+    background: #9D9D9D;
+    color: #fff;
+    cursor: pointer; }
+  .form-row .btn-login {
+    height: 40px;
+    margin-top: 20px;
+    padding: 8px 100px;
+    cursor: pointer; }
+  .form-row .no-w {
+    width: auto; }
+  .form-row .s-ck {
+    height: 14px;
+    position: relative;
+    top: 3px;
+    left: 4px; }
+
+.tip-msg {
+  position: absolute;
+  top: 10px;
+  left: 368px;
+  white-space: nowrap; }
+
+.pt-big {
+  padding-top: 50px; }
+
+.safe-setting .list > li {
+  position: relative;
+  padding: 20px 0 20px 50px;
+  border-bottom: 1px dashed #ddd; }
+  .safe-setting .list > li .icon {
+    position: absolute;
+    top: 10px;
+    left: 5px; }
+  .safe-setting .list > li .txt-1-c {
+    color: #333;
+    margin: 0 8px; }
+  .safe-setting .list > li .txt-1-d {
+    font-size: 12px;
+    color: #666; }
+  .safe-setting .list > li .rt-md {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%); }
+  .safe-setting .list > li .link-red {
+    margin-left: 10px;
+    color: #C73030;
+    text-decoration: underline; }
+  .safe-setting .list > li .switch {
+    position: relative;
+    padding: 6px 0;
+    border-radius: 30px;
+    background: #ddd;
+    color: #333;
+    transition: all .2s linear;
+    cursor: pointer;
+    padding-left: 35px;
+    padding-right: 15px; }
+    .safe-setting .list > li .switch.active {
+      background: #C73030;
+      color: #fff;
+      padding-right: 35px;
+      padding-left: 15px; }
+      .safe-setting .list > li .switch.active:after {
+        right: 3px;
+        background: #fff; }
+    .safe-setting .list > li .switch:after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      right: 50px;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #bbb; }
+
+.login-access .l-a-title {
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  vertical-align: middle; }
+  .login-access .l-a-title img {
+    margin: 0 10px; }
+.login-access .l-a-form {
+  width: 400px;
+  margin: 40px auto; }
+  .login-access .l-a-form .form-row {
+    margin-top: 20px; }
+    .login-access .l-a-form .form-row > label {
+      display: inline-block;
+      width: 120px;
+      text-align: right; }
+    .login-access .l-a-form .form-row input {
+      border: 1px solid #ddd;
+      height: 38px;
+      padding-left: 8px; }
+    .login-access .l-a-form .form-row .type-len {
+      width: 260px; }
+    .login-access .l-a-form .form-row .type-st {
+      width: 140px; }
+    .login-access .l-a-form .form-row .btn-def {
+      padding: 8px 80px;
+      cursor: pointer; }
+  .login-access .l-a-form .vali {
+    cursor: pointer; }
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5); }
+  .modal .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 10px;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: #fff; }
+  .modal .modal-content-header {
+    min-height: 32px;
+    text-align: center; }
+  .modal .modal-content-body {
+    padding: 10px 0 30px;
+    text-align: center; }
+    .modal .modal-content-body .item {
+      display: inline-block;
+      padding: 5px 10px; }
+  .modal .text {
+    display: inline-block;
+    line-height: 60px;
+    font-size: 20px; }
+  .modal .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer; }
+  .modal .line {
+    display: block;
+    margin: 0 auto; }
+  .modal .ewm-line {
+    padding: 10px 0 0; }
+
+/*# sourceMappingURL=login.css.map */

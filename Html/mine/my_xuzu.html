@@ -1,0 +1,226 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title></title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+  <link href="/Content/libs/layer/skin/default/layer.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="modal-xuzu" style="background:#fff;">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ul class="body-list mod">
+          <li id="OrderNo">
+            订单号：
+          </li>
+          <li id="GameName">
+            游戏名称：
+          </li>
+          <li>
+            租号时长：
+            <span class="calc-box">
+              <img src="/Content/public/icons/minus_1.jpg" id="btnDown" />
+              <b class="count">2</b>
+              <img src="/Content/public/icons/plus_1.jpg" id="btnUp" />
+            </span>
+          </li>
+          <li>
+            租号价格：
+            <span class="color-red">￥<span id="sp_price">0.00</span></span>
+          </li>
+        </ul>
+        <ul class="body-list mod">
+          <li>应付总额：<span class="color-red">￥<span id="OrderCountLable">0.00</span>元</span></li>
+          <li>可用余额：<span class="color-red">￥<span id="ClientUserBalance">0.00</span>元</span></li>
+        </ul>
+        <p class="sure-btn">
+          <a href="javascript:;" id="btnPay" class="btn btn-lg btn-red">确认付款</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/My97DatePicker/WdatePicker.js"></script>
+
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script type="text/javascript">
+    var createBy = '';
+    var loginUserInfo = GetLoginUserCookie();
+    if (loginUserInfo != null)
+      createBy = loginUserInfo.UserID;
+
+    //?orderno=201805261718433143744,1
+    var url = window.location.search.toString().replace("?", "");
+    var params = url.split('=');
+    var _tempParams = params[1].split(',');
+
+    console.log('_tempParams[0]=', _tempParams[0], "_tempParams[1]=", _tempParams[1]);
+
+    function GetUserBalance() {
+      var url = 'clientuser/GetClientUserBalance';
+      var params = new Object();
+      params.UserID = createBy;
+      HttpGet(url, params)
+        .then(function(result) {
+          //这里处理成功回调
+          if (result.Code == "0") {
+            $("#ClientUserBalance").html(parseFloat(result.Balance).toFixed(2));
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          console.log(result);
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function XuZuOrder(orderNo, orderCount) {
+      var xuzuParams = new Object();
+      xuzuParams.OrderNo = orderNo;
+      xuzuParams.OrderCount = orderCount;
+      xuzuParams.CreateBy = createBy;
+      var url = 'order/xuzu'; //url地址
+      HttpGet(url, xuzuParams)
+        .then(function(result) {
+          //这里处理成功回调         
+          if (result.Code == "0") {
+            var _parentWindows = parent.window.frames['right'].window;
+            // if (_tempParams[1] == 1)
+            //   _parentWindows.XuZu_Refresh();
+            // else
+            //   _parentWindows.xz1(orderNo);
+
+            // if(_tempParams[1] == 1){
+
+            // }else{
+            //   xz1(orderNo);
+            // }
+            xz1(orderNo);
+
+            $(".modal-xuzu").addClass("hide");
+            parent.window.CloseOpen();
+            parent.window.ShowMsg('续租成功', 1);
+          } else
+            parent.window.ShowAlert(result.Message, 3);
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function xz1(t) {
+      HttpGet("/product/GetOrderInfo", {
+        "id": t
+      }).then(function(result) {
+        if (result.Code == "0") {
+          parent.window.GetUserBalance();
+           parent.GoToUrl('/Html/mine/my_zuhao.html');
+          //parent.goRefresh();  
+          //parent.goBack();       
+          // model.order = result.model;
+          // model.time = result.time;
+          // total = model.time.sum;
+        }
+      }).catch(function() {
+
+      });
+    }
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var index = layer.msg('查询中，请稍候', {
+        icon: 16,
+        time: false,
+        shade: 0.8
+      });
+      setTimeout(function() {
+        $.ajax({
+          url: apiUrl + "/Order/GetXuZuOrderAndProductInfo",
+          type: "get",
+          data: {
+            'orderNo': _tempParams[0]
+          },
+          dataType: "html",
+          success: function(data) {
+            var json = ResultDecrypt.AES_Decrypt(data);
+            $("#sp_price").html(parseFloat(json.Price).toFixed(2));
+            $("#OrderNo").html("订单号： " + _tempParams[0]);
+            $("#GameName").html("游戏名称：" + json.GameName + "/" + json.QName + "/" + json.FName);
+
+            var _count = parseInt($(".count").html());
+            $("#btnDown").click(function() {
+              _count = parseInt($(".count").html());
+              if (_count <= 1)
+                _count = 1;
+              else
+                _count = _count - 1;
+              $(".count").html(_count);
+              $("#OrderCountLable").html(parseFloat(parseFloat(json.Price.toString()).toFixed(2) * _count).toFixed(2));
+            });
+            $("#btnUp").click(function() {
+              _count = parseInt($(".count").html());
+              if (_count >= 99)
+                _count = 99;
+              else
+                _count = _count + 1;
+              $(".count").html(_count);
+              $("#OrderCountLable").html(parseFloat(parseFloat(json.Price.toString()).toFixed(2) * _count).toFixed(2));
+            });
+            GetUserBalance();
+            $("#OrderCountLable").html(parseFloat(parseFloat(json.Price.toString()).toFixed(2) * _count).toFixed(2));
+          }
+        });
+        layer.close(index);
+      }, 1000);
+
+
+      $("#btnPay").click(function() {
+        var orderCount = $(".count").html();
+        //if (!$("#agreeProtocol").is(":checked")) {
+        //    layer.alert("请勾选 我已阅读并同意《GG租号协议》", { title: '提示', icon: 5 });
+        //    return false;
+        //}
+        XuZuOrder(_tempParams[0], orderCount);
+      });
+    });
+  </script>
+</body>
+
+</html>

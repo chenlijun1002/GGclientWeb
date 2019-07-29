@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="Keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/Content/public/css/public.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <title>login</title>
+</head>
+<body>
+
+    <!-- 短信验证码登录 -->
+    <div class="login-a ">
+        <form>
+            <p class="line-title"><span>短信验证码登录</span></p>
+            <div class="form-row">
+                <label for="userPhone">请输入手机号：</label>
+                <input type="text" id="userPhone" class="len-long" />
+            </div>
+            <div class="form-row">
+                <label for="phoneValiCode">手机验证码：</label>
+                <input type="text" id="phoneValiCode" class="len-short" />
+                <input type="button" id="GetVerifyCode" value="获取短信验证码" class="vali" />
+            </div>
+            <div class="form-row">
+                <label>&nbsp;</label>
+                <input type="button" onclick="SMS(this)" class="btn btn-login btn-red" value="登录" />
+                <input type="button" onclick="GetUser()" class="btn btn-login btn-red" value="获取用户" />
+            </div>
+        </form>
+    </div>
+    <!-- 1、 选择登录方式的模态框 -->
+    <div id="" class="modal">
+        <div class="modal-content">
+            <div class="modal-content-header">
+                <span class="text">请选择登录方式</span>
+                <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+                <img src="/Content/public/img/icon-line-1.jpg" class="line" />
+            </div>
+            <div class="modal-content-body">
+                <a href="javascript:;" onclick="QQLogin(this)" class="item">
+                    <p><img src="/Content/public/img/icon-qq.jpg" /></p>
+                    <p>QQ登录</p>
+                </a>
+                <a href="javascript:;" onclick="WXLogin(this)" class="item">
+                    <p><img src="/Content/public/img/icon-wx.jpg" /></p>
+                    <p>微信登录</p>
+                </a>
+                <a href="javascript:;" class="item">
+                    <p><img src="/Content/public/img/icon-phone.jpg" /></p>
+                    <p>手机登录</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--登录弹出框-->
+    <div id="LoginBox" class="modal" style="display:none">
+        <div class="modal-content" style="width:auto;height:auto;padding: 0px;">
+            <div class="modal-content-header">
+                <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+            </div>
+            <div class="modal-content-body">
+                <iframe src="" scrolling="no" style="width:750px;height:390px;border: 0px;">
+                    QQ授权页面
+                </iframe>
+            </div>
+        </div>
+    </div>
+    <!-- 2、 二维码弹出模态框 -->
+    <div class="modal hide">
+        <div class="modal-content">
+            <div class="modal-content-header">
+                <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+            </div>
+            <div class="modal-content-body">
+                <img src="/Content/public/img/ewm-login.jpg" />
+                <p class="ewm-line">打开GG租号APP扫描二维码</p>
+            </div>
+        </div>
+    </div>
+    <div style="display:none">
+        <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    </div>
+    <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+    <script src="../../Content/libs/layer/layer.js"></script>
+    <script src="../../Content/libs/Common.js"></script>
+    <script src="/Content/libs/Cryptojs/src/core.js"></script>
+    <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+    <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+    <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+    <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+    <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+    <script>
+        function GetUser() {            
+            var user = parent.document.getElementById("LogInUsers");
+            //alert(parent.GetLoginUser().UserName);
+        }
+        
+        //发送验证码
+        $("#GetVerifyCode").click(function () {
+            if ($(this).css("cursor") == "not-allowed") {
+                return;
+            }
+            var phone = $("#userPhone").val();
+            if ($.trim(phone) == "") {
+                layer.tips("手机号码不能为空.", "#userPhone", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+            var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+            if (!reg.test(phone)) {
+                layer.tips("输入手机格式不正确.", "#userPhone", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+            var _obj = $(this);
+            $.ajax({
+                type: "POST",
+                url: apiUrl + "Login/SendSMS",
+                data: { "": phone },
+                dataType: 'text',
+                success: function (data) {
+                    var result = ResultDecrypt.AES_Decrypt(data)
+                    if (result.Code == 0) {
+                        SetTime(_obj);
+                    } else {
+                        layer.alert(result.Message, { icon: 5, title: '提示信息' });
+                    }
+                }
+            });
+        })
+
+        //读表
+        function SetTime(obj) {
+            var i = 60;
+            obj.css("cursor", "not-allowed");
+            obj.val("重新发送(60)");
+            var timer1 = window.setInterval(function () {
+                i--;
+                if (i == 0) {
+                    window.clearInterval(timer1);
+                    obj.css("cursor", "pointer");
+                    obj.val("获取短信验证码");
+                    return;
+                }
+                obj.val("重新发送(" + i + ")");
+            }, 1000);
+        }
+
+        //提交登录
+        function SMS(obj) {
+            var phone = $("#userPhone").val();
+            if ($.trim(phone) == "") {
+                layer.tips("手机号码不能为空.", "#userPhone", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+            var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+            if (!reg.test(phone)) {
+                layer.tips("输入手机格式不正确.", "#userPhone", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+            var valiCode = $("#phoneValiCode").val();
+            if ($.trim(valiCode) == "") {
+                layer.tips("短信验证码不能为空.", "#phoneValiCode", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+
+            if (valiCode.length != 4) {
+                layer.tips("短信验证码位数不正确.", "#phoneValiCode", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+
+            if (isNaN(valiCode)) {
+                layer.tips("短信验证码必须为数字.", "#phoneValiCode", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+            obj = $(obj);
+            $.ajax({
+                type: "POST",
+                url: apiUrl + "login/LoginBySMS",
+                dataType: 'text',
+                data: { phone: phone, phoneCode: valiCode },
+                beforeSend: function (xhr) {
+                    obj.attr("disabled", true).text("登录中...");
+                },
+                success: function (resultMsg) {
+                    if (resultMsg.Success) {
+
+                    } else {
+                        layer.alert(resultMsg.Message, { icon: 5, title: '登录失败' });
+                        $("#btnSubmit").attr("disabled", false).text("立即登录");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    layer.alert("", { icon: 5, title: '提示信息' });
+                    obj.attr("disabled", false).val("登录");
+                }
+            });
+        }
+
+
+        //发送验证码
+        $("#GetVerifyCode").click(function () {
+            if ($(this).css("cursor") == "not-allowed") {
+                return;
+            }
+            var phone = $("#userPhone").val();
+            if ($.trim(phone) == "") {
+                layer.tips("手机号码不能为空.", "#userPhone", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+            var reg = /^1[3|4|5|6|7|8|9][0-9]{9}$/; //验证规则
+            if (!reg.test(phone)) {
+                layer.tips("输入手机格式不正确.", "#userPhone", { tips: [1, '#E62B2E'], time: 800 });
+                return;
+            }
+            var _obj = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: apiUrl + "Login/SendSMS",
+                data: { "": phone },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result == "true") {
+                        SetTime(_obj)
+                    } else {
+                        layer.alert(data.msg, { icon: 5, title: '提示信息' });
+                    }
+                }
+            });
+        })
+
+        //读表
+        function SetTime(obj) {
+            var i = 10;
+            obj.css("cursor", "not-allowed");
+            obj.val("重新发送(60)");
+            var timer1 = window.setInterval(function () {
+                i--;
+                if (i == 0) {
+                    window.clearInterval(timer1);
+                    obj.css("cursor", "pointer");
+                    obj.val("获取短信验证码");
+                    return;
+                }
+                obj.val("重新发送(" + i + ")");
+            }, 1000);
+        }
+
+        (function () {
+            $('.close').on('click', function () {
+                $(this).parent().parent().parent().addClass('hide');
+            });
+        })();
+        (function () {
+            var isOpen = false;
+            $('.switch').on('click', function () {
+                if (!isOpen) {
+                    $(this).addClass('active').html('开启');
+                    isOpen = true;
+                } else {
+                    $(this).removeClass('active').html('关闭');
+                    isOpen = false;
+                }
+            })
+        })();
+    </script>
+</body>
+</html>

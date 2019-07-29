@@ -1,0 +1,354 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title></title>
+  <meta charset="utf-8" /> 
+  <link rel="stylesheet" href="./css/my.css" />
+  <!-- <link href="/Content/libs/layer/skin/default/layer.css" rel="stylesheet"> -->
+  <!-- <link rel="stylesheet" href="./css/bootstrap.min.css">   -->
+  <style>
+    .select-box{
+        /* //用div的样式代替select的样式 */
+        width: 338px;
+        height: 35px;
+        line-height: 35px;
+        padding: 0 5px;
+        /* border-radius: 5px; */
+        /* //盒子阴影修饰作用,自己随意 */
+        /* box-shadow: 0 0 5px #ccc; */
+        position: relative;
+        display: inline-block;
+        box-sizing: border-box;
+        border: 1px solid #a9a9a9;
+        font-size: 12px;
+    }
+
+    .select-box select{
+        /* //清除select的边框样式 */
+        border: none;
+        /* //清除select聚焦时候的边框颜色 */
+        outline: none;
+        /* //将select的宽高等于div的宽高 */
+        width: 100%;
+        height: 35px;
+        line-height: 35px;
+        /* //隐藏select的下拉图标 */
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* //通过padding-left的值让文字居中 */        
+        padding-left: 8px;
+        background-color: transparent;
+    }
+    /* 使用伪类给select添加自己想用的图标 */
+    .select-box::after{
+        content: "";
+        width: 14px;
+        height: 8px;
+        background: url('/Content/public/img/arrow_down.png') no-repeat center;
+        /* 通过定位将图标放在合适的位置 */
+        position: absolute;
+        right: 16px;
+        top: 41%;
+        /* 给自定义的图标实现点击下来功能 */
+        pointer-events: none;
+        background-size: 100%;
+    }
+
+    .option-item:hover{
+      background-color: #509df0;
+      color:#fff;
+    }
+   
+  </style>
+</head>
+
+<body>
+  <div class="ApplyForafterSale_si">
+    <div id="SubmitComplain">
+      <div class="detail-complain">
+        <form id="form-submitcomplain" action="" method="post" enctype="multipart/form-data">
+          <div class="com-row" style="height: 35px;overflow: visible;">
+            <label style="color: #333;">售后类型：</label>
+            <!-- <div style="position: absolute;z-index: 111;top: 0px;left: 98px;height: 35px;">
+                <select id="selComplainType" class="txt-sel">
+                    <option value="">请选择售后类型</option>
+                    <option value="10">密码错误</option>
+                    <option value="13">被惩罚状态(debuff)</option>
+                    <option value="11">账号保护中</option>
+                    <option value="5">被顶号(挤号)了</option>
+                    <option value="17">无法进入游戏,非账号密码错误</option>
+                    <option value="18">不想玩了</option>
+                    <option value="4">账号描述与实际不符</option>
+                  </select>
+            </div> -->
+            <div class="select-box">                
+                  <span id="selComplainType2" value="">请选择售后类型</span>
+                  <div style="display:none;width: 338px;position: absolute;z-index:10;left: -1px;top:33px;border:1px solid #ccc;background-color: #fff;box-sizing: border-box;" id="select-box">
+                    <div value="" style="padding: 4px;line-height: 16px;" class="option-item">请选择售后类型</div>
+                    <div value="10" style="padding: 4px;line-height: 16px;" class="option-item">密码错误</div>
+                    <div value="13" style="padding: 4px;line-height: 16px;" class="option-item">被惩罚状态</div>
+                    <div value="11" style="padding: 4px;line-height: 16px;" class="option-item">账号保护中</div>
+                    <div value="5" style="padding: 4px;line-height: 16px;" class="option-item">被顶号(挤号)了</div>
+                    <div value="17" style="padding: 4px;line-height: 16px;" class="option-item">无法进入游戏,非账号密码错误</div>
+                    <div value="18" style="padding: 4px;line-height: 16px;" class="option-item">不想玩了</div>
+                    <div value="4" style="padding: 4px;line-height: 16px;" class="option-item">账号描述与实际不符</div>
+                  </div>            
+            <!-- <div class="select-box">
+              <select id="selComplainType" class="form-control">
+                <option value="">请选择售后类型</option>
+                <option value="10">密码错误</option>
+                <option value="13">被惩罚状态(debuff)</option>
+                <option value="11">账号保护中</option>
+                <option value="5">被顶号(挤号)了</option>
+                <option value="17">无法进入游戏,非账号密码错误</option>
+                <option value="18">不想玩了</option>
+                <option value="4">账号描述与实际不符</option>
+              </select> -->
+            </div> 
+          </div>
+          <div class="com-row">
+            <label style="color: #999;">申请：</label>
+            <label for="tuiZuJin" style="width: 150px;text-align: left;color: #999;"><input type="checkbox" id="tuiZuJin" price="" checked disabled="disabled" />退还租金<span id="tuihuanZuJin"></span>元</label>
+            <label for="tuiYaJin" style="width: 150px;text-align: left;color: #999;"><input type="checkbox" id="tuiYaJin" bail="" checked disabled="disabled" />退还押金<span id="tuihuanYaJin"></span>元</label>
+          </div>
+          <div class="com-row">
+            <label  style="color: #333;">详细描述：</label>
+            <textarea name="errDetail" id="errDetail" class="txt-des" maxlength="50" placeholder="请输入售后描述" ></textarea>
+          </div>
+          <div class="com-row">
+            <label  style="color: #333;">上传图片：</label>
+            <input type="button" class="btn-red-outline" value="上传图片" />
+            <input type="button" id="test111" class="file-opacity" title="请选择图片" onclick="creatInput();" />
+            <div class="hide" id="div_hide_input"></div>
+            <div id="test12" class="img-panel"></div>
+          </div>
+
+          <div class="com-row color-red">
+            <label style="line-height: 20px;float: left;color: #333;">备注：</label>
+            <div class="txt-div">从提交申请开始12小时内若双方没有协商达成共识，客服会根据双方提供的证据进行仲裁。</div>
+          </div>
+          <div class="com-row" style="padding-left: 88px;">
+            <input type="hidden" name="userid" value="" />
+            <input type="hidden" name="pOrderNo" value="" />
+            <input type="hidden" name="refundType" value="1">
+            <input type="hidden" name="complainType" value="">
+            <button type="submit" class="btn btn-lg-x btn-red" id="btnComplain" onclick="return SubmitComplain();">确认提交</button>
+            <button type="submit" class="btn btn-lg-x btn-rot" onclick="return quxiao();">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/jquery.form.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script type="text/javascript">
+    var createBy = '';
+    var loginUserInfo = GetLoginUserCookie();
+    if (loginUserInfo != null) {
+      createBy = loginUserInfo.UserID;
+    }
+    $("input[name='userid']").val(createBy);
+    var file_index = 1;
+    // var url = window.location.search.toString().replace("?", "");
+    // var params = url.split('=');
+    // var _tempParams = params[1].split(',');
+    var _tempParams = GetQueryString('orderno');    
+    $("input[name='pOrderNo']").val(_tempParams);
+    var submitComplain = new Vue({
+      el: '#SubmitComplain',
+      data: {
+        items: []
+      }
+    });
+    $(document).ready(function() {
+      // $("#selComplainType").change(function() {
+      //   if ($(this).val() != "") {
+      //     var complainType = $(this).val();
+      //     complainType += ',' + $(this).find("option:selected").text();
+      //     $("input[name='complainType']").val(complainType);
+      //   }
+      // });
+      $('#select-box').on('click','div',function(e){
+        e.stopPropagation();        
+        $('#select-box').hide();
+        $("#selComplainType2").attr('value',$(e.currentTarget).attr('value'));      
+        $('#selComplainType2').text(e.currentTarget.innerText);
+        var complainType = $(e.currentTarget).attr('value');
+          complainType += ',' + e.currentTarget.innerText;
+          $("input[name='complainType']").val(complainType);
+      })
+
+      $('.select-box').click(function(e){ 
+        e.stopPropagation();           
+        if($('#select-box').css('display') !=='none'){
+          $('#select-box').hide();
+        }else{
+          $('#select-box').show();
+        }
+      })
+      $(document).click(function(){
+        $('#select-box').hide();
+      })
+    });
+
+      //获取地址栏参数
+      function GetQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+
+    //转义  元素的innerHTML内容即为转义后的字符
+    function htmlEncode ( str ) {
+      var ele = document.createElement('span');
+      ele.appendChild( document.createTextNode( str ) );
+      return ele.innerHTML;
+    }
+    //解析 
+    function htmlDecode ( str ) {
+      var ele = document.createElement('span');
+      ele.innerHTML = str;
+      return ele.textContent;
+    }
+
+    function textPress(e){
+      e.value=htmlEncode(e.value)
+    }
+
+    function SubmitComplainImage(obj) {
+      var divOne = $('#test12');
+      showImg();
+
+      function showImg() {
+        var file = obj.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+          var img = new Image();
+          var div = $('<div class="img-panel-item"><i class="del" name="file_' + file_index + '">X</i></div>');
+          var del = $('');
+          img.src = e.target.result;
+          div.prepend(img);
+          //div.append(del);
+          divOne.append(div);
+          file_index++;
+        };
+        divOne.on('click', '.del', function() {
+          $(this).parent().remove();
+          $("#div_hide_input input[name='" + $(this).attr("name") + "']").remove();
+          $("#div_hide_input input[type='file']").each(function() {
+            if ($(this).val() == "") {
+              $(this).remove();
+            }
+          });
+        });
+      }
+    }
+    //生产一个上传图片的input
+    function creatInput() {         
+      if (parseInt($("#test12 .img-panel-item").length) < 3) {
+        var input = $('<input type="file" id="file_' + file_index + '" name="file_' + file_index + '" value="" accept="image/jpg,image/jpeg,image/png" onchange="SubmitComplainImage(this);"  class="upload-img">');
+        $('#div_hide_input').append(input);
+        $("#file_" + file_index + "").click();
+      } else {
+        layer.alert("只能上传3张图", {
+          title: '提示',
+          icon: 7
+        });
+        return;
+      }
+    }
+
+    function VerifyForm() {
+      $("input[type='file']").each(function() {
+        if ($(this).val() == "") {
+          $(this).remove();
+        }
+      });     
+      if ($("#selComplainType").val() == "") {
+        layer.alert("请选择投诉类型", { title: '提示', icon: 7 });
+        // parent.window.ShowAlert("请选择投诉类型", 7);
+        //layer.alert("请选择投诉类型", { title: '提示', icon: 7 });
+        return false;
+      }
+      if ($("#errDetail").val() == "") {
+        parent.window.ShowAlert("请填写详细描述", 7);
+        //layer.alert("请填写详细描述", { title: '提示', icon: 7 });
+        return false;
+      }
+      $(this).attr("disabled", "disabled");
+      return true;
+    }
+
+    function SubmitComplain() {      
+      if (VerifyForm()) {
+        $("#form-submitcomplain").ajaxSubmit({
+          type: 'post',
+          url: '' + apiUrl + 'complain/submitcomplain',
+          dataType: 'html',
+          beforeSend: function(xhr) {
+            $("#btnComplain").attr("disabled", "disabled").html("提交投诉中...");
+          },
+          success: function(data) {
+            var result = ResultDecrypt.AES_Decrypt(data);           
+            if (result.Code == 0) {
+              parent.window.CloseOpen();                                       
+              parent.window.ShowAlert("提交成功", 7);
+              var fromsource = GetQueryString('from');  
+              if(fromsource){
+                parent.window.locationReplace('/html/mine/my_zuhao_detail.html?' + _tempParams);
+              }else{
+                parent.mosutLoadOrderInfo();
+              }               
+            } else {
+              $("#btnComplain").attr("disabled", false).html("确认提交");
+              parent.window.ShowAlert(result.Message, 5);
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest.status);
+            alert(XMLHttpRequest.readyState);
+            alert(textStatus);
+            alert(XMLHttpRequest);
+            $("#btnComplain").attr("disabled", false).html("确认提交");
+          }
+        });
+      }
+      return false;
+    }
+
+    function quxiao() {
+      parent.window.CloseOpen();           
+    }
+  </script>
+</body>
+
+</html>

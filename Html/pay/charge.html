@@ -1,0 +1,325 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+  <link rel="stylesheet" href="css/pay.css" />
+  <title>充值</title>
+</head>
+
+<body>
+  <div class="charge">
+    <p class="line-title"><span>请选择充值平台</span></p>
+    <div class="charge-type">
+      <dl payWays="wx">
+        <dt><img src="/Content/public/icons/pay_wx.png" /></dt>
+        <dd>微信充值</dd>
+      </dl>
+      <dl class="active" payWays="zfb">
+        <dt><img src="/Content/public/icons/pay_zfb.png" /></dt>
+        <dd>支付宝充值</dd>
+      </dl>
+      <dl payWays="qpay" style="display: none;">
+        <dt><img src="/Content/public/icons/pay_qq.png" /></dt>
+        <dd>QQ钱包充值</dd>
+      </dl>
+    </div>
+    <form id="form-submitchongzhi" >
+      <div class="charge-row pay_miss">
+        <label>请输入充值金额：</label>
+        <input type="text" name="chMoney" id="chMoney" class="cash" value="5" placeholder="请输入充值金额" />
+        <p>不低于5元且小于500元</p>
+      </div>
+      <div class="charge-row">
+        <input type="hidden" id="payWays" name="payWays" value="zfb" />
+        <input type="hidden" id="userID" name="userID" />
+        <!--<a href="javascript:;" id="btnSubmitCZ" class="btn btn-lg btn-red">确认充值</a>-->
+        <input type="submit" id="btnSubmitCZ" class="btn btn-lg btn-red" value="确认充值" />
+      </div>
+      <div class="charge-row charge-text">
+        <p>
+          <span>充值金额不可提现，仅平台内消费 充值即表示同意 </span>
+          <a href="javascript:;" id="openProtocalModal" style="color:#C73030;"><<充值协议>></a>
+        </p>
+        <p>
+          <span>充值未到账或其他异常请联系客服电话：4000691500</span>
+        </p>
+      </div>
+      <!-- 模态框选择显示 -->
+      <!-- 充值协议弹框 -->
+      <div id="protocalModal" class="modal hide">
+        <div class="content protocal">
+          <div class="content-header">
+            <b>充值协议</b>
+            <img src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAA7AAD/7gAOQWRvYmUAZMAAAAAB/9sAhAAHBQUFBQUHBQUHCQYFBgkLCAcHCAsNCgoLCgoNEAwMDAwMDBAMDg8QDw4MFBQVFRQUHRwcHB0gICAgICAgICAgAQcHBw0MDRkQEBkbFhIWGyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICD/wAARCAAOAA0DAREAAhEBAxEB/8QAXwABAQEAAAAAAAAAAAAAAAAAAQQHAQEAAAAAAAAAAAAAAAAAAAAAEAACAQIFAgcBAAAAAAAAAAABAgMREiExEwQFADJBcSJCUhQVBhEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A3jeb2TgJJN1vJGn4idi1x9UkEjYhAPdG3h8fLIEHnBA3IVQzM6yDjyVsWBQ1YxLlqNdcWyqAMsegTHAvK6nLTI+5cSfQhZSIY4R3ULC1pWXuxrTLDoJRt9j+czndyH+cMiyJFpvhGLg0Zal2gWtYHKmFbeg//9k="
+              class="close" />
+          </div>
+          <div class="content-body self-scroll-bar">
+            <p>
+              尊敬的用户，为保障您的合法权益，请您在充值前仔细阅读本规则，以免造成误解。当您点击“立即充值”按钮后，即视为您已阅读、理解本协议，并同意按本协议的规定参与充值，否则您无权使用GG提供的充值服务。您继续使用GG的服务即视为您已经阅读并同意接受本协议的约束。
+              本团队向您提供的用于在GG租号平台上进行相关消费的功能，您可以通过第三方支付充值的方式使用各项产品或服务，同时您应根据自己的实际需求充值相应的金额，以免造成不必要的误会。
+              未成年用户应在监护人或法定代理人的陪同下阅读本协议。
+            </p>
+
+            <p>
+              <b>一、充值提现说明</b> <br />
+              1.充值余额有效期 充值金额有期限为自充值日起至用完即止<br />
+              2.余额使用规则 充值余额可用于支付GG订单订单费用，也可用于GG申请保证金支付。 <br />
+              3.充值金额提现 通过第三方充值后，充值金额不可提现，仅可用作平台内消费。 <br />
+              GG租号平台保留对充值行为规则进行单方面变更、调整、中止或终止的权利。您同意无条件接受对上述充值规则的变更、调整、中止或终止，GG租号平台开展上述行动后将以于GG租号平台公布的方式通知，并自公布之日起自动生效，而无需另行单独通知您，也不就该等行动给您造成的任何损失承担任何责任。
+            </p>
+
+            <p>
+              <b>二、附加说明</b>
+              <br /> 4.您明白您在本平台充值的金额不会产生任何利息。
+              <br /> 5.您对您所充值的产品享有合法权益，保证不会侵犯任何第三方的合法权益，保证不会违反国家相关法律法规的规定。例如，您是您充值使用的手机号码，微信账户或银联账户的合法使用人或已取得了其合法使用人的授权。
+              <br /> 6.您理解并同意，GG的服务是按照现有技术和条件所能达到的现状提供的。GG会尽最大努力向您提供服务，确保服务的连贯性和安全性；但GG不能随时预见和防范法律、技术以及其他风险，包括但不限于不可抗力、病毒、木马、黑客攻击、系统不稳定、第三方服务瑕疵、政府行为等原因可能导致的服务中断、数据丢失以及其他的损失和风险。
+              <br /> 7.您在使用本服务的过程中可能需要下载软件，对于这些软件，GG给予您一项个人的、不可转让及非排他性的许可。您仅可为访问或使用本服务的目的而使用这些软件。
+              <br /> 8.为了改善用户体验、保证服务的安全性及产品功能的一致性，GG可能会对软件进行更新。您应该将相关软件更新到最新版本，否则GG并不保证其能正常使用。
+              <br /> 9.您理解并同意：本平台的某些功能可能会让第三方知晓您的信息，例如：您通过使用本服务由第三方为您提交的手机号码进行充值，第三方可以知悉用户提交的手机号码或微信账户等信息。
+              <br /> 10.GG租号平台保留修改或增补本协议内容的权利。本协议的修改文本将公告于映客平台或以其他GG租号平台认为可行的方式公告。修改文本一旦公布则立即生效，且对生效前的用户同样适用。若您在本协议内容发生修订后，继续使用本服务的，则视为您同意最新修订的协议内容；否则您须立即停止使用本服务。
+            </p>
+
+            <p>
+              <b>三、用户违法行为</b>
+              <br /> 11.您在使用本服务时须遵守法律法规，不得利用本服务从事违法违规行为，包括但不限于：
+              （1）发布、传送、传播、储存危害国家安全统一、破坏社会稳定、违反公序良俗、侮辱、诽谤、淫秽、暴力以及任何违反国家法律法规的内容；
+              （2）发布、传送、传播、储存侵害他人知识产权、商业秘密等合法权利的内容；
+              （3）恶意虚构事实、隐瞒真相以误导、欺骗他人；
+              （4）发布、传送、传播广告信息及垃圾信息；
+              （5）其他法律法规禁止的行为。
+              <br /> 12.如果您违反了本条约定，相关国家机关或机构可能会对您提起诉讼、罚款或采取其他制裁措施，并要求GG给予协助。造成损害的，您应依法予以赔偿，GG不承担任何责任。
+              <br /> 13.如果GG发现或收到他人举报您发布的信息违反本条约定，GG有权进行独立判断并采取技术手段予以删除、屏蔽或断开链接。同时，GG有权视用户的行为性质，采取包括但不限于暂停或终止服务，限制、冻结或终止您在本平台账户的使用，追究法律责任等措施。
+              <br /> 14.您违反本条约定，导致任何第三方损害的，您应当独立承担责任；GG因此遭受损失的，您也应当一并赔偿。
+              三、不可抗力及其他免责事由
+              <br /> 15.您理解并同意，在使用本服务的过程中，可能会遇到不可抗力等风险因素，使本服务发生中断、延迟或受阻。不可抗力是指不能预见、不能克服并不能避免且对一方或双方造成重大影响的客观事件，包括但不限于自然灾害如洪水、地震、瘟疫流行和风暴等以及社会事件如战争、动乱、政府行为等。出现上述情况时，GG将努力在第一时间与相关单位配合，及时进行修复，但是由此给您造成的损失GG在法律允许的范围内免责。
+              <br /> 16.GG作为技术服务平台仅按现状提供服务，在法律允许的范围内，GG对以下情形导致的服务中断、延迟受阻不承担责任：
+              （1）受到计算机病毒、木马或其他恶意程序、黑客攻击的破坏；
+              （2）用户、第三方或GG的电脑软件、系统、硬件、网络和通信线路出现故障；
+              （3）用户操作不当，包括但不限于用户提交错误的充值号码或账号错误；
+              （4）用户通过非GG授权的方式使用本服务；
+              （5）其他GG无法控制或合理预见的情形。
+              <br /> 17.您理解并同意，在使用本服务的过程中，可能会遇到网络信息或其他用户行为带来的风险，GG不对任何信息的真实性、适用性、合法性承担责任，也不对因侵权行为给您造成的损害负责。这些风险包括但不限于：
+              （1）来自他人匿名或冒名的含有威胁、诽谤、令人反感或非法内容的信息；
+              （2）因使用本协议项下的服务，遭受他人误导、欺骗或其他导致或可能导致的任何心理、生理上的伤害以及经济上的损失；
+              （3）其他因网络信息或用户行为引起的风险。
+              <br /> 18.您理解并同意，本服务并非为某些特定目的而设计，包括但不限于核设施、军事用途、医疗设施、交通通讯等重要领域。如果因为软件或服务的原因导致上述操作失败而带来的人员伤亡、财产损失和环境破坏等，GG不承担法律责任。
+              <br /> 19.GG依据本协议约定获得处理违法违规内容的权利，该权利不构成GG的义务或承诺，GG不能保证及时发现违法行为或进行相应处理。
+              <br /> 20.在任何情况下，您不应轻信借款、索要密码或其他涉及财产的网络信息。涉及财产操作的，请一定先核实对方身份。
+            </p>
+
+            <p>
+              <b>四、未成年人使用条款</b>
+
+              <br /> 21.若用户未满18周岁，则为未成年人，应在监护人监护、指导下阅读本协议和使用本服务。
+              <br /> 22.未成年人用户涉世未深，容易被网络虚象迷惑，且好奇心强，遇事缺乏随机应变的处理能力，很容易被别有用心的人利用而又缺乏自我保护能力。因此，未成年人用户在使用本服务时应注意以下事项，提高安全意识，加强自我保护：
+              （1）认清网络世界与现实世界的区别，避免沉迷于网络，影响日常的学习生活；
+              （2）填写个人资料时，加强个人保护意识，以免不良分子对个人生活造成骚扰；
+              （3）在监护人或老师的指导下，学习正确使用网络；
+              （4）避免陌生网友随意会面或参与联谊活动，以免不法分子有机可乘，危及自身安全。
+              <br /> 23.监护人、学校均应对未成年人使用本服务时多做引导。特别是家长应关心子女的成长，注意与子女的沟通，指导子女上网应该注意的安全问题，防患于未然。
+            </p>
+
+            <p>
+              <b>五、其他</b>
+
+              <br /> 24.因本协议引起的或与本协议有关的争议，均适用中华人民共和国法律。
+              <br /> 25.因本协议引起的或与本协议有关的争议，GG与您将协商解决。协商不成的，任何一方均有权向本协议签订地有管辖权的法院提起诉讼。
+              <br /> 26.本协议部分内容被有管辖权的法院认定为违法或无效的，不因此影响其他内容的效力。
+              <br /> 27.本协议未涉及的问题参见国家有关法律法规，当本协议与国家法律法规冲突时，以国家法律法规为准。
+              <br /> 28.本协议所有条款的标题仅为阅读方便，本身并无实际涵义，不能作为本协议涵义解释的依据。
+              <br /> 29.本协议条款无论因何种原因部分无效或不可执行，其余条款仍有效，对双方具有约束力。
+              <br /> 30.本协议签订地：深圳。
+            </p>
+
+          </div>
+        </div>
+      </div>
+      <!-- 充值界面 -->
+      <div id="div_fill" class="modal" style="display:none;">
+        <div class="content">
+          <div class="content-header">
+            <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+          </div>
+          <!-- <iframe id="ifr_fill" name="ifr_fill" src="" width="100%" height="200" style="overflow:auto;border:0"></iframe> -->
+          <img src="" id="QRcodeUrl" style="width:117px;"/>
+          <p style="padding: 16px 0;">充值：<span style="color:#C73030;" id="amount">0</span>元</p>
+          <p>充值未到账请联系客服电话：4000691500</p>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery.form.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script type="text/javascript">
+    var _fillUrl = '';
+    var _fillBalance = 0;
+
+    function VerifyForm() {
+      var _chongZhiBalance = $("#chMoney").val();
+      var _loginUser = GetLoginUser();
+      var _payWays = $("#payWays").val();
+
+      var loginUserInfo = GetLoginUserCookie();
+      if (loginUserInfo != null)
+        $("#userID").val(loginUserInfo.UserID);
+
+      if ($("#userID").val() == "")
+        return false;
+
+      if (_payWays == "") {
+        parent.window.ShowAlert("请选择充值方式", 5);
+        return false;
+      }
+      if (_chongZhiBalance == "") {
+        parent.window.ShowAlert("请填写充值金额", 5);
+        return false;
+      }
+      if (!/^\d+$/.test($("#chMoney").val())) {
+        parent.window.ShowAlert("请输入整数充值金额", 5);
+        return false;
+      } else {
+        if (parseFloat($("#chMoney").val()).toFixed(2) < 5.00) {
+          parent.window.ShowAlert("请输入大于等于5元的整数金额", 5);
+          return false;
+        }
+        if (parseFloat($("#chMoney").val()).toFixed(2) > 500) {
+          parent.window.ShowAlert("请输入小于或等于500元的整数金额", 5);
+          return false;
+        }
+      }
+      _fillBalance = _chongZhiBalance;
+      CheckFillType();
+      if (_fillUrl == "")
+        return false;
+      return true;
+    }
+
+    function CheckFillType() {
+      var _payWays = $("#payWays").val();
+      if (_payWays == "wx")
+        _fillUrl = "https://testclientwebpay.ggzuhao.com/wechatpay/wechat/SubmitChongZhi";
+      else if (_payWays == "zfb")
+        _fillUrl = "https://testclientwebpay.ggzuhao.com/alipay/ali/SubmitChongZhi";
+      else if (_payWays == "qpay")
+        _fillUrl = "https://testclientwebpay.ggzuhao.com/qqpay/qq/SubmitChongZhi";
+    }
+
+    function CloseFillWindow() {
+      $("#div_fill").hide();
+    }
+
+    function GoToZuHao() {
+      window.location = '/html/hall/hall.html';
+    }
+
+    function GetUserBalance() {
+      parent.window.GetUserBalance();
+    }
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".charge-type dl").click(function() {
+        $(".charge-type dl").removeClass("active");
+        $(this).addClass("active");
+        var _payWays = $(this).attr("payWays");
+        $("#payWays").val(_payWays);
+      });
+
+      $("#btnSubmitCZ").click(function() {
+        if (VerifyForm()) {
+          //$("#form-submitchongzhi").attr("action", _fillUrl);
+         // $("#div_fill").show();
+
+          //$("#form-submitchongzhi").submit();                 
+          var _chongZhiBalance = $("#chMoney").val()-0;
+          var _loginUser = GetLoginUser();
+          var _payWays = $("#payWays").val();
+          var loginUserInfo = GetLoginUserCookie();         
+          $('#amount').text(_chongZhiBalance.toFixed(2));   
+          $('#div_fill').show();
+          axios.get(apiUrl+`order/SubmitChongZhi?chMoney=${_chongZhiBalance}&payWays=${_payWays}&userID=${loginUserInfo.UserID}&sxval=1`).then(function(result) {
+            //这里处理成功回调                  
+            var result=JSON.parse(result.data);           
+            console.log(result,orderNo,QRurl,88)
+            if (result.code) {            
+              var orderNo=result.msg.split('|')[0];
+              var QRurl=result.msg.split('|')[1];
+              this.orderNo=orderNo;
+            $('#QRcodeUrl').attr('src',QRurl)
+            window.getOrderStateTimer=setInterval(function(){
+                getOrderState(window.getOrderStateTimer,orderNo,_payWays)
+            },1500)
+            } else {
+              layer.msg(result.msg);
+            }
+          }).catch(function(result) {
+            layer.msg(result.msg);
+          });
+        }
+        return false;
+      });
+
+      $(".close").click(function() {
+        CloseFillWindow();
+      });
+
+      // 打开充值协议
+      $('#openProtocalModal').on('click', function() {
+        $('#protocalModal').removeClass('hide');
+      });
+
+
+      //关闭模态框
+      $('.close').on('click', function() {
+        $(this).parent().parent().parent().addClass('hide');
+        clearInterval(window.getOrderStateTimer)
+      });
+    });
+    function getOrderState(timer,orderNo,payWays){
+      axios.get(apiUrl+`/order/QueryPaySuccess?orderNo=${orderNo}&payWays=${payWays}`).then(function(result) {
+          //这里处理成功回调
+          console.log(result,88)
+          var result=JSON.parse(result.data);
+          if (result.code) {
+            clearInterval(timer)
+            layer.msg('支付成功');
+            setTimeout(function(){
+              // parent.CloseOpen(); //关闭信息框
+              // parent.goRefresh();
+              $('#div_fill').hide();
+              parent.GetUserBalance();
+            },1000)
+          } else {
+            //layer.msg(result.Message);
+          }
+          //clearInterval(timer)
+        }).catch(function(result) {
+          clearInterval(timer)
+          layer.msg(result.msg);               
+        });
+    }
+  </script>
+</body>
+
+</html>

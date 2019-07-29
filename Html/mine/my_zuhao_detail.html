@@ -1,0 +1,356 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+  <link rel="stylesheet" href="/Content/public/icon/iconfont.css">
+  <link rel="stylesheet" href="css/my.css" />
+  <link href="/Content/libs/layer/skin/default/layer.css" rel="stylesheet" />
+  <title>我租的号-订单详情</title>
+  <style>
+    .product-preview-btn{
+      display: inline-block;        
+      line-height: normal;
+      background: rgb(255, 255, 255);
+      border-radius: 4px;
+      color: #c73030;
+      border: 1px solid #c73030;
+      cursor: pointer;
+      padding: 2px 5px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="zuhao-detail self-scroll-bar">
+    <!-- 订单详情-->
+    <div id="OrderInfo" v-cloak>
+      <p class="line-title"><span>订单详情</span></p>
+      <div class="detail-order">
+        <img id="productImage" src="" class="i-w150" :alt="order.GameName" />
+        <p>订单编号： <span>{{order.OrderformID}}</span><a :href="'../hall/hall_detail.html?id='+order.ProductNumber" class="product-preview-btn">预览商品</a></p>
+        <p>商品编号：<span>{{order.ProductNumber}}</span></p>
+        <p class="ellipsis-2">订单名称：{{order.ProductDesc}}</span></p>
+        <p>游戏区服：<span>{{order.GameName}}&nbsp;&nbsp;/&nbsp;&nbsp;{{order.QName}}&nbsp;&nbsp;/&nbsp;&nbsp;{{order.FName}}</span></p>
+        <p>
+          <span>订单总额：<b class="color-red">{{order.TotalRMB}}元</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <span>单价：<b class="color-red">{{order.ProductPrice}}元</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <span>押金：<b class="color-red">{{order.Bail}}元</b></span>       
+        </p>
+      </div>
+      <div class="OrderDetails">
+        <div class="OrderDetails_shi">使用信息</div>
+        <div class="OrderDetails_deta">
+          <p v-if="order.States ==3&&order.GameTypeID==2">&nbsp;账号： <span>{{order.AccountNumber}}</span> <a class="copy" v-on:click="copyToClipboard(order.AccountNumber)">复制</a></p>
+          <p v-if="order.States ==3&&order.GameTypeID==2">&nbsp;密码： <span>{{order.Passed}}</span> <a class="copy" v-on:click="copyToClipboard(order.Passed)">复制</a></p>
+          <p> <i class="icon iconfont icon-kaishishijian"></i> &nbsp;开始时间： <span>{{order.CreateDate}}</span></p>
+          <p> <i class="icon iconfont icon-kaishishijian"></i> &nbsp;结束时间： <span>{{order.OverTimer}}</span></p>
+          <p v-if="order.States ==3&&order.GameTypeID==1" :data="order.States"><i class="icon iconfont icon-bianhao"></i> &nbsp;上号码： <span id="shNumber">{{order.SHCode}}</span> <a class="copy" v-on:click="copyToClipboard(order.SHCode)">复制</a> </p>
+        </div>
+        <div class="OrderDetails_jinxing" v-if="order.States==3">
+          <div class="OrderDetails_btn">订单正在进行中...</div>
+          <div class="OrderDetails_acb">
+            <a class="a1" @click="GoToStartGame(order.SHCode,order.GameName)" v-if="order.States ==3&&order.GameTypeID==1">登录游戏</a>
+            <a class="a2" @click="XuZu(order.OrderformID,order.GameName,order.QName,order.FName,order.Price)">续租</a>
+            <span @click="ApplyForafterSale(order.OrderformID,order.GameName,order.QName,order.FName,order.Price)">申请售后</span>
+          </div>
+        </div>
+        <div class="OrderDetails_jinxing" v-if="order.States==5" style="padding-top: 25px;">
+          <div class="OrderDetails_acb">
+            <!-- <a class="a3">登录游戏</a> -->
+            <a class="a1" @click="GoToProductInfo(order.ProductNumber)">再租一次</a>
+          </div>
+        </div>
+        <div class="OrderDetails_jinxing" v-if="order.States==8" style="padding-top: 15px;">
+          <div class="OrderDetails_acb">
+            <a class="a3">订单售后中...</a>
+          </div>
+          <div class="OrderDetails_apen"><span class="active">售后信息</span></div>
+          <div class="OrderDetails_tabel">
+            <div class="OrderDetails_tr">
+              <label>售后类型：</label> {{complainInfo.ComplainTypeName}}
+            </div>
+            <div class="OrderDetails_tr">
+              <label>申请退还：</label> <span class="OrderDetails_tr_span" v-for="items in RealRefundPrices">{{items.RefundTypeName}}{{items.RefundPrice}}元</span>
+            </div>
+            <div class="OrderDetails_tr">
+              <label>售后描述：</label> {{complainInfo.ComplainDescribe}}
+            </div>
+            <div class="OrderDetails_tr_img" >               
+              <span v-for="item in Images" v-if="item.ComplainImagePath">
+                <img onclick="Zoom(this.src);" v-bind:src="item.ComplainImagePath" />
+              </span>
+            </div>
+            <div class="OrderDetails_tr">
+              <label>申请时间：</label> {{complainInfo.ComplainTimeStr}}
+            </div>
+            <div class="OrderDetails_tr">
+              <!-- <span class="color-red"> &nbsp; * &nbsp;</span>您的投诉已提交，若48小时内双方协商没有达成共识，客服将介入进行仲裁处理！ -->
+              <span class="color-red"> &nbsp; * &nbsp;</span>售后申请，我们会尽快处理，时间在12小时之内
+            </div>
+            <div class="OrderDetails_tr">
+              <!-- <label >待处理时间：</label> <span id="ShengYuTimeLabel">{{complainInfo.ShengYuTime}}</span> -->
+              <!-- <label >待处理时间：</label> <span id="ShengYuTimeLabel">00天00时00分00秒</span>               -->
+              <button style="background: #C73030;color: #fff;cursor: pointer;padding: 5px 16px;" onclick="parent.openKefu();">联系客服</button>      
+            </div>
+          </div>
+        </div>
+        <div class="OrderDetails_jinxing" v-if="order.States==9" style="padding-top: 15px;">
+          <div class="OrderDetails_acb">
+            <a class="a3">售后处理完成</a>
+          </div>
+          <div class="OrderDetails_apen">
+            <span @click="complete=1" v-bind:class="complete==1?'active':''">售后信息</span>
+            <span @click="complete=2" v-bind:class="complete==2?'active':''">售后结果</span>
+          </div>
+          <div class="OrderDetails_tabel" v-if="complete == 1">
+            <div class="OrderDetails_tr">
+              <label>售后类型：</label> {{complainInfo.ComplainTypeName}}
+            </div>
+            <div class="OrderDetails_tr">
+              <label>申请退还：</label> <span class="OrderDetails_tr_span" v-for="items in RealRefundPrices">{{items.RefundTypeName}}{{items.RefundPrice}}元</span>
+            </div>
+            <div class="OrderDetails_tr">
+              <label>售后描述：</label> {{complainInfo.ComplainDescribe}}
+            </div>
+            <div class="OrderDetails_tr_img" v-if="Images.length">              
+              <span v-for="item in Images" v-if="item.ComplainImagePath">
+                <img onclick="Zoom(this.src);" v-bind:src="item.ComplainImagePath" />
+              </span>
+            </div>
+            <div class="OrderDetails_tr">
+              <label>申请时间：</label> {{complainInfo.ComplainTimeStr}}
+            </div>
+            <div class="OrderDetails_tr">              
+              <!-- <span class="color-red"> &nbsp; * &nbsp;</span>售后申请，我们会尽快处理，时间在12小时之内 -->
+            </div>
+            <div class="OrderDetails_tr"></div>
+          </div>
+          <div class="OrderDetails_tabel" v-if="complete == 2">
+            <div class="OrderDetails_complete">
+              <img src="../../Content/img/yes.png" class="close" v-if="complainInfo.ComplainStatus==0" />
+              <img src="../../Content/img/no.png" class="close" v-if="complainInfo.ComplainStatus==3" />
+            </div>
+            <div class="OrderDetails_tr" v-if="complainInfo.ComplainStatus==0">
+              <label>退还用户：</label> <span class="OrderDetails_tr_span" v-for="items in RealRefundPrices">{{items.RefundTypeName}}{{items.RealRefundPrice}}元</span>
+            </div>
+            <div class="OrderDetails_tr_bo" v-if="complainInfo.ComplainStatus==3">
+              售后驳回！
+            </div>
+            <div class="OrderDetails_tr">
+              <label>仲裁描述：</label> {{complainInfo.ArbitrateResult}}
+            </div>
+            <div class="OrderDetails_tr">
+              <label>仲裁时间：</label> {{complainInfo.EstimateOverTime2}}
+            </div>
+          </div>
+        </div>
+        <div class="OrderDetails_jinxing" v-if="order.States==11" style="padding-top: 15px;">
+          <div class="OrderDetails_acb">
+            <a class="a3">订单冻结中...</a>
+          </div>
+          <div class="OrderDetails_apen"><span class="active">订单冻结中</span></div>
+          <div class="OrderDetails_tabel">
+            <div class="OrderDetails_tr">
+              <label>冻结原因：</label> 冻结的订单说明有使用外挂或其他可疑行为，请耐心等待客服小姐姐处理，或咨询客服
+            </div>
+            <div class="OrderDetails_tr">
+              <label>客服电话：</label> <span class="color-red">400-0691-500</span>
+            </div>
+            <div class="OrderDetails_tr">              
+              <label>冻结时间：</label> {{order.ShengYuTimer}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/jquery.form.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script src="js/my_zuhao_detail.js"></script>
+  <script>
+
+  </script>
+  <script type="text/javascript">
+    function LoadComplainInfo(_price, _bail) {
+      $("#tuihuanZuJin").html(parseFloat(_price).toFixed(2));
+      $("#tuihuanYaJin").html(parseFloat(_bail).toFixed(2));
+
+      $("#tuiZuJin").attr("price", _price);
+      $("#tuiYaJin").attr("bail", _bail);
+
+      var _tuihuanYaJin = "1,退还租号押金," + _bail;
+      var _tuihuanZuJin = "2,退还交易金额," + _price;
+
+      $("input[name='refundType']").val(_tuihuanYaJin + ";" + _tuihuanZuJin);
+    }
+
+    function GetComplainHandleResult() {
+      var complainResultParams = new Object();
+      complainResultParams.OrderNo = urlParams;
+      complainResultParams.UserID = createBy;
+      var url = 'complain/GetComplainHandleResult'; //url地址
+      HttpGet(url, complainResultParams)
+        .then(function(result) {
+          console.log(result,123);
+          //这里处理成功回调
+          if (result.Code == "0") {
+            orderInfo.complainHandleResult = result;
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            }, function(index) {
+              layer.close(index);
+              window.location = '/html/hall/hall.html';
+            });
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析投诉处理结果数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function LoadIntoLogInfo() {
+      var intoLogParams = new Object();
+      intoLogParams.OrderNo = urlParams;
+      intoLogParams.CreateBy = createBy;
+      var url = 'intolog/getintologforcreateby'; //url地址
+      HttpGet(url, intoLogParams)
+        .then(function(result) {          
+          //这里处理成功回调
+          if (result.Code == "0") {
+            orderInfo.intoLogs = result.Content;
+          }
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析进账记录数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+
+
+    // var orderInfo = new Vue({
+    //   el: '#orderInfo',
+    //   data: {
+    //     complainInfo: [],
+    //     Images: [],
+    //     RefundPrices: [],
+    //     RealRefundPrices: [],
+    //     OrderStatus: -1
+    //   }
+    // });
+
+
+    function GetComplainImages(complainDetailId) {
+      var complainParams = new Object();
+      complainParams.complainDetailID = complainDetailId;
+      var url = 'complain/GetComplainImages'; //url地址
+      HttpGet(url, complainParams)
+        .then(function(result) {
+          //这里处理成功回调
+          if (result.Code == "0") {
+            orderInfo.Images = result.Content;
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析投诉图片数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function GetComplainRefunds(complainDetailId) {
+      var complainParams = new Object();
+      complainParams.complainDetailID = complainDetailId;
+      var url = 'complain/GetComplainRefunds'; //url地址
+      HttpGet(url, complainParams)
+        .then(function(result) {
+          console.log(result,888)
+          //这里处理成功回调
+          if (result.Code == "0") {
+            orderInfo.RefundPrices = result.Content;
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析投诉图片数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+
+    function Zoom(url) {
+      var oldUrl = $("#PZoom>img").attr("src");
+      if (oldUrl == "") {
+        var _image = '<img src="' + url + '" style="width:0;height:0;"/>';
+        $("#PZoom").html(_image);
+        $("#PZoom>img").attr("src", url).animate({
+          width: "700px",
+          height: "100%",
+        }, "slow");
+      } else {
+        if (oldUrl == url) {
+          $("#PZoom").html("");
+        } else {
+          var _image = '<img src="' + url + '" style="width:0;height:0;"/>';
+          $("#PZoom").html(_image);
+          $("#PZoom>img").attr("src", url).animate({
+            width: "700px",
+            height: "100%",
+          }, "slow");
+        }
+      }
+    }
+  </script>
+
+</body>
+
+</html>

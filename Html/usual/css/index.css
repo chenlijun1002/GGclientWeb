@@ -1,0 +1,262 @@
+.sub-right-top {
+  border-bottom: 1px solid #ddd;
+}
+
+.sub-right-top .text {
+  display: inline-block;
+  width: 100%;
+  padding-left: 20px;
+  line-height: 34px;
+  vertical-align: bottom;
+  color: #02ADFE;
+}
+
+.box-carousel {
+  height: 240px;
+}
+
+.box-carousel .carousel-content {
+  width: 750px;
+  margin: 0 auto;
+  padding-top: 10px;
+}
+
+.box-carousel .carousel-content .content-list {
+  position: relative;
+  height: 205px;
+}
+
+.box-carousel .carousel-content .content-list img {
+  transition: all .3s linear;
+}
+
+.box-carousel .carousel-content .content-list li {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  transition: all .6s ease-in-out;
+  transform: scale(1, 0.8);
+  opacity: 0;
+}
+
+.box-carousel .carousel-content .content-list li.active {
+  z-index: 60;
+  opacity: 1;
+  transform: scale(1, 1);
+}
+
+.box-carousel .carousel-content .content-list li.pre {
+  left: -70px;
+  opacity: 1;
+  transform: scale(1, 0.8) translateY(22px);
+}
+
+.box-carousel .carousel-content .content-list li.pre img {
+  height: 180px;
+}
+
+.box-carousel .carousel-content .content-list li.next {
+  left: 150px;
+  opacity: 1;
+  transform: scale(1, 0.8) translateY(22px);
+}
+
+.box-carousel .carousel-content .content-list li.next img {
+  height: 180px;
+}
+
+.box-carousel .carousel-indicator {
+  text-align: center;
+}
+
+.box-carousel .carousel-indicator .indicator-list {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.box-carousel .carousel-indicator .indicator-list:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.box-carousel .carousel-indicator .indicator-list li {
+  float: left;
+  width: 25px;
+  height: 6px;
+  margin-left: 8px;
+  background: #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.box-carousel .carousel-indicator .indicator-list li.active {
+  background: #C73030;
+}
+
+.add-sc {
+  height: 635px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.game-hot {
+  margin-bottom: 5px;
+}
+
+.game-hot .hot-tag {
+  margin: 0 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.game-hot .hot-tag .tag {
+  display: inline-block;
+  padding: 5px 6px;
+  border-bottom: 2px solid #C73030;
+}
+
+.game-hot .hot-tag .hot {
+  position: relative;
+  top: -4px;
+  right: -7px;
+  font-size: 12px;
+  padding: 1px 4px;
+  border-radius: 5px;
+  background: #D40401;
+  color: #fff;
+}
+
+.game-hot .hot-tag .hot:before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: -12px;
+  border: 6px solid transparent;
+  border-right-color: #D40401;
+  transform: scaleY(0.5);
+}
+
+.game-hot .hot-tag .rt {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.game-hot .list-a {
+  margin-top: 5px;
+}
+
+.game-hot .list-a:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.game-hot .list-a li {
+  float: left;
+  width: 136px;
+  margin-left: 18px;
+}
+
+.game-hot .list-a li img {
+  width: 136px;
+  height: 136px;
+}
+
+.game-hot .list-a li p {
+  padding: 5px 0;
+}
+
+.game-hot .list-a a {
+  display: block;
+  text-align: center;
+}
+
+.game-category .tab-items {
+  margin: 0 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.game-category .tab-items .rt {
+  margin-top: 3px;
+  font-size: 14px;
+  font-family: 'Microsoft YaHei';
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+}
+
+.game-category .item {
+  display: inline-block;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+
+.game-category .item.active {
+  color: #C73030;
+  border-bottom: 2px solid #c73030;
+}
+
+.game-category .tab-content {
+  margin-top: 12px;
+}
+
+.game-category .content-list:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.game-category .content-list li {
+  display: inline-block;
+  /* float: left; */
+  margin: 5px 9px 10px;
+  width: 112px;
+  text-align: center;
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.game-category .content-list li a p {
+  width: 100%;
+  font-size: 14px;
+  font-family: PingFang-SC-Medium;
+  font-weight: 500;
+  color: #fff;
+  line-height: 26px;
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  bottom: 0px;
+}
+
+.game-category .content-list li a:hover p {
+  /* color: #c73030; */
+  color:#fff;
+}
+
+.game-category .rounded {
+  width: 110px;
+  height: 110px;
+}
+
+.game-category .content-list li:hover {
+  border: 1px solid #c73030;
+  box-sizing: border-box;
+  transform: scale(1.15);
+  transition: transform 0.5s;
+}
+
+/*# sourceMappingURL=index.css.map */
+/*****************/
+.game_banner {
+  padding: 10px 14px;
+}
+
+.game_banner .game_Souree {
+  margin-bottom: 10px;
+}
+
+.game_banner .game_Wouer {
+  margin-bottom: 10px;
+}

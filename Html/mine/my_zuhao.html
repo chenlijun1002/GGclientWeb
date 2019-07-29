@@ -1,0 +1,546 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+
+  <link rel="stylesheet" href="css/my.css" />
+  <link href="/Content/libs/layer/skin/default/layer.css" rel="stylesheet" />
+  <title>我租的号</title>
+</head>
+
+<body>
+
+  <div class="my-zuhao">
+    <div class="search-rt">
+      <form>
+        <input type="text" id="txtKeyword" class="i-input" placeholder="请输入商品名称" />
+        <label class="label">
+          <span>订单时间：</span>
+          <input type="text" class="i-date" value="" id="txtBeginTime" onClick="WdatePicker({ onclearing: function () { return !ClearPicker(); },maxDate:'#F{$dp.$D(\'txtEndTime\')}' })" />
+          <span style="display: inline-block;width: 16px;height: 1px;border-top: 1px solid #333;vertical-align: middle;margin: 0 8px;"></span>
+          <input type="text" class="i-date" id="txtEndTime" onClick="WdatePicker({ onclearing: function () { return !ClearPicker();  },minDate:'#F{$dp.$D(\'txtBeginTime\')}' })" />
+        </label>&nbsp;&nbsp;&nbsp;
+        <input type="button" id="btnSearch" value="搜索" />
+      </form>
+    </div>
+    <div class="zuhao-tabs">
+      <div class="tabs-item" id="OrderStatusCount" v-cloak>
+        <span class="item active" status="3">租号中（{{orderStatusCount.租号中}}）</span>
+        <span class="item" status="5">已完成（{{orderStatusCount.已完成}}）</span>
+        <span class="item" status="8">售后中（{{orderStatusCount.投诉中}}）</span>
+        <span class="item" status="9">售后完成（{{orderStatusCount.投诉完成}}）</span>
+        <span class="item" status="11">已冻结（{{orderStatusCount.已冻结}}）</span>
+      </div>
+      <div class="tabs-content">
+        <div class="content">
+          <p class="content-title">
+            <span class="sec-one">订单信息</span>
+            <span class="sec-two">订单状态</span>
+            <span class="sec-three">订单金额</span>
+            <span class="sec-four">操作</span>
+          </p>
+          <ul id="OrderList" class="content-list self-scroll-bar" v-cloak>
+            <li v-if="items.length" v-for="item in items">
+              <div class="sec-one">
+                <p>订单编号：{{item.OrderformID}}</p>
+                <p class="ellipsis">{{item.ProductDesc}}</p>
+                <p>游戏区服：&nbsp;{{item.GameName}} &nbsp;/&nbsp; {{item.QName}} &nbsp;/&nbsp; {{item.FName}}</p>
+                <p>
+                  <span>单价：<b class="color-red">{{item.Price}}元</b> &nbsp;&nbsp;</span>
+                  <span>押金：<b class="color-red">{{item.Bail}}元</b> &nbsp;&nbsp;</span>
+                  <span>时长：<b class="color-red">{{item.OrderCount}}小时</b></span>
+                </p>
+                <p v-if="item.GameTypeID==2 && item.States==3">
+                  <span>
+                    账号：<b style="display: inline-block;width: 250px;">{{item.AccountNumber}}</b>
+                    <button class="btn btn-red copy" @click="Copy(item.AccountNumber)">复制</button>
+                  </span>
+                </p>
+                <p v-if="item.GameTypeID==2 && item.States==3">
+                  <span>
+                    密码：<b style="display: inline-block;width: 250px;">{{item.Passed}}</b>
+                    <button class="btn btn-red copy" @click="Copy(item.Passed)">复制</button>
+                  </span>
+                </p>
+              </div>
+              <div class="sec-two" v-if="item.States=='0'">
+                已取消
+              </div>
+              <div class="sec-two" v-else-if="item.States==2">
+                待付款
+              </div>
+              <div class="sec-two" v-else-if="item.States==3">
+                <p class="color-red">出租中</p>
+                <p class="color-red" :id="item.OrderformID">{{item.lastTime}}</p>
+              </div>
+              <div class="sec-two" v-else-if="item.States==4">
+                待收货
+              </div>
+              <div class="sec-two" v-else-if="item.States==5">
+                已完成
+              </div>
+              <div class="sec-two" v-else-if="item.States==6">
+                已完成
+              </div>
+              <div class="sec-two" v-else-if="item.States==7">
+                退款
+              </div>
+              <div class="sec-two" v-else-if="item.States==8">
+                售后中
+              </div>
+              <div class="sec-two" v-else-if="item.States==9">
+                售后处理完成
+              </div>
+              <div class="sec-two" v-else-if="item.States==10">
+                投诉驳回
+              </div>
+              <div class="sec-two" v-else-if="item.States==11">
+                订单冻结
+              </div>
+              <div class="sec-three color-red">
+                {{item.RealRMB}}元
+              </div>
+              <div class="sec-four">
+                <span v-if="item.States==0">已取消</span>
+                <span v-else-if="item.States==2">待付款</span>
+                <!--待付款-->
+                <span v-else-if="item.States==3">
+                  <!--租号中-->
+                  <a v-if="item.GameTypeID==1" href="javascript:;" class="btn btn-lg btn-red" @click="GoToStartGame(item.SHCoder,item.GameName)">登录游戏</a>
+                  <a href="javascript:;" @click="XuZu(item.OrderformID,item.GameName,item.QName,item.FName,item.Price)" class="btn btn-lg btn-red-outline">续租</a>
+                  <!-- <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-red-outline">申请售后</a> -->
+                  <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-lusei">订单详情</a>
+                </span>
+                <span v-else-if="item.States==4">待收货</span>
+                <!--待收货-->
+                <span v-else-if="item.States==5 || item.States==6 ">
+                  <!--5=待评价,6=已完成-->
+                  <!-- <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-red" v-if="item.FrozenOrder>0">冻结结果</a> -->
+                  <a href="javascript:;" @click="GoToProductInfo(item.ProductNumber)" class="btn btn-lg btn-red-outline">再租一次</a>
+                  <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-lusei" v-if="item.FrozenOrder==0">订单详情</a>
+                </span>
+                <span v-else-if="item.States==7">
+                  <!--退单-->
+                  <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-lusei" v-if="item.FrozenOrder==0">订单详情</a>
+                </span>
+                <span v-else-if="item.States==8">
+                  <!--投诉中-->
+                  <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-lusei" v-if="item.FrozenOrder==0">订单详情</a>
+                </span>
+                <span v-else-if="item.States==9">
+                  <!--投诉处理完成-->
+                  <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-lusei">订单详情</a>
+                </span>
+                <span v-else-if="item.States==10">投诉驳回</span>
+                <span v-else-if="item.States==11">
+                  <a href="javascript:;" @click="GoToInfo(item.OrderformID)" class="btn btn-lg btn-lusei">订单详情</a>
+                </span>
+              </div>
+            </li>
+            <!-- <li v-else style="text-align:center;">无订单</li> -->
+            <li v-if="!items.length" style="text-align:center;line-height: 100px;color:#666;">无订单</li>
+            <li id="OrderListBottom" style="text-align:center; display:none;">我是有底线的</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="divLoading" class="loading-more">
+    数据加载中，请稍后...
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <!-- 余额不足时显示 ，1.5秒后自动消失-->
+  <div class="modal-pay hide" id="TipsCharge">
+    <div class="m-content">
+      <div class="cont-head">
+        <span class="t-btm">余额不足，请先充值</span>
+        <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+      </div>
+      <div class="cont-body b-mg-s">
+        <a href="../pay/charge.html" class="btn btn-lg btn-red">充值</a>
+        <a href="javascript:;" class="btn btn-lg btn-red-outline" id="btnCancel">取消</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/My97DatePicker/WdatePicker.js"></script>
+
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script type="text/javascript">
+    var createBy = '';
+    var loginUserInfo = GetLoginUserCookie();
+    if (loginUserInfo != null)
+      createBy = loginUserInfo.UserID;
+
+    var params = new Object(); //创建params对象
+    params.pageIndex = 1; //传递参数
+    params.pageSize = 7; //传递参数
+    params.states = 3;
+    params.keyWord = '';
+    params.beginTime = '';
+    params.endTime = '';
+    params.createBy = createBy;
+
+    var orderList = new Vue({
+      el: '#OrderList',
+      data: {
+        items: []
+      },
+      methods: {
+        XuZu: function(orderNo, gameName, qName, fName, _price) {
+          parent.window.Open("续租商品", "/html/mine/my_xuzu.html?orderno=" + orderNo + ",1", '380px', '450px');
+        },
+        GoToInfo: function(orderNo) {         
+          window.location = 'my_zuhao_detail.html?' + orderNo;
+        },
+        GoToProductInfo: function(productNumber) {          
+          window.location = '/html/hall/hall_detail.html?id=' + productNumber;
+        },
+        GoToStartGame: function(shCode, gameName) {
+          //debugger
+          parent.window.StartGame(shCode, gameName, 2);
+        },
+        Copy: function(value) {
+          parent.window.Copy(value);
+        }
+      }
+    });
+
+    var OrderStatusCount = new Vue({
+      el: '#OrderStatusCount',
+      data: {
+        items: [],
+        orderStatusCount: []
+      }
+    });
+
+    var _pageCount = 0;
+    var _userBalance = 0;
+    var arrZuHaoZhongOrders = new Array();
+
+    function LoadOrderList(_params) {
+      console.log("params.pageIndex=" + params.pageIndex + ",_pageCount" + _pageCount);
+      if (orderList.items.length > 4) {
+        if (params.pageIndex > _pageCount) {
+          $("#OrderListBottom").show();
+          return;
+        }
+      }
+
+      console.log("_params.pageIndex=" + _params.pageIndex);
+      ShowLoading();
+      var url = 'order/getmyzuhaoorders'; //url地址
+      HttpGet(url, _params)
+        .then(function(result) {
+          console.log(result,'订单列表');
+          //这里处理成功回调
+          if (result.Code == "0") {
+            var orderObj = result.Content;
+            $.each(orderObj, function(index, content) {
+              orderList.$set(orderObj[index], 'lastTime', FormatTime(content.UpdateDate, content.hour, content.serverCurTime));
+              orderList.items.push(orderObj[index]);
+
+              content.lastTime = FormatTime(content.UpdateDate, content.hour, content.serverCurTime);
+              arrZuHaoZhongOrders.push(content);
+            });
+
+            clearInterval(ServerTimeInterval);
+            if (orderObj.length > 0) {
+              ServerTimeInterval = setInterval(GetServerTime, 1000);
+              // setInterval(ShengYuTimer, 1000);
+            }
+            _pageCount = result.PageCount;
+            CloseLoading();
+            console.log(orderList.items,888888888)
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });        
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function LoadOrderStatusCount() {
+      var orderStatusCountParams = new Object();
+      orderStatusCountParams.CreateBy = createBy;
+      orderStatusCountParams.keyWord = params.keyWord;
+      orderStatusCountParams.beginTime = params.beginTime;
+      orderStatusCountParams.endTime = params.endTime;
+
+      var url = 'order/GetMyZuHaoOrderStatusCount'; //url地址
+      HttpGet(url, orderStatusCountParams)
+        .then(function(result) {    
+          console.log(result,9999)              
+          //这里处理成功回调
+          if (result.Code == "0") {
+            OrderStatusCount.orderStatusCount = result;
+            arrZuHaoZhongOrders.splice(0, arrZuHaoZhongOrders.length);
+          }
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function XuZuOrder(orderNo, orderCount) {
+      var xuzuParams = new Object();
+      xuzuParams.OrderNo = orderNo;
+      xuzuParams.OrderCount = orderCount;
+      xuzuParams.CreateBy = createBy;
+      var url = 'order/xuzu'; //url地址
+      HttpGet(url, xuzuParams)
+        .then(function(result) {
+          //这里处理成功回调
+          if (result.Code == "0") {
+            arrZuHaoZhongOrders.splice(0, arrZuHaoZhongOrders.length);
+            LoadOrderList(params);
+            parent.window.GetUserBalance();
+            $(".modal-xuzu").addClass("hide");
+            parent.window.ShowMsg('续租成功', 1);
+          } else
+            parent.window.ShowLayer(result.Message, 1000);
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    (function() {
+      $('.close').on('click', function() {
+        //todo
+        $(this).parent().parent().parent().addClass('hide');
+      })
+    })();
+
+    function CloseWindow() {
+      $(this).parent().parent().parent().addClass('hide');
+      $('.close').on('click', function() {
+        $(this).parent().parent().parent().addClass('hide');
+      });
+    }
+
+    function CloseWindow() {
+      $("#TipsCharge").addClass('hide');
+    }
+
+    $("#btnCancel").click(function() {
+      CloseWindow();
+    });
+    (function() {
+      $('.close').on('click', function() {
+        CloseWindow();
+      });
+    })();
+
+    function GetUserBalance() {
+      var url = 'clientuser/GetClientUserBalance';
+      var params = new Object();
+      params.UserID = createBy;
+      HttpGet(url, params)
+        .then(function(result) {
+          //这里处理成功回调
+          if (result.Code == "0") {
+            _userBalance = result.Balance;
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function ClearPicker() {
+      $("#txtBeginTime").val('');
+      $("#txtEndTime").val('');
+
+      params.beginTime = '';
+      params.endTime = '';
+      return true;
+    }
+
+    function FormatTime(startTime, timeCount, serverTime) {
+      //console.log("startTime=" + startTime + ",timeCount=" + timeCount + ",serverTime=" + serverTime);
+
+
+      var orderOverTime = (new Date(startTime));
+      orderOverTime.setHours(orderOverTime.getHours() + parseInt(timeCount));
+      orderOverTime.setMinutes(orderOverTime.getMinutes() + parseInt(5));
+      //console.log('订单结束时间=' + orderOverTime.format("yyyy-MM-dd hh:mm:ss"));
+
+      var serverCurTime = FormatServerTime(serverTime);
+      //console.log('服务器时间=' + serverCurTime.format("yyyy-MM-dd hh:mm:ss"));
+
+      var s1 = serverCurTime.getTime(),
+        s2 = orderOverTime.getTime();
+      var total = (s2 - s1) / 1000;
+
+      var day = parseInt(total / (24 * 60 * 60)); //计算整数天数
+      var afterDay = total - day * 24 * 60 * 60; //取得算出天数后剩余的秒数
+      var hour = parseInt(afterDay / (60 * 60)); //计算整数小时数
+      var afterHour = total - day * 24 * 60 * 60 - hour * 60 * 60; //取得算出小时数后剩余的秒数
+      var min = parseInt(afterHour / 60); //计算整数分
+      var afterMin = total - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60; //取得算出分后剩余的秒数
+
+      if (hour <= 0)
+        hour = 0;
+      if (min <= 0)
+        min = 0;
+      if (afterMin <= 0)
+        afterMin = 0;
+
+      var shengyuTime = "" + day + "天" + hour + "时" + min + "分" + afterMin + "秒"; //[day, hour, min, afterMin].join(':');
+      return shengyuTime;
+    }
+
+    function FormatServerTime(timer) {
+      var _serverCurTime = new Date(timer);
+      return _serverCurTime;
+    }
+
+    function ShengYuTimer() {
+      $.each(arrZuHaoZhongOrders, function(index, content) {
+        content.lastTime = FormatTime(content.UpdateDate, content.hour, _serverTime);
+        $("#" + content.OrderformID + "").html(content.lastTime);
+
+        if (content.lastTime == "0:0:0") {
+          parent.window.AddOverOrderArray(content.SHCoder);
+        }
+      });
+    }
+
+    var _serverTime;
+    var ServerTimeInterval;
+
+    function GetServerTime() {
+      $.ajax({
+        type: "get",
+        url: apiUrl + "ClientUser/GetServerTimer",
+        dataType: 'html',
+        success: function(data) {
+          var result = ResultDecrypt.AES_Decrypt(data)
+          if (result.Code == 0) {
+            _serverTime = result.ServerTime;
+            ShengYuTimer();
+          } else {
+            layer.alert(result.Message, {
+              icon: 5,
+              title: '提示'
+            });
+          }
+        }
+      });
+    }
+
+    //续租完成刷新
+    function XuZu_Refresh() {
+      var _parentWindows = parent.window.frames['right'].window;
+      _parentWindows.arrZuHaoZhongOrders.splice(0, _parentWindows.arrZuHaoZhongOrders.length);
+      _parentWindows.orderList.items.splice(0, orderList.items.length);
+      _parentWindows.LoadOrderList(_parentWindows.params);
+      parent.window.GetUserBalance();
+    }
+
+    function ClearListItems() {
+      orderList.items.splice(0, orderList.items.length);
+      arrZuHaoZhongOrders.splice(0, arrZuHaoZhongOrders.length);
+      $("#OrderListBottom").hide();
+    }
+
+    $(document).ready(function() {
+      LoadOrderStatusCount();
+      LoadOrderList(params);
+
+      $("#OrderList").scroll(function() {
+        var ddd = document.getElementById("OrderList");
+        if (ddd.scrollTop > 0 && (ddd.scrollTop + ddd.clientHeight) == ddd.scrollHeight) {
+          params.pageIndex += 1;
+          LoadOrderList(params);
+        }
+      });
+
+      $(".tabs-item .item").click(function() {
+        $(".tabs-item .item").removeClass("active");
+        $(this).addClass("active");
+        params.states = $(this).attr("status");
+        params.pageIndex = 1;       
+        ClearListItems();
+        LoadOrderStatusCount();
+        LoadOrderList(params);
+      });
+
+      $("#btnSearch").click(function() {
+        var _keyWord = $("#txtKeyword").val();
+        var _beginTime = $("#txtBeginTime").val();
+        var _endTime = $("#txtEndTime").val();
+        if (_keyWord != "") {
+          params.keyWord = _keyWord;
+        }
+        if (_beginTime != "" && _endTime != "") {
+          params.beginTime = _beginTime;
+          params.endTime = _endTime;
+        }
+        params.pageIndex = 1;
+        ClearListItems();
+        LoadOrderStatusCount();
+        LoadOrderList(params);
+      });
+
+      $("#txtKeyword").change(function() {
+        params.keyWord = '';
+      });
+    });
+  </script>
+</body>
+
+</html>

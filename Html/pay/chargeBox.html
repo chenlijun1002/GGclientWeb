@@ -1,0 +1,293 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+  <link rel="stylesheet" href="css/pay.css" />
+  <title>充值</title>
+  <style media="screen">
+    body{
+      overflow: hidden;
+    }
+    .content-body p img{
+      width: 224px;
+      height: 224px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="chargeBox">
+    <div class="chargeBox">
+      <div class="chargeBox_title" id="chargeBox_title">充值金额：</div>
+      <div class="chargeBox_ul">
+        <div class="chargeBox_li" v-bind:class="{ 'active': stateValue == 5 }" @click="GetCameBetListFun(5)">5</div>
+        <div class="chargeBox_li" v-bind:class="{ 'active': stateValue == 10 }" @click="GetCameBetListFun(10)">10</div>
+        <div class="chargeBox_li" v-bind:class="{ 'active': stateValue == 50 }" @click="GetCameBetListFun(50)">50</div>
+        <div class="chargeBox_li" v-bind:class="{ 'active': stateValue == 100 }" @click="GetCameBetListFun(100)">100</div>
+        <div class="chargeBox_input">
+          <input type="text" name="chargeBox_input" onkeyup="onchangeStateValues(this)" placeholder="其它金额" min="5" max="500"/>
+        </div>
+      </div>
+      <div class="chargeBox_mitImg">
+        <!-- <div class="chargeBox_h8">请使用{{payWaysName}}扫码支付：</div> -->
+        <div v-if="payWays==='zfb'" style="font-size: 17px;color:#333;padding-top: 24px;padding-bottom: 18px;text-align: center;">请使用<img src="/Content/public/icons/pay_zfb.png" style="width:17px;margin: 0 6px;"/>{{payWaysName}}扫码支付：</div>
+        <div v-if="payWays==='wx'" style="font-size: 17px;color:#333;padding-top: 24px;padding-bottom: 18px;text-align: center;">请使用<img src="/Content/public/icons/pay_wx2.png" style="width:17px;margin: 0 6px;"/>{{payWaysName}}扫码支付：</div>
+        <div class="chargeBox_Img" v-if="isformBox" style="text-align: center;">
+          <form id="form-submitchongzhi" >
+            <input type="hidden" name="payWays" v-model:value="payWays" />
+            <input type="hidden" name="UserID" v-model:value="UserID" />
+            <input type="hidden" name="chMoney" v-model:value="stateValue" />
+          </form>
+          <!-- <iframe id="ifr_fill" name="ifr_fill" src="" width="100%" height="200" style="overflow:auto;border:0"></iframe> -->
+          <img src=""  id="QRcodeUrl" style="width:224px;height: 224px;margin-bottom: 15px;text-align: center;" v-if="showQRcode"/>
+          <div style="height: 240px;line-height: 240px;text-align: center;font-size: 14px;" v-else>请选择金额</div>
+        </div>
+        <div class="isformBox" v-else>
+          注意：请输入5到500之间的金额且为正整数
+        </div>
+        <div class="chargeBox_wz">
+          <div v-bind:class="{ 'active': payWays == 'zfb' }" @click="SetCameBetListFun('zfb')"><img src="/Content/public/icons/pay_zfb.png" /> 支付宝</div>
+          <div v-bind:class="{ 'active': payWays == 'wx' }" @click="SetCameBetListFun('wx')"><img src="/Content/public/icons/pay_wx2.png" /> 微信</div>
+        </div>
+        <div class="chargeBox_text">
+          充值金额不可提现，仅平台内消费充值即表示同意充值协议<br>
+          充值未到账或其他异常请联系客服电话：4000691500
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script type="text/javascript">
+  var debounce = function(action,idle){
+    var last
+    return function(){
+      var ctx = this, args = arguments
+      clearTimeout(last)
+      last = setTimeout(function(){
+          action.apply(ctx, args)
+      }, idle)
+    }
+  }  
+  function debounceAjax(e){        
+        if(!/^[1-9]\d*$/.test(e.value)) {e.value=e.value.replace(/\D/g,'');}
+        if(!e.value) return chargeBox.showQRcode=false;   
+        if(e.value<5||e.value>500) {
+          layer.msg('输入金额范围为5元~500元之间的整数');
+          return false;
+        }
+        chargeBox.stateValue=e.value;
+        chargeBox.showQRcode=true;
+        var userInfo=parent.GetLoginUserCookie();
+          var orderNo=chargeBox.orderNo;
+          var payWays=chargeBox.payWays;        
+          axios.get(apiUrl+`order/SubmitChongZhi?chMoney=${chargeBox.stateValue}&payWays=${chargeBox.payWays}&userID=${userInfo.UserID}`).then(function(result) {
+            //这里处理成功回调                 
+            var result=JSON.parse(result.data);
+            console.log(result,orderNo,QRurl,88)
+            if (result.code) {            
+              var orderNo=result.msg.split('|')[0];
+              var QRurl=result.msg.split('|')[1];
+              this.orderNo=orderNo;
+            $('#QRcodeUrl').attr('src',QRurl)
+            window.getOrderStateTimer=setInterval(function(){
+                getOrderState(window.getOrderStateTimer,orderNo,payWays)
+            },1500)
+            } else {
+              layer.msg(result.msg);
+            }
+          }).catch(function(result) {
+            layer.msg(result.msg);
+          });
+  }
+  var _debounce2 = debounce(debounceAjax,1000);     
+  function onchangeStateValues(e){  
+      _debounce2(e);
+  }    
+    var chargeBox = new Vue({
+      el: '#chargeBox',
+      data: {
+        isformBox: true,
+        UserID: GetLoginUserCookie().UserID,
+        payWays: 'zfb',
+        payWaysName: '支付宝',
+        stateValue: 5,
+        actionUrl: 'https://testclientwebpay.ggzuhao.com/alipay/ali/SubmitChongZhi',
+        orderNo:0, 
+        showQRcode:true       
+      },
+      created:function(){
+        var userInfo=parent.GetLoginUserCookie();
+        var orderNo=this.orderNo;
+        var payWays=this.payWays;
+        console.log(userInfo.UserID,6666666666)
+        axios.get(apiUrl+`order/SubmitChongZhi?chMoney=${this.stateValue}&payWays=${this.payWays}&userID=${userInfo.UserID}&sxval=1`).then(function(result) {
+          //这里处理成功回调                  
+          var result=JSON.parse(result.data);
+          console.log(result,orderNo,QRurl,88)
+          if (result.code) {            
+            var orderNo=result.msg.split('|')[0];
+            var QRurl=result.msg.split('|')[1];
+            this.orderNo=orderNo;
+          $('#QRcodeUrl').attr('src',QRurl)
+          window.getOrderStateTimer=setInterval(function(){
+              getOrderState(window.getOrderStateTimer,orderNo,payWays)
+           },1500)
+          } else {
+            layer.msg(result.msg);
+          }
+        }).catch(function(result) {
+          layer.msg(result.msg);
+        });
+      },
+      methods: {
+        SetCameBetListFun: function(payWays) {
+          clearInterval(window.getOrderStateTimer);
+          this.showQRcode = true;
+          this.payWays = payWays;
+          var orderNo=this.orderNo;        
+          var stateValue=this.stateValue;          
+          if (payWays == 'wx') {
+            this.payWaysName = '微信';
+            //this.actionUrl = 'https://testclientwebpay.ggzuhao.com/wechatpay/wechat/SubmitChongZhi';            
+          }
+          if (payWays == 'zfb') {
+            this.payWaysName = '支付宝';
+            //this.actionUrl = 'https://testclientwebpay.ggzuhao.com/alipay/ali/SubmitChongZhi';            
+          }
+          //getImgcode();
+          var userInfo=parent.GetLoginUserCookie();         
+          axios.get(apiUrl+`order/SubmitChongZhi?chMoney=${this.stateValue}&payWays=${this.payWays}&userID=${userInfo.UserID}`).then(function(result) {
+            //这里处理成功回调
+            var result=JSON.parse(result.data);
+          console.log(result,orderNo,QRurl,88)
+          if (result.code) {            
+            var orderNo=result.msg.split('|')[0];
+            var QRurl=result.msg.split('|')[1];
+            this.orderNo=orderNo;
+          $('#QRcodeUrl').attr('src',QRurl)
+            window.getOrderStateTimer=setInterval(function(){
+              getOrderState(window.getOrderStateTimer,orderNo,payWays)
+            },1500)
+            } else {
+              //alert(result.Message);
+            }
+          }).catch(function(result) {
+            //alert(result.Message);
+          });
+        },
+        GetCameBetListFun: function(stateValue) {
+          clearInterval(window.getOrderStateTimer)
+          this.stateValue = stateValue;
+          this.showQRcode = true;
+          var orderNo=this.orderNo;        
+          var payWays=this.payWays;
+          //getImgcode();
+          var userInfo=parent.GetLoginUserCookie();         
+          axios.get(apiUrl+`order/SubmitChongZhi?chMoney=${this.stateValue}&payWays=${this.payWays}&userID=${userInfo.UserID}`).then(function(result) {
+            //这里处理成功回调
+            var result=JSON.parse(result.data);
+          console.log(result,orderNo,QRurl,88)
+          if (result.code) {            
+            var orderNo=result.msg.split('|')[0];
+            var QRurl=result.msg.split('|')[1];
+            this.orderNo=orderNo;
+          $('#QRcodeUrl').attr('src',QRurl)
+            window.getOrderStateTimer=setInterval(function(){
+              getOrderState(window.getOrderStateTimer,orderNo,payWays)
+            },1500)
+            } else {
+              //alert(result.Message);
+            }
+          }).catch(function(result) {
+            //alert(result.Message);
+          });
+        },        
+      },
+      updated: function() {
+        //getImgcode();
+      },
+    });
+   // getImgcode();
+    
+    function getOrderState(timer,orderNo,payWays){
+      axios.get(apiUrl+`/order/QueryPaySuccess?orderNo=${orderNo}&payWays=${payWays}`).then(function(result) {
+          //这里处理成功回调
+          console.log(result,88)
+          var result=JSON.parse(result.data);
+          if (result.code) {
+            clearInterval(timer)
+            layer.msg('支付成功');
+            setTimeout(function(){
+              parent.CloseOpen(); //关闭信息框
+              parent.goRefresh();
+              parent.GetUserBalance();
+            },1000)
+          } else {
+            //layer.msg(result.Message);
+          }
+          //clearInterval(timer)
+        }).catch(function(result) {
+          clearInterval(timer)
+          layer.msg(result.msg);               
+        });
+    }
+
+    function getImgcode() {
+      var reg = /^[5-9]{1}$|^[1-9]{1}[0-9]{1}$|^[1-4]{1}[0-9]{1}[0-9]{1}$|^[5]{1}[0-0]{1}[0-0]{1}$|^500$/;
+      if (reg.test(chargeBox.stateValue)) {
+        chargeBox.isformBox = true;
+        $("#form-submitchongzhi").submit();
+      } else {
+        chargeBox.isformBox = false;
+      }
+    }
+
+    function GoToZuHao() {
+      //window.location = '/html/hall/hall.html';
+      GoToUrl('/html/hall/hall.html')
+    }
+
+    function GoToUrl(url){     
+      window.parent.GoToUrl(url);
+      //window.parent.sfa.src=$(id).attr('data-href');
+    }
+
+    function GetUserBalance() {
+      parent.SuccessfulRecharge();
+    }
+    $("#chargeBox_title").click(function() {
+      //parent.SuccessfulRecharge();
+    })
+  </script>
+</body>
+
+</html>

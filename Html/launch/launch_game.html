@@ -1,0 +1,628 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+
+  <link rel="stylesheet" href="css/launch.css" />
+  <title>一键登录</title>
+</head>
+
+<body>
+
+  <div class="launch" id="oneoRder">
+    <p class="line-title"><span>一键上号</span></p>
+    <div class="launch_bout">
+      <div class="launch_buzhou" onclick="show('https://clientweb.ggzuhao.com/html//lc/shang_hao_flow.html')"></div>
+      <div class="launch_shiping" onclick="show('http://index.ggzuhao.com/ggshq/videopage/gg-video.html')"></div>
+    </div>
+    <div class="get-order" onmousedown="event.stopPropagation()" onmouseup="event.stopPropagation()">
+      <input type="text" class="get" placeholder="请输入或粘贴上号码" id="txtShCode" />
+      <input type="button" id="btnGetOrder" class="btn btn-lg btn-red" value="获取订单" />
+    </div>
+    <!-- <p style="text-align:center;padding:8px 0;color:#f00;">假如登录游戏不成功，请点击游戏界面的帐号输入框，并按 CTRL+F12 重试</p> -->
+
+    <!-- <div id="launch_vue">
+      <p class="hot-tag" style="border-bottom: 1px solid #ddd;" v-if="Islaunch">
+        <span class="tag">搜索结果</span>
+      </p>
+      <div class="launchVue">
+        <div class="launchVue_div" v-if="Islaunch">
+          <img :src="'http://img.ggzuhao.com/img/ImgProc/ProcImg/'+SearchOrderList.gameId+'.jpg'" class="list-img" />
+          <div class="list-info">
+            <p>订单编号：{{SearchOrderList.orderId}}</p>
+            <p class="ellipsis"><b>{{SearchOrderList.title}}</b></p>
+            <p>游戏区服：{{SearchOrderList.gameServer}}</p>
+            <p>剩余时间：<b class="color-red">{{SearchOrderList.lastTime}}</b></p>
+          </div>
+          <div class="list-btn">
+            <a v-if="SearchOrderList.GameTypeId==1" href="javascript:;" name="btnStartGame" :shcoder="SearchOrderList.SHCoder" class="btn btn-lg btn-red" @click="GoToStartGame(SearchOrderList.SHCoder,SearchOrderList.GameName)">登录游戏</a>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div id="OrderList">
+      <p class="hot-tag" style="border-bottom: 1px solid #ddd;">
+        <span class="tag">我的订单</span>
+      </p>
+      <ul class="list self-scroll-bar" v-if="items.length>0">
+        <li v-for="item in items" v-if="item.GameTypeId==1" shcode="item.orderCode">
+          <img :src="'http://img.ggzuhao.com/img/ImgProc/ProcImg/'+item.gameId+'.jpg'" class="list-img" />
+          <div class="list-info">
+            <p>订单编号：{{item.orderId}}</p>
+            <p class="ellipsis"><b>{{item.title}}</b></p>
+            <p>游戏区服：{{item.gameServer}}</p>
+            <p>剩余时间：<b class="color-red" :id="item.orderId">{{item.lastTime}}</b></p>
+          </div>
+          <div class="list-btn">
+            <a v-if="item.GameTypeId==1" href="javascript:;" name="btnStartGame" :shcoder="item.SHCoder" class="btn btn-lg btn-red" @click="GoToStartGame(item.SHCoder,item.GameName)">登录游戏</a>
+            <!-- <a href="javascript:;" @click="XuZu(item.orderId,item.GameName,item.QName,item.FName,item.Price)" class="btn btn-lg btn-red-outline ">续租</a> -->
+            <!-- <a href="javascript:;" @click="GoToInfo(item.orderId)" class="btn">售后/退单</a> -->
+          </div>
+        </li>
+      </ul>
+      <div class="OrderList_teir" v-else>
+        暂未查询到订单!
+      </div>
+    </div>
+    <div class="modal-xuzu hide">
+      <div class="modal-content">
+        <div class="modal-header">
+          <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+          <p><span>续租</span></p>
+          <p><img src="/Content/public/img/icon-line-1.jpg" /></p>
+        </div>
+        <div class="modal-body">
+          <ul class="body-list">
+            <li id="GameName">
+              游戏名称：
+            </li>
+            <li>
+              租号时长：
+              <span class="calc-box">
+                <img src="/Content/public/icons/minus_1.jpg" id="btnDown" />
+                <b class="count">2</b>
+                <img src="/Content/public/icons/plus_1.jpg" id="btnUp" />
+              </span>
+            </li>
+            <li>
+              租号价格：
+              <span class="color-red">￥<span id="sp_price">1.00</span></span>
+            </li>
+          </ul>
+          <ul class="body-list">
+            <li>应付总额：<span class="color-red">￥<span id="OrderCountLable">1.00</span>元</span></li>
+            <li>可用余额：<span class="color-red">￥<span id="ClientUserBalance">1.00</span>元</span></li>
+            <li>
+              <label for="agreeProtocol">
+                <input type="checkbox" id="agreeProtocol" />我已阅读并同意
+                <a href="" class="color-red">《GG租号协议》</a>
+              </label>
+            </li>
+          </ul>
+          <p class="sure-btn">
+            <a href="javascript:;" id="btnPay" class="btn btn-lg btn-red">确认付款</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 余额不足时显示 ，1.5秒后自动消失-->
+    <div class="modal-pay hide" id="TipsCharge">
+      <div class="m-content">
+        <div class="cont-head">
+          <span class="t-btm">余额不足，请先充值</span>
+          <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+        </div>
+        <div class="cont-body b-mg-s">
+          <a href="../pay/charge.html" class="btn btn-lg btn-red">充值</a>
+          <a href="#" class="btn btn-lg btn-red-outline" id="btnCancel">取消</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="test1" class="modal-tip" style="display:none;">
+      <div class="modal-content">
+        <div class="content-head">
+          <span class="tag">温馨提示</span>
+          <img id="test2" src="/Content/public/img/icon-close-1.jpg" class="close" />
+        </div>
+        <div class="content-body">
+          <p>请打开WeGame登录窗口，点击“登录游戏” 系统会自动输入账号密码登录。</p>
+          <p class="mg-b"><a href="" class="btn btn-red btn-sure">确定</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script>
+    //关闭弹框
+    (function(doc, win) {
+      doc.getElementById('test2').addEventListener('click', function() {
+        doc.getElementById('test1').style.display = 'none';
+      });
+    })(document, window);
+  </script>
+
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script type="text/javascript">
+    var oneKeySH = new Vue({
+      el: '#OrderList',
+      data: {
+        items: []
+      },
+      methods: {
+        XuZu: function(orderNo, gameName, qName, fName, _price) {
+          $("#GameName").html("游戏名称：" + gameName + "/" + qName + "/" + fName);
+          $("#sp_price").html(parseFloat(_price.toString()).toFixed(2));
+          var _count = parseInt($(".count").html());
+          $("#btnDown").click(function() {
+            _count = parseInt($(".count").html());
+            if (_count <= 1)
+              _count = 1;
+            else
+              _count = _count - 1;
+            $(".count").html(_count);
+            $("#OrderCountLable").html(parseFloat(parseFloat(_price.toString()).toFixed(2) * _count).toFixed(2));
+          });
+          $("#btnUp").click(function() {
+            _count = parseInt($(".count").html());
+            if (_count >= 99)
+              _count = 99;
+            else
+              _count = _count + 1;
+            $(".count").html(_count);
+            $("#OrderCountLable").html(parseFloat(parseFloat(_price.toString()).toFixed(2) * _count).toFixed(2));
+          });
+          GetUserBalance();
+          $("#ClientUserBalance").html(parseFloat(_userBalance).toFixed(2));
+          $("#OrderCountLable").html(parseFloat(parseFloat(_price.toString()).toFixed(2) * _count).toFixed(2));
+          $(".modal-xuzu").removeClass("hide");
+          $("#btnPay").click(function() {
+            var orderCount = $(".count").html();
+            if (!$("#agreeProtocol").is(":checked")) {
+              layer.alert("请勾选 我已阅读并同意《GG租号协议》", {
+                title: '提示',
+                icon: 5
+              });
+              return false;
+            }
+            XuZuOrder(orderNo, orderCount);
+          });
+        },
+        GoToInfo: function(orderNo) {
+          window.location = '/Html/mine/my_zuhao_detail.html?' + orderNo;
+        },
+        GoToProductInfo: function(productNumber) {
+          window.location = '/html/hall/hall_detail.html?id=' + productNumber;
+        },
+        GoToStartGame: function(shCode, gameName) {
+          parent.window.StartGame(shCode, gameName, 1);
+        }
+      }
+    });
+
+    function show(url) {
+      parent.window.OpenWindowIEUrl(url);
+    }
+    // var launchvue = new Vue({
+    //   el: '#launch_vue',
+    //   data: {
+    //     SearchOrderList: {},
+    //     Islaunch: false
+    //   },
+    //   methods: {
+    //     //登陆游戏
+    //     GoToStartGame: function(shCode, gameName) {
+    //       parent.window.StartGame(shCode, gameName, 1);
+    //     }
+    //   }
+    // });
+    var createBy = '';
+    var loginUserInfo = GetLoginUserCookie();
+    if (loginUserInfo != null)
+      createBy = loginUserInfo.UserID;
+    // else
+    // $("#myorder_me").addClass('hide');
+
+    var _userBalance = parseFloat('0.00');
+    var _serverTime = '';
+
+    var arrOrders = new Array();
+
+    function BindList(orderInfo) {
+      if (orderInfo != "" && (orderInfo.toString().substring(0, 1) == "{" || orderInfo.toString().substring(0, 2) == "[{")) {
+        //var resultObj = eval('(' + orderInfo + ')');
+        //var orderObj = resultObj.Content;
+        //orderObj.lastTime = FormatTime(orderObj.orderCreateTime, orderObj.hour, orderObj.serverCurTime);
+        //arrOrders.push(orderObj)
+        //oneKeySH.items = arrOrders;
+      } else {
+        layer.alert("数据格式错误", {
+          title: '提示',
+          icon: 5
+        });
+      }
+    }
+
+    function FormatTime(startTime, timeCount, serverTime) {
+      //console.log("startTime=" + startTime + ",timeCount=" + timeCount + ",serverTime=" + serverTime);
+
+
+      var orderOverTime = (new Date(startTime));
+      orderOverTime.setHours(orderOverTime.getHours() + parseInt(timeCount));
+      orderOverTime.setMinutes(orderOverTime.getMinutes() + parseInt(5));
+      //console.log('订单结束时间=' + orderOverTime.format("yyyy-MM-dd hh:mm:ss"));
+
+      var serverCurTime = FormatServerTime(serverTime);
+      //console.log('服务器时间=' + serverCurTime.format("yyyy-MM-dd hh:mm:ss"));
+
+      var s1 = serverCurTime.getTime(),
+        s2 = orderOverTime.getTime();
+      var total = (s2 - s1) / 1000;
+
+      var day = parseInt(total / (24 * 60 * 60)); //计算整数天数
+      var afterDay = total - day * 24 * 60 * 60; //取得算出天数后剩余的秒数
+      var hour = parseInt(afterDay / (60 * 60)); //计算整数小时数
+      var afterHour = total - day * 24 * 60 * 60 - hour * 60 * 60; //取得算出小时数后剩余的秒数
+      var min = parseInt(afterHour / 60); //计算整数分
+      var afterMin = total - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60; //取得算出分后剩余的秒数
+
+      if (hour <= 0)
+        hour = 0;
+      if (min <= 0)
+        min = 0;
+      if (afterMin <= 0)
+        afterMin = 0;
+
+      var shengyuTime = "" + day + "天" + hour + "时" + min + "分" + afterMin + "秒"; //[hour, min, afterMin].join(':');
+      return shengyuTime;
+    }
+
+    function FormatServerTime(timer) {
+      var _serverCurTime = new Date(timer);
+      return _serverCurTime;
+    }
+
+    //加载租号中的订单
+    function LoadOrders() {
+      var orderParams = new Object();
+      orderParams.CreateBy = createBy;
+      var _index = layer.msg('查询中，请稍候', {
+        icon: 16,
+        time: false,
+        shade: 0.1
+      });
+      var url = 'order/GetMyZuhaoOrders'; //url地址
+      HttpGet(url, orderParams)
+        .then(function(result) {
+          console.log(result);
+          //这里处理成功回调     
+          layer.close(_index);     
+          if (result.Code == "0") {            
+            var orderObj = result.Content;
+            arrOrders=[];
+            $.each(orderObj, function(index, content) {
+              content.lastTime = FormatTime(content.orderCreateTime, content.hour, content.serverCurTime);
+
+              arrOrders.push(content);
+            });
+
+            clearInterval(ServerTimeInterval);
+            if (orderObj.length > 0) {
+              ServerTimeInterval = setInterval(GetServerTime, 1000);
+              // setInterval(ShengYuTimer, 1000);
+            }
+            console.log(arrOrders,777)
+            oneKeySH.items = arrOrders;
+          }else{
+            layer.alert(result.Message, {
+              icon: 5,
+              title: '提示'
+            });
+          }
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.close(_index);
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function GetUserBalance() {
+      var url = 'clientuser/GetClientUserBalance';
+      var params = new Object();
+      params.UserID = createBy;
+      HttpGet(url, params)
+        .then(function(result) {
+          //这里处理成功回调
+          if (result.Code == "0") {
+            _userBalance = result.Balance;
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function CloseWindow() {
+      $("#TipsCharge").addClass('hide');
+    }
+
+    function XuZuOrder(orderNo, orderCount) {
+      var xuzuParams = new Object();
+      xuzuParams.OrderNo = orderNo;
+      xuzuParams.OrderCount = orderCount;
+      xuzuParams.CreateBy = createBy;
+      var url = 'order/xuzu'; //url地址
+      HttpGet(url, xuzuParams)
+        .then(function(result) {
+          //这里处理成功回调
+          if (result.Code == "0") {
+            arrOrders.splice(0, arrOrders.length);
+            LoadOrders();
+            parent.window.GetUserBalance();
+            $(".modal-xuzu").addClass("hide");
+            parent.window.ShowMsg('续租成功', 1);
+          } else
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });
+        })
+        .catch(function(result) {
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+    }
+
+    function ShengYuTimer() {
+      $.each(arrOrders, function(index, content) {
+        content.lastTime = FormatTime(content.orderCreateTime, content.hour, _serverTime);
+        $("#" + content.orderId + "").html(content.lastTime);
+
+        if (content.lastTime == "0:0:0") {
+          parent.window.AddOverOrderArray(content.SHCoder);
+        }
+      });
+    }
+
+    var ServerTimeInterval;
+    var SearchOrderTime;
+
+    function GetServerTime() {
+      $.ajax({
+        type: "get",
+        url: apiUrl + "ClientUser/GetServerTimer",
+        dataType: 'html',
+        success: function(data) {
+          var result = ResultDecrypt.AES_Decrypt(data)
+          if (result.Code == 0) {
+            _serverTime = result.ServerTime;
+            ShengYuTimer();
+          } else {
+            layer.alert(result.Message, {
+              icon: 5,
+              title: '提示'
+            });
+          }
+        }
+      });
+    }
+
+    function SetBtnStarGameGrayColor(shCoder) {
+      $("a[shcoder='" + shCoder + "']").removeClass("btn-red").addClass("btn-gray");
+    }
+
+    function SetBtnStarGameRedColor(shCoder) {
+      $("a[shcoder='" + shCoder + "']").removeClass("btn-gray").addClass("btn-red");
+    }
+
+    //根据上号码搜索订单
+    function SearchOrder(shCode) {
+      var SearchOrderList = new Object();
+      var url = 'Order/GetOrderBySHCoder?shCoder=' + shCode; //url地址
+      var _index = layer.msg('查询中，请稍候', {
+        icon: 16,
+        time: false,
+        shade: 0.1
+      });
+      HttpGet(url, SearchOrderList).then(function(result) {
+        //这里处理成功回调
+        layer.close(_index);
+        if (result.Code == "0") {
+          //launchvue.Islaunch = true;         
+          var SearchOrderList = result.Content[0];
+          SearchOrderList.lastTime = FormatTime(SearchOrderList.orderCreateTime, SearchOrderList.hour, SearchOrderList.serverCurTime);
+          clearInterval(ServerTimeInterval);
+          // if (arrOrders.length > 0) {
+          //   SearchOrderTime = setInterval(function() {
+          //     oneKeySH.items[0].lastTime = FormatTime(oneKeySH.items[0].orderCreateTime, oneKeySH.items[0].hour, _serverTime);
+          //   }, 1000);
+          // } else {
+          //   SearchOrderTime = setInterval(SearchGetServerTime, 1000);
+          // }
+          //launchvue.SearchOrderList = SearchOrderList;
+          if(arrOrders.length){
+            ServerTimeInterval = setInterval(GetServerTime, 1000);
+          }
+          var newarr=[];
+          newarr.push(SearchOrderList);
+          console.log(newarr,888)
+          oneKeySH.items=newarr;
+         // layer.msg(JSON.stringify(newarr))
+          //console.log(launchvue.SearchOrderList);
+        } else {
+          //launchvue.Islaunch = false;
+          layer.alert(result.Message, {
+            icon: 5,
+            title: '提示'
+          });
+        }
+      }).catch(function(result) {
+        //这里处理失败回调
+        layer.close(_index);
+        layer.alert("解析数据异常", {
+          title: '提示',
+          icon: 5
+        });
+      });
+    }
+    //定时获取系统时间
+    function SearchGetServerTime() {
+      $.ajax({
+        type: "get",
+        url: apiUrl + "ClientUser/GetServerTimer",
+        dataType: 'html',
+        success: function(data) {
+          var result = ResultDecrypt.AES_Decrypt(data)
+          if (result.Code == 0) {
+            var ServerTime = result.ServerTime
+            launchvue.SearchOrderList.lastTime = FormatTime(launchvue.SearchOrderList.orderCreateTime, launchvue.SearchOrderList.hour, ServerTime);
+            if (launchvue.SearchOrderList.lastTime == "0:0:0") {
+              parent.window.AddOverOrderArray(content.SHCoder);
+            }
+          } else {
+            layer.alert(result.Message, {
+              icon: 5,
+              title: '提示'
+            });
+          }
+        }
+      });
+    }
+    //获取url参数
+    function getQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var Code = getQueryString('Code');      
+      if (Code) {
+        $("#txtShCode").val(Code);
+        SearchOrder(Code);
+      }else{
+        LoadOrders();
+      }      
+      GetServerTime();
+      $("#btnGetOrder").click(function() {
+        var shCode = $("#txtShCode").val();
+        if (shCode == "") {
+          // layer.alert('请填入上号码', {
+          //   title: '提示',
+          //   icon: 7
+          // });
+          // return false;
+          LoadOrders();
+        } else {
+          SearchOrder(shCode);
+          // parent.window.StartGame(shCode);
+        }
+      });
+      $('.close').on('click', function() {
+        //todo
+        $(this).parent().parent().parent().addClass('hide');
+      })
+
+      $('.close').on('click', function() {
+        CloseWindow();
+      });
+    });
+  </script>
+  <div id="hallAdvertiseContainer">
+    <style>
+      .left-float-nav {
+        position: fixed;
+        bottom: 1%;
+        right: 4%;
+        float: left;
+        z-index: 500;
+      }
+
+      .left-float-nav img {
+        width: 100%;
+      }
+
+      .left-float-nav .close3 {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 600;
+        width: 30px;
+        line-height: 30px;
+        font-size: 20px;
+        border-radius: 50%;
+        text-align: center;
+        color: #000;
+        background: #fff;
+        cursor: pointer;
+      }
+    </style>
+    <div class="left-float-nav">
+      <span>
+        <img src="../../Content/img/adsh.jpg" usemap="#testmap" alt="ad" />
+        <map name="testmap" id="testmap">
+          <area shape="poly" coords="0, 0, 214, 0, 162, 100, 0, 100" href="../hall/hall.html?gtypeid=1" onclick="_hmt.push(['_trackEvent', '吃鸡广告图', '点击', '租号客户端右侧悬浮广告']);" alt="吃鸡" />
+          <area shape="poly" coords="214, 0, 400, 0, 347, 100, 160, 100" href="../hall/hall.html?gtypeid=2" onclick="_hmt.push(['_trackEvent', '加时广告图', '点击', '租号客户端右侧悬浮广告']);" alt="加时" />
+          <area shape="poly" coords="400, 0, 585, 0, 533, 100, 348, 100" href="../hall/hall.html?gtypeid=3" onclick="_hmt.push(['_trackEvent', '特价广告图', '点击', '租号客户端右侧悬浮广告']);" alt="特价" />
+          <area shape="poly" coords="587, 0, 747, 0, 747, 100, 535, 100" href="../hall/hall.html?gtypeid=4" onclick="_hmt.push(['_trackEvent', '不下线广告图', '点击', '租号客户端右侧悬浮广告']);" alt="不下线" />
+        </map>
+      </span>
+      <span id="closeTheAdvertiseImg" class="close3">X</span>
+    </div>
+    <script>
+      // 关闭左侧悬浮广告
+      $('#closeTheAdvertiseImg').on('click', function(e) {
+        $('.left-float-nav').hide();
+      });
+    </script>
+  </div>
+</body>
+
+</html>

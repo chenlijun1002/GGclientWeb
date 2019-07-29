@@ -1,0 +1,360 @@
+.pay-state .state-title {
+  padding: 20px 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.pay-state .state-info {
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.pay-state .state-info:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.pay-state .info-left {
+  float: left;
+  width: 240px;
+  padding: 20px;
+  margin-right: 20px;
+  background: #F7F7F7;
+  border-right: 1px solid #ddd;
+}
+
+.pay-state .info-left img {
+  width: 200px;
+  height: 200px;
+}
+
+.pay-state .info-left dd {
+  padding: 3px 0;
+  line-height: 20px;
+}
+
+.pay-state .info-right {
+  float: left;
+  padding: 10px 0;
+}
+
+.pay-state .info-right li {
+  margin: 5px 0;
+}
+
+.pay-state .info-right li:nth-child(2) {
+  margin-top: 15px;
+}
+
+.pay-state .info-right li:nth-child(3) {
+  margin-bottom: 15px;
+}
+
+.pay-state .info-right .see-order {
+  margin-left: 20px;
+  text-decoration: underline;
+}
+
+.pay-state .info-right .time-box {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid #C73030;
+  border-radius: 5px;
+  color: #C73030;
+  font-size: 18px;
+}
+
+.pay-state .info-right .box {
+  position: relative;
+  display: inline-block;
+  line-height: 34px;
+  padding: 0 5px;
+  font-size: 20px;
+  text-align: center;
+  border-radius: 3px;
+  color: #fff;
+  background: #D42C0F;
+  background-image: linear-gradient(to top, #d42c0f, #FD701E);
+}
+
+.pay-state .info-right .box:nth-child(2n) {
+  left: -3px;
+}
+
+.pay-state .info-right .box:nth-child(2n+1) {
+  margin-left: 3px;
+}
+
+.pay-state .info-right .has-btn {
+  margin-top: 15px;
+}
+
+.pay-state .info-right .has-btn .btn {
+  width: 128px;
+  line-height: 28px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=pay.css.map */
+.charge-type {
+  margin: 40px 0;
+  text-align: center;
+}
+
+.charge-type dl {
+  display: inline-block;
+  margin: 0 20px;
+  padding: 20px 32px;
+  border: 2px solid #eee;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.charge-type dl.active {
+  border-color: #FF4A00;
+  box-shadow: 0 0 5px #333;
+}
+
+.charge-type dd {
+  padding: 4px 0;
+}
+
+.charge-row {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.pay_miss p {
+  padding-right: 53px;
+  color: #999;
+  line-height: 30px;
+}
+
+.cash {
+  padding-left: 8px;
+  height: 34px;
+  width: 320px;
+  font-size: 16px;
+}
+
+.charge-row .btn {
+  width: 160px;
+  padding: 10px 0;
+  border: none;
+}
+
+.charge-text {
+  margin-top:
+}
+
+.charge-text p {
+  color: #999;
+  line-height: 30px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .5);
+  text-align: center;
+}
+
+.modal .content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  background: #fff;
+  padding: 20px 0;
+}
+
+.modal .content-header {
+  height: 20px;
+}
+
+.modal .close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+}
+
+.content-body p {
+  padding: 5px 0;
+  font-size: 16px;
+}
+
+.content-body .btn {
+  width: 200px;
+  padding: 10px 0;
+  border-radius: 100px;
+}
+
+.modal .protocal {
+  width: 600px;
+  height: 500px;
+}
+
+.protocal .content-body {
+  height: 445px;
+  padding: 10px;
+  overflow-y: auto;
+  text-align: left;
+  line-height: 24px;
+}
+
+/************************************/
+#chargeBox {
+  width: 532px;
+  height: 521px;
+  margin: 0 auto;
+}
+
+.chargeBox {
+  padding: 15px 26px 10px;
+}
+
+.chargeBox .chargeBox_title {
+  text-align: left;
+  font-size: 17px;
+  /* font-family: PingFang-SC-Regular; */
+  font-weight: 400;
+  color: rgba(51, 51, 51, 1);
+}
+
+.chargeBox .chargeBox_ul {
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.chargeBox .chargeBox_ul .chargeBox_li {
+  width: 76px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  float: left;
+  border: 1px solid rgba(102, 102, 102, 1);
+  margin-right: 15px;
+  font-size: 18px;
+  /* font-family: PingFang-SC-Regular; */
+  font-weight: 400;
+  color: rgba(102, 102, 102, 1);
+  cursor: pointer;
+}
+
+.chargeBox .chargeBox_ul .chargeBox_li.active {
+  border: 1px solid rgba(191, 45, 45, 1);
+  background: url("../../../../Content/img/jiao.png") 58px 15px no-repeat;
+}
+
+.chargeBox .chargeBox_ul .chargeBox_input {}
+
+.chargeBox .chargeBox_ul .chargeBox_input input {
+  float: left;
+  width: 96px;
+  height: 32px;
+  font-size: 18px;
+  /* font-family: PingFang-SC-Regular; */
+  font-weight: 400;
+  border: 1px solid rgba(102, 102, 102, 1);
+  text-align: center;
+}
+
+.chargeBox_wz {
+  text-align: center;
+}
+
+.chargeBox_wz>div {
+  display: inline-block;
+  width: 150px;
+  height: 45px;
+  line-height: 45px;
+  background: rgba(255, 255, 255, 1);
+  /* background-color: #24AEEF;  */
+  /* box-shadow:0px 5px 87px 0px rgba(36,174,239,0.11); */
+  border: 1px solid #999;
+  border-radius: 0px 2px 2px 0px;
+  cursor: pointer;
+  margin: 0 13px;
+  font-size: 16px;
+  /* font-family: PingFang-SC-Regular; */
+  font-weight: 400;
+}
+
+.chargeBox_wz>div.active {
+  border: 1px solid #24AEEF;
+  background: url("../../../../Content/img/jiao2.png") 132px 28px no-repeat;
+  /* background-color: #24AEEF; */
+  box-shadow: inset 0px 5px 87px 0px rgba(36,174,239,0.15);
+  color: #24aeef;
+  position: relative;
+}
+/* .chargeBox_wz>div.active::before {
+  content: '';
+  color:#fff;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border: 8px solid transparent; 
+  border-right-color: #24AEEF;
+  border-bottom-color: #24AEEF;
+}
+.chargeBox_wz>div.active::after {
+  content: '✔';
+  color:#fff;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 14px;
+  width: 10px;
+  height: 29px
+} */
+
+.chargeBox_wz>div.zfb {
+  color: #24AEEF;
+}
+
+.chargeBox_wz>div.wx {
+  color: #2DBF5A;
+}
+
+.chargeBox_wz>div img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  position: relative;
+  top: -2px;
+}
+
+.chargeBox_text {
+  font-size: 14px;
+  /* font-family: PingFang-SC-Regular; */
+  font-weight: 400;
+  color: rgba(102, 102, 102, 1);
+  text-align: center;
+  margin-top: 23px;
+  color: #666;
+  text-align: center;
+  margin-top: 23px;
+  line-height: 24px
+}
+
+.chargeBox_h8 {
+  height: 45px;
+  line-height: 45px;
+}
+
+.isformBox {
+  height: 200px;
+  line-height: 167px;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  color: #24aeef;
+}

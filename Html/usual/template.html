@@ -1,0 +1,1464 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link href="/Content/public/css/public.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/Content/public/icon/iconfont.css">
+  <link rel="stylesheet" href="" />
+  <title>template</title>
+  <style>
+    .layui-layer-iframe {
+          overflow-y: inherit;
+      }
+      .not_logged{
+        font-size: 16px;
+        color:#333;
+        margin-top: 14px;
+      }
+      .not_logged_tip{
+        color:#999999;
+        font-size: 14px;
+        margin-bottom: 10px;
+        line-height: 32px;
+      }
+      .custom-class .layui-layer-title{
+        display: none;
+      }
+      .custom-class .layui-layer-btn0{
+        border-color: #D22222 !important;
+        background-color: #D22222 !important;
+      }
+      .sub-left-list li:hover a {
+          color: #C73030;
+      }
+      .sub-left-list .outlink  a{
+        cursor: pointer;        
+      }
+      .sub-left-list .outlink:hover a {
+          color: #C73030 !important;          
+      }
+      .sub-left-list #btnBaXiazaiApp:hover a::before{
+        background-position-x: -90px !important;
+      }
+      .sub-left-list #btnBaZheBuyzhanghao:hover a::before{
+        background-position-x: -91px !important;
+      }
+      .sub-left-list li:hover .icon-zu-hao::before{
+        background-position-x: -26px;
+      }
+      .sub-left-list li:hover .icon-hall::before{
+        background-position-x: -28px;
+      }
+      #btnBaZheBuyChiJi a:before {
+          background-position: -62px -1px;
+      }
+      .sub-left-list #btnBaZheBuyChiJi:hover a::before{
+        background-position: -62px -28px;
+      }
+      .sliderBox{
+        /* transform: translateY(-0); */
+        /* transition: all 0.8s; */
+      }
+      .slider{
+        transform: translateY(-44px);
+        transition: all 0.8s;
+        /* animation: mymover 1s infinite; */
+      }
+      @keyframes mymover{
+        from{
+          transform: translateY(0)
+        }
+        to{
+          transform: translateY(-44px)
+        }
+      }
+      /* .salogoin:hover{
+        transform: scale(1.1);
+        transition: transform 0.3s;
+      } */  
+      .waves{
+            position:relative;
+            cursor:pointer;
+            display:inline-block;
+            overflow:hidden;
+            text-align: center;
+            -webkit-tap-highlight-color:transparent;
+            z-index:1;
+        }
+        .waves .waves-animation{
+            position:absolute;
+            border-radius:50%;
+            width:25px;
+            height:25px;
+            opacity:0;
+            background:rgba(255,255,255,0.4);
+            transition:all 0.7s ease-out;
+            transition-property:transform, opacity, -webkit-transform;
+            -webkit-transform:scale(0);
+            transform:scale(0);
+            pointer-events:none
+        }  
+        /* #btnClickLianXiKeFu,.suer_falrig,.top-rt-list li{
+          color:rgba(255,255,255,0.7);
+        }
+        #btnClickLianXiKeFu:hover,.suer_falrig:hover,.top-rt-list li:hover{
+          color:rgba(255, 255, 255, 1);
+        } */
+  </style>
+</head>
+
+<body>
+  <!-- 登录弹框 -->
+  <div id="loginBox" class="form-box">
+    <div class="box-content box-utouur">
+      <div class="box-content-header" style="border-bottom: none;padding-bottom: 0;">
+        <div class="box-content-ul clearfix">          
+          <div class="box-content-li active" id="loginBox_li2">账号密码登录</div>
+          <div class="box-content-li" id="loginBox_li1">手机号验证登录</div>
+        </div>
+        <img onclick="closeLoginModal()" src="/Content/img/close.png" class="box-close" style="width: 38px;" />
+      </div>
+      <div class="box-content-body" id="loginBox_pone" style="display:none">
+        <form id="login-form">
+          <div style="height: 236px;">
+            <div class="row" style="margin-bottom:15px">
+              <label>
+                <input id="loginPhone" type="text" name="phone" class="loginBox-input" placeholder="请输入手机号" />
+                <i class="icon iconfont icon-shouji"></i>
+              </label>
+            </div>
+            <div class="row" style="white-space: nowrap;margin-bottom:15px;">
+              <label>
+                <input id="loginPhoneCode" type="text" name="phoneCode" class="loginBox_input" maxlength="6" placeholder="请输入验证码" />
+                <i class="icon iconfont icon-yidongduanicon-"></i>
+              </label>
+              <button type="button" style="width: 98px;" onclick="loginGetVerifyCode(this)" class="box_msg" id="login_msg">获取验证码</button>
+            </div>
+            <div class="b_link">
+              没有账号，<a onclick="ShowBox(1)" href="javascript:;">去注册？</a>
+            </div>
+            <div class="row">
+              <button onclick="Ponelogin()" type="button" class="btn btn_login">立即登录</button>
+            </div>
+          </div>
+          <div class="box-content-footer">
+            <p class="plat-o" style="margin: 12px 0 12px;"><span>其他登录方式</span></p>
+            <a href="javascript:;">
+              <img style="width: 22px;height: 26px;" onclick="QQLogin()" src="/Content/public/img/icon-qq.png" alt="" />
+            </a>
+          </div>         
+        </form>
+      </div>
+      <div class="box-content-body" id="loginBox_over">
+        <form id="loginOver-form">
+          <div style="height: 236px;">
+            <div class="row" style="margin-bottom:15px">
+              <label>
+                <input id="loginPhoneOver" type="text" class="loginBox-input" placeholder="请输入手机号" />
+                <i class="icon iconfont icon-shouji"></i>
+              </label>
+            </div>
+            <div class="row" style="margin-bottom:15px">
+              <label>
+                <input id="loginpasswordOver" type="password" class="loginBox-input" onkeypress="javascript:if(event.keyCode == 32)event.returnValue = false;" placeholder="请输入密码" />
+                <i class="icon iconfont icon-yidongduanicon-"></i>
+              </label>
+            </div>
+            <div class="row" style="display: none;" id="imgVerificationCodeBox">
+              <label>
+                <input id="loginVerificationCodeOver" type="text" class="loginBox-input" placeholder="请输入图形验证码" style="width: 206px;padding-left: 40px;height: 40px;" />
+                <i class="icon iconfont icon-renzhengdunpaianquanbaozhangzhibao"></i>
+              </label>
+              <div style="display: inline-block;width: 97px;background-color: #bdbdbd;vertical-align: top;height: 40px;cursor: pointer;" onclick="getImgVerifyCode()">
+                <img src="" id="imgVerificationCode" style="width: 100%;height: 100%;"/>
+              </div>
+            </div>
+            <div class="b_link">
+              没有账号，<a onclick="ShowBox(1)" href="javascript:;">去注册？</a>
+            </div>
+            <div class="row">
+              <button onclick="loginOver()" type="button" class="btn btn_login">立即登录</button>
+            </div>
+          </div>          
+          <div class="box-content-footer">
+            <p class="plat-o" style="margin: 12px 0 10px;"><span>其他登录方式</span></p>
+            <a href="javascript:;">
+              <img style="width: 22px;height: 26px;" onclick="QQLogin()" src="/Content/public/img/icon-qq.png" alt="" />
+            </a>
+          </div>         
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- 注册弹框 -->
+  <div id="RegBox" class="form-box ">
+    <div class="box-content box-utouur">
+      <div class="box-content-header" style="border-bottom: none">
+        <div class="box-content-ul clearfix">
+          <div class="box-content-li active" style="width: 100%;">注册</div>
+        </div>
+        <img onclick="closeRegisterModal()" src="/Content/img/close.png" class="box-close" style="width: 38px;" />
+      </div>
+      <form id="form1" url="Login/RegUser">
+        <div class="box-content-body">
+          <div class="row">
+            <label>
+              <input type="text" id="registerPhone" name="phone" class="loginBox-input" placeholder="请输入手机号" />
+              <i class="icon iconfont icon-shouji"></i>
+            </label>
+          </div>
+          <div class="row">
+            <label>
+              <input type="text" name="phoneCode" class="loginBox-input" placeholder="请输入验证码" style="width: 206px;padding-left: 40px;height: 40px;" />
+              <i class="icon iconfont icon-renzhengdunpaianquanbaozhangzhibao"></i>
+            </label>
+            <button type="button" style="width: 97px;" onclick="GetVerifyCode(this)" class="box_msg" id="register_msg">获取验证码</button>
+          </div>
+          <div class="row">
+            <label>
+              <input type="password" name="pass" class="loginBox-input" placeholder="请输入密码" onkeypress="javascript:if(event.keyCode == 32)event.returnValue = false;"/>
+              <i class="icon iconfont icon-yidongduanicon-"></i>
+            </label>
+          </div>
+          <div class="row">
+            <button type="button" onclick="Submit(this,'reg')" class="btn btn-login" id="register_btn">立即注册</button>
+          </div>
+          <!-- <div class="b-link" style="overflow: hidden;">           
+            <a onclick="ShowBox(0)" href="javascript:;" class="rt">已有账号，去登录？</a>
+          </div> -->
+          <div class="b_link" style="overflow: hidden;">
+              已有账号，<a onclick="ShowBox(0)" href="javascript:;">去登录？</a>
+          </div>
+        </div>
+        <div class="box-content-footer">
+          <label for="proto" class="proto">
+            <input name="agree" type="checkbox" id="proto" checked />
+            注册帐号即表示同意并遵守 <a href="javascript:OpenUrl('https://www.ggzuhao.com/default/service');" class="color-red">《GG租号协议》</a>
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- 找回密码弹框 -->
+  <!-- <div id="GetPass" class="form-box ">
+    <div class="box-content bg-1">
+      <div class="box-content-header">
+        <p><img src="data:image/png;base64,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" /></p>
+        <p class="h-title">找回密码</p>
+        <img onclick="document.getElementById('GetPass').className = 'form-box'" src="/Content/img/close.png" class="box-close" style="width: 38px;" />
+      </div>
+      <div class="box-content-body">
+        <form id="form2" url="Login/FindPass">
+          <div class="row">
+            <label><input type="text" name="phone" class="box-input" placeholder="请输入手机号" /><i class="icon icon-phone"></i></label>
+          </div>
+          <div class="row">
+            <label><input type="text" name="phoneCode" class="box-vali" placeholder="手机验证码" /><i class="icon icon-vali"></i></label>
+            <button type="button" style="width: 98px;" onclick="GetFindPassVerifyCode(this)" class="box-msg">获取短信验证码</button>
+          </div>
+          <div class="row">
+            <label><input type="password" name="pass" class="box-input" placeholder="请输入密码" /><i class="icon icon-pwd"></i></label>
+          </div>
+          <div class="row">
+            <button type="button" onclick="Submit(this)" class="btn btn-login">提交</button>
+          </div>
+        </form>
+      </div>
+      <div class="box-content-footer"></div>
+    </div>
+  </div> -->
+  <div class="container">
+    <div class="top clearfix" id="top">
+      <span class="logo-version">
+        <img src="../../Content/public/img/logo.png" alt="1"/>
+      </span>
+      <div class="template_icon clearfix">
+        <div class="suer_falrig" onmousedown="event.stopPropagation()" onmouseup="event.stopPropagation()">
+          <i class="icon iconfont icon-fanhui" id="btnGoBack"></i>
+        </div>
+        <div class="suer_falrig" onmousedown="event.stopPropagation()" onmouseup="event.stopPropagation()">
+          <i class="icon icon iconfont icon-gengduo" id="btnGoForward"></i>
+        </div>
+        <div class="suer_falrig" onmousedown="event.stopPropagation()" onmouseup="event.stopPropagation()">
+          <i class="icon iconfont icon-shuaxin" id="btnRefresh"></i>
+        </div>
+      </div>
+      <span class="refresh-search" onmousedown="event.stopPropagation()" onmouseup="event.stopPropagation()">
+        <input type="text" id="searchKey" class="top-search" placeholder="请输入关键字搜索" />
+        <i class="icon-search" id="btnSearch">&nbsp;</i>
+      </span>
+      <span class="logo_overPone">电话：400-069-1500</span>
+      <span id="btnClickLianXiKeFu" onmousedown="event.stopPropagation()" onmouseup="event.stopPropagation()" class="logo_kefu"><i class="icon iconfont icon-kefu"></i>客服</span>      
+      <ul class="top-rt-list" onmousedown="event.stopPropagation()" onmouseup="event.stopPropagation()">
+        <li id="li_chognzhi_userbalance" class="width-2 hide">
+          <span class="color-yellow mr-s">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAkFJREFUeNp0U01IVFEU/u57bxyfOY1ggliZQbooCTdFBQqSUG3aVO6KAqlFi6w2RRQFQYtatKtFuxZBGMSE0HLEAcMSapn9YT9ayZQ6M80M83P67n1v3jjiHPjuPffec757zrnnKvmMqoTRx/EkBBnOHcQwdcDBc5TxhYhA4QksvK64KJn3NcEeYhrrSVlb+vCkn0hoxQq2LAygnlg1zvqyIZQ4F3UEC/5myYwviUN1icSQxZnIIOwKdzvHdqNtYqi2MSrXSUN8nww9XGpNepGlkkEnDT5SG4LdOo3QtjETkaxyDvc+Q2hrgvsD9PmEHLo9tmWOSUzQOGqMQ93jaHt1Ai03r+kcDdzB24jeO46GvWP+qzRhCZMEI17ARfkGke8+vhJLl66ICOTv+fvy+8ADyTyG/Oy6YM60zQ/fbg7XHYZ0NqiwDjW0OwYUppCPA9G7oyi8887cYzOQF09RnB1G9f1O66mzplh2QxL2DoVsbAS5WBjyz0JufARWlwM78iuoiycdDoesV0+fNffmDNCo4PQtorziQm20UEr2ID/Rj9zMqVWdoyWvmM8UWfcF76zcFCJXWxDeX6az1yDCO/KTjUjd+QPJu0HKCm8VC3GOrA8NczW8NMRZRmR0C8IH+UpHWbpClA7Na9r7spKkDgTveVFPwFxppg1HDsPanEb6UaLmL+hzG3N8zu1KxNzXxl6Ic2Pnuu2r1uwVMYtWtnMz5i0/l0Uy9nK+wdUHIuWDdTAUlbXu1ltMdxdh/vF/AQYAoqzT3wSx3OUAAAAASUVORK5CYII="
+              class="ad-img">
+            <!-- <i id="user_balance_lable">0.00</i> -->
+          </span>
+          <a href="../pay/charge.html" target="right" class="btn btn-bg-white">充值</a> <i class="line"></i>
+        </li>
+        <li>
+          <a href="javascript:;" id="btnSetting" class="top-icon icon-setting"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyMDlBNzJCQzc3RUJFNzExODhGQTk3NDVEQjY1QUM2RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozQjAzMEUxMUVCOTQxMUU3QkQyNjg2Qjk5RUZBOTk1MSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozQjAzMEUxMEVCOTQxMUU3QkQyNjg2Qjk5RUZBOTk1MSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjVFNTlEMUVGNzlFQkU3MTFBNzhDRUU2RkUzMDY0RkYxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjIwOUE3MkJDNzdFQkU3MTE4OEZBOTc0NURCNjVBQzZEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+z3rCswAAAV1JREFUeNqkk80rhFEUxq/Z0FhoykqmLMRiykbTRKwkodj5WrCRhY2N2GiysrRWaihhaZKFj53yj5BYyWeSeD3HPDMepxcLt37de5773HPved97QxRFwTERfbUOao3gmtqMX6NBEmzTuA52OT5nfwrWOC6CVFySehpmRRsAm2BatEn6muOSGLdgKaZEZR68/1ROljv0ukVJF3fT169JMlLrnphz4AK8sc/JXIF+KzVrwg2FOTGlqR2CUXDEOC0e+04vRuDksDuy/Zk7p1m847ROW5wIpfYcvrdq8Oo0i2ucVlrHIz2CMdmhlSfcAn3srbWIZ6h8AQNv5T5NBTH1gAfq94zLc6vUj+1van2DnOhydTe4uJ2+qd8u2/Ifl22RSSpaQj5SCtSBK9HGwQYYEe2SfVNFkYy14IS7rIAD9wDt0eU5PuNbiy3HWJCPmaHWBp6o5/2aqs9M/2wfAgwA2ZglQyGrrEsAAAAASUVORK5CYII=" /></a>
+          <div id="setting_body" class="top-list-sub set">
+            <!-- <p><a href="javascript:;">检查更新</a></p> -->
+            <p><a href="javascript:;" id="btnLoginOutClient"> 退出</a></p>
+            <p onclick="logout()"><a href="javascript:;" class="color-red" id="btnLoginOutAccount">注销</a></p>
+          </div>
+        </li>
+        <li onclick="minimize(event)"><a href="javascript:;" class="top-icon icon-min"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAARCAYAAAAL4VbbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyMDlBNzJCQzc3RUJFNzExODhGQTk3NDVEQjY1QUM2RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozQjE0QzE4Q0VCOTQxMUU3QkQyNjg2Qjk5RUZBOTk1MSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozQjAzMEUxNEVCOTQxMUU3QkQyNjg2Qjk5RUZBOTk1MSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjVFNTlEMUVGNzlFQkU3MTFBNzhDRUU2RkUzMDY0RkYxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjIwOUE3MkJDNzdFQkU3MTE4OEZBOTc0NURCNjVBQzZEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+D9zyIQAAACRJREFUeNpi/P//PwOxgImBBDDsFbMA8X9SFDOOBt3gUgwQYADi8AQj/rUjogAAAABJRU5ErkJggg==" /></a></li>
+        <li><a href="javascript:;" id="btnLoginOutClientX" class="top-icon icon-close"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAARCAYAAADkIz3lAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyMDlBNzJCQzc3RUJFNzExODhGQTk3NDVEQjY1QUM2RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozQjE0QzE5MEVCOTQxMUU3QkQyNjg2Qjk5RUZBOTk1MSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozQjE0QzE4RkVCOTQxMUU3QkQyNjg2Qjk5RUZBOTk1MSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjVFNTlEMUVGNzlFQkU3MTFBNzhDRUU2RkUzMDY0RkYxIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjIwOUE3MkJDNzdFQkU3MTE4OEZBOTc0NURCNjVBQzZEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+c9g/YgAAAIBJREFUeNrEUtEKgCAQyz638kNS+4TQ+syirtOUrsPCnhoMZDfZTRQAUJWgrgrxybgi7YvHBg/uOMEJ7fdl1HHmkqCiYIjJRE2FwpnbEtnwFB4l4YKkM956J+ftNslEd8j2KVpnmg9R65Nxpu0YDX2eBTlmTInOe8S/n6IIhwADAO3MGTc8cwSoAAAAAElFTkSuQmCC" /></a></li>
+      </ul>
+    </div>
+    <div class="sub-left">
+      <div class="maerseriu">
+        <div class="maerseriu_img">
+          <a href="javascript:;" style="cursor: pointer;" onclick="loginClickAction();_hmt.push(['_trackEvent', '启动页', '点击量', '头像']);"><img src="/Content/public/img/vendor_default.png" alt="1" id="maerseriu_img"></a>
+        </div>
+        <div class="maerseriu_utre" id="maerseriu_butt">        
+          <div class="not_logged">未登录</div>
+          <div class="not_logged_tip">登录GG租号畅享体验</div>
+          <button type="button" name="button" class="salogoin waves" onmouseover="clickAction(event)" onclick="ShowBox(0);_hmt.push(['_trackEvent', '启动页', '点击量', '登录']);">登录</button>
+        </div>
+        <div class="maerseriu_utre hide" id="maerseriu_utre">
+          <p class="utre_f" id="maerseriu_name"></p>
+          <p class="utre_v" id="user_balance_lable"></p>
+          <button type="button" name="button" class="salogoin waves" onmouseover="clickAction(event)" onclick="clickAction(event);GoToUrl('../pay/charge.html');_hmt.push(['_trackEvent', '启动页', '点击量', '我要充值']);">我要充值</button>
+        </div>
+      </div>
+      <ul class="sub-left-list">
+        <li class="active"><a href="javascript:;" onclick="GoToUrl('../usual/index.html',0);_hmt.push(['_trackEvent', '启动页', '点击量', '首页']);" class="icon-home">首页</a></li>
+        <li><a href="javascript:;" onclick="GoToUrl('../hall/hall.html',1);_hmt.push(['_trackEvent', '启动页', '点击量', '租号大厅']);" class="icon-hall">租号大厅</a></li>
+      </ul>
+      <ul class="sub-left-list">
+        <li><a href="javascript:;" onclick="GoToUrl('../mine/my_zuhao.html',2);_hmt.push(['_trackEvent', '启动页', '点击量', '我租的号']);" class="icon-zu-hao">我租的号</a></li>
+        <span id="btnBaZheBuyChiJi" class="outlink"><a href="javascript:void(0);" onclick="_hmt.push(['_trackEvent', '启动页', '点击量', '永久吃鸡']);" class="icon-logo">永久吃鸡</a></span>
+        <span id="btnBaXiazaiApp" class="outlink"><a href="javascript:;" onclick="_hmt.push(['_trackEvent', '启动页', '点击量', '下载APP']);" class="icon-logo">下载APP <i></i> </a></span>
+        <span id="btnBaZheBuyzhanghao" class="outlink"><a href="javascript:;" onclick="_hmt.push(['_trackEvent', '启动页', '点击量', '发布账号']);" class="icon-logo">出租赚钱</a></span>
+      </ul>
+      <div class="bottom-btn">
+        <div class="bottom-da" onclick="openAccelerator();_hmt.push(['_trackEvent', '菜单', '点击量', '打开加速器']);"></div>
+        <div class="bottom-yijian waves" style="display: block;" onmouseover="clickAction(event)" onclick="clickAction(event);GoToUrl('../launch/launch_game.html'); _hmt.push(['_trackEvent', '启动页', '点击量', '一键上号']);"></div>
+      </div>
+    </div>
+    <div class="sub-right">
+      <iframe id="sfa" onload="iframeLoad(this)" scrolling="no" rameborder="0" src="../usual/index.html" name="right" style="overflow:auto;width:100%;height:100%;max-height:inherit;max-width:inherit;border:0px;padding:0;z-index:0;"></iframe>
+    </div>
+    <div class="bottom">
+      <div class="fl">
+        <div style="float: left;overflow: hidden;">
+            <i class="icon iconfont icon-laba"></i>
+        </div>        
+        <div style="float: left;overflow: hidden;">
+            <div class="sliderBox">              
+              <div><a  href="javascript:OpenWindowIEUrl('https://shang.qq.com/wpa/qunwpa?idkey=38f45ea532106563bb3e3ca690a33a877325ba80e8b97376ee4a4b0ae1084911');">Steam玩家交流群：822059103</a></div>
+              <div>手游出租是采取直接给予租客账户密码的方式出租</div>
+              <div><a  href="javascript:OpenWindowIEUrl('https://shang.qq.com/wpa/qunwpa?idkey=38f45ea532106563bb3e3ca690a33a877325ba80e8b97376ee4a4b0ae1084911');">Steam玩家交流群：822059103</a></div>
+            </div>            
+        </div>
+      </div>
+      <div class="fr" style="padding-right: 1%;">
+        <!-- <div class="dare_cv"><i class="icon iconfont icon-wentiquestions1"></i>常见问题
+        </div>
+        <div class="dare_mn"><i class="icon iconfont icon-yijianfankui"></i>意见反馈
+        </div> -->
+        <div style="line-height: 44px;">当前版本：2.0</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script src="/Content/libs/zuhao/login.js"></script>
+  <script typet="text/javascript" src="//manger.ggzuhao.com/Content/JS/BiddingAnalysis.js?v=1"></script>
+  <!-- <script type="text/javascript" src="http://dl.ntalker.com/js/xn6/ntkfstat.js?siteid=kf_10311" charset="utf-8"></script> -->
+  <script>
+    function loginClickAction(){
+      if($('#maerseriu_butt').css('display') !=='none'){
+        ShowBox(0);
+        _hmt.push(['_trackEvent', '启动页', '点击量', '登录']);
+      }else{        
+        window.sfa.contentWindow.location.href="/Html/mine/my_zuhao.html";
+      }
+    }
+    function ltipmsg(){
+      layer.msg('已经是第一页了！')
+    }
+    function rtipmsg(){
+      layer.msg('已经是最后一页了！')
+    }
+    var isInner=false;
+    $('#top').on('mouseenter',mouseenter)
+    $('#top').on('mouseleave',function(){
+      isInner=false;
+    })
+    function mouseenter(e){
+      e=e? e:window.event;
+      console.log("X:"+e.screenX+"Y:"+e.screenY)
+      //document.writeln("X:"+e.screenX+"Y:"+e.screenY);
+      isInner=true;
+    }
+    function isInPolygon(checkPoint, polygonPoints) {
+      var counter = 0;
+      var i;
+      var xinters;
+      var p1, p2;
+      var pointCount = polygonPoints.length;
+      p1 = polygonPoints[0];
+  
+      for (i = 1; i <= pointCount; i++) {
+          p2 = polygonPoints[i % pointCount];
+          if (
+              checkPoint[0] > Math.min(p1[0], p2[0]) &&
+              checkPoint[0] <= Math.max(p1[0], p2[0])
+          ) {
+              if (checkPoint[1] <= Math.max(p1[1], p2[1])) {
+                  if (p1[0] != p2[0]) {
+                      xinters =
+                          (checkPoint[0] - p1[0]) *
+                              (p2[1] - p1[1]) /
+                              (p2[0] - p1[0]) +
+                          p1[1];
+                      if (p1[1] == p2[1] || checkPoint[1] <= xinters) {
+                          counter++;
+                      }
+                  }
+              }
+          }
+          p1 = p2;
+      }
+      if (counter % 2 == 0) {
+          return false;
+      } else {
+          return true;
+      }
+  }
+    function closeLoginModal(){
+      document.getElementById('loginBox').className = 'form-box';
+      // if(window.timer1) clearInterval(window.timer1);
+      // $('#login_msg').text('获取验证码');
+
+    }
+    function closeRegisterModal(){
+      document.getElementById('RegBox').className = 'form-box';
+      // if(window.timer1) clearInterval(window.timer1);
+      // $('#register_msg').text('获取验证码');
+    }
+    var type=0;
+    setInterval(function(){
+      if(type==2){
+        // $('.sliderBox').eq(0).css('transform','translateY(0)');
+        $('.sliderBox').eq(0).removeClass('slider');
+        type=0;
+        return;
+      }
+      if(type==1){
+        $('.sliderBox').eq(0).addClass('slider');
+        type=2;
+        return;
+      }
+      if(type==0){
+        // $('.sliderBox').eq(0).css('transform','translateY(-44px)');
+        $('.sliderBox').eq(0).addClass('slider');
+        type=1;
+        return;
+      }     
+    },15000)
+    $.removeCookie('errorObj');
+    $.removeCookie('hasError');
+    function iframeLoad(e){   
+      var path=window.sfa.contentWindow.location.pathname.toLocaleLowerCase();      
+      if(path.indexOf('/html/usual')>-1){
+        $(".sub-left-list li").removeClass('active');
+        $(".sub-left-list li").eq(0).addClass('active');
+      }else if(path.indexOf('/html/hall')>-1){
+        $(".sub-left-list li").removeClass('active');
+        $(".sub-left-list li").eq(1).addClass('active');
+      }else if(path.indexOf('/html/mine')>-1){
+        $(".sub-left-list li").removeClass('active');
+        $(".sub-left-list li").eq(2).addClass('active');
+      }     
+    }
+
+    function zuhaoHallState() {
+      $(".sub-left-list li").removeClass('active');
+      $(".sub-left-list li").eq(1).addClass('active');
+    }
+
+    var registerCountdown = 0;
+    var countdown=0;
+    var _arrBrowseRecords = new Array();
+    var _currRecordIndex = 0;
+    var _overOrderArray = new Array();
+    var _loginUserBalance = parseFloat('0').toFixed(2);
+    var _loginUserId = '';
+
+    var _status = 0;
+    var _intervalHandle;
+
+    _arrBrowseRecords.push(0);
+    //判断是否登陆
+    function GetLoginUser() {
+      var _userInfo = GetLoginUserCookie();
+      if (_userInfo != null) {
+        _loginUserId = _userInfo.UserID;
+        if (_userInfo.HeadImg) {
+          $("#maerseriu_img").attr("src", _userInfo.HeadImg);
+        } else {
+          $("#maerseriu_img").attr("src", "/Content/public/img/vendor_default.png");
+        }
+        $("#maerseriu_utre").removeClass("hide");
+        $("#maerseriu_butt").addClass("hide");
+        $("#maerseriu_name").html(_userInfo.NickName);
+        GetUserBalance();
+
+      } else {
+        $("#maerseriu_utre").addClass("hide");
+        $("#maerseriu_butt").removeClass("hide");
+      }
+    }
+
+    //最小化
+    function minimize(e) {
+      Extern_Form_minimize();
+    }
+    //关闭
+    function exit(e) {
+      Extern_Form_exit();
+    }
+    (function() {
+      // Vueopen.PostBoxtitle('提示','你的账号')
+      //头部拖动
+      $("#top").mousedown(function(e) {
+        e.stopPropagation();
+        e.preventDefault();              
+        Extern_Form_caption_click("down");
+      })
+      $("#top").mouseup(function(e) {
+        e.stopPropagation();
+        e.preventDefault();       
+        Extern_Form_caption_click("up");
+      });           
+
+
+      //只有第一次打开才能获取此活动编号，新刷后，此方法获取不到值
+      var netber_activity_list = Extern_Form_get_netbarid_and_activityid();
+      $.cookie("netberactivityno", netber_activity_list, {
+        path: '/'
+      });
+
+    })();
+
+    //注销登录
+    function logout() {
+        layer.confirm('您确定要注销登录？', {
+            icon: 3,
+            title: '信息'
+        }, function (index) {
+            $.cookie("LoginUser", null, {
+                path: '/'
+            });
+            $('#logState').text("登录");
+            $('#maerseriu_img').attr("src", '/Content/public/img/vendor_default.png');
+            $('#user_balance_lable').text('余额：00.0元');
+            $("#maerseriu_utre").addClass("hide");
+            $("#maerseriu_butt").removeClass("hide");
+            $("#destroyDIV").hide();
+            document.getElementById("sfa").src = "/Html/usual/index.html";
+            layer.close(index);
+
+            _status = 0;
+            StartOrStopSetInterval();
+        });
+    }
+
+    //QQ授权登录
+    function QQLogin() {
+      $("body>div.active").removeClass('active');
+      layer.open({
+        type: 2,
+        title: 'QQ授权登录',
+        area: ['550px', '370px'],
+        shade: 0.5,
+        shadeClose: false,
+        content: ['https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101401174&redirect_uri=https%3a%2f%2fwww.ggzuhao.com%2fLogin%2fQQcallBack&state=https://clientweb.ggzuhao.com/Html/login/AuthSuccess.html',
+          'no'
+        ],
+        success: function(layero, index) {
+          console.log(layero, index)
+        }
+      });
+    }
+
+    function ShowBox(index) {    
+      $("body>div.active").removeClass('active');
+      // $("body>div.form-box").eq(index).addClass('active').find(":text,:password").val('');
+      $("body>div.form-box").eq(index).addClass('active').find(":password").val('');
+      if(index===1){
+        $('#RegBox .btn-login').parent().addClass('submit_btn');
+      }else{
+        $('#RegBox .btn-login').parent().removeClass('submit_btn');
+        if(index==0){
+          var show=$('#loginBox_pone').css('display');
+          if(show==='none'){
+            $('#loginBox_over .btn_login').parent().addClass('submit_btn');
+            $('#loginBox_pone .btn_login').parent().removeClass('submit_btn');
+          } else{
+            $('#loginBox_pone .btn_login').parent().addClass('submit_btn');
+            $('#loginBox_over .btn_login').parent().removeClass('submit_btn');
+          }                 
+        }
+      }
+    }
+
+    //提交注册
+    function Submit(target, type) {
+      var form = $(target).parents("form").get(0);
+      var reg = /^1[2|3|4|5|6|7|8|9][0-9]{9}$/;
+      var inputPhone = $.trim(form["phone"].value);
+      if (inputPhone == '') {
+        layer.alert("手机号不能为空", {
+          title: '提示',
+          icon: 5
+        });
+        form["phone"].focus();
+        return;
+      }
+      if (!reg.test(inputPhone)) {
+        layer.alert("手机号码输入格式不正确", {
+          title: '提示',
+          icon: 5
+        });
+        form["phone"].focus();
+        return;
+      }
+      if ($.trim(form["phoneCode"].value) == '') {
+        layer.alert("手机验证码不能为空", {
+          title: '提示',
+          icon: 5
+        });
+        phoneCode.focus();
+        return;
+      }
+
+      if ($.trim(form["pass"].value) == '') {
+        layer.alert("密码不能为空", {
+          title: '提示',
+          icon: 5
+        });
+        form["pass"].focus();
+        return;
+      }
+
+      if($.trim(form["pass"].value).length<6||$.trim(form["pass"].value).length>18){      
+        layer.alert("密码的长度为6~18位", {
+          title: '提示',
+          icon: 5
+        });
+        form["pass"].focus();
+        return;
+      }
+
+      if (form["agree"]) {
+        var checkAgree = $(form["agree"]);
+        if (!checkAgree.is(':checked')) {
+          layer.alert("您还没有同意GG租号平台用户服务协议", {
+            title: '提示',
+            icon: 5
+          });
+          form["agree"].focus();
+          return;
+        }
+      }
+      var loadIndex = layer.load(2);
+      var url = apiUrl + $(form).attr("url");
+
+      var _openid = '';
+      var hidOpenId = $("#sfa").contents().find("#hidOpenId");
+      if (hidOpenId) {
+        _openid = hidOpenId.val();
+      }
+      HttpGet(url, {
+        phone: inputPhone,
+        pass: form["pass"].value,
+        phoneCode: form["phoneCode"].value,
+        barKey: GetInternetBarId(),
+        openid: _openid
+      }).then(function(result) {
+        layer.close(loadIndex);
+        if (result.Code == "0") {
+          if (type == "reg") {
+            layer.alert("注册成功", {
+              title: '提示',
+              icon: 6
+            });
+          } else {
+            layer.alert("操作成功", {
+              title: '提示',
+              icon: 6
+            });
+          }
+          $("body>div.active").removeClass('active');
+          SetLoginUserCookie(result.UserInfo);
+          GetLoginUser();
+        } else {
+          layer.alert(result.Message, {
+            title: '提示',
+            icon: 5
+          });
+        }
+      }).catch(function(result) {
+        layer.close(loadIndex);
+        layer.alert("操作失败，" + result.message, {
+          title: '提示',
+          icon: 5
+        });
+      });
+    }
+    //获取验证码
+    function GetVerifyCode(obj) {
+      if (registerCountdown != 0) {
+        return false;
+      }
+      var form = $(obj).parents("form").get(0);
+
+      var reg = /^1[2|3|4|5|6|7|8|9][0-9]{9}$/;
+      var inputPhone = $.trim(form["phone"].value);
+      if (inputPhone == '') {
+        layer.alert("手机号不能为空", {
+          title: '提示',
+          icon: 5
+        });
+        form["phone"].focus();
+        return false;
+      }
+      if (!reg.test(inputPhone)) {
+        layer.alert("手机号码输入格式不正确", {
+          title: '提示',
+          icon: 5
+        });
+        form["phone"].focus();
+        return false;
+      }
+
+      var loadIndex = layer.load(2);
+      HttpGet("Login/SendSMS", {
+        phone: inputPhone
+      }).then(function(result) {
+        layer.close(loadIndex);
+        if (result.Code == "0") {
+          registerCountdown = 60;
+          var btn = $(obj);
+          btn.css("cursor", "not-allowed");
+          btn.attr('disabled', true);
+          btn.text("重新发送(60s)");
+          window.timer1 = window.setInterval(function() {
+            registerCountdown--;
+            if (registerCountdown == 0) {
+              window.clearInterval(timer1);
+              btn.css("cursor", "pointer");
+              btn.text("获取验证码");
+              btn.removeAttr("disabled");
+              return;
+            }
+            btn.text("重新发送(" + registerCountdown + "s)");
+          }, 1000);
+        } else {
+          layer.alert(result.Message, {
+            title: '提示',
+            icon: 5
+          });
+        }
+      }).catch(function(result) {
+        layer.close(loadIndex);
+        layer.alert("发送验证码异常", {
+          title: '提示',
+          icon: 5
+        });
+      });
+    }
+    //获取验证码
+    function GetFindPassVerifyCode(obj) {
+      if (countdown != 0) {
+        return false;
+      }
+      var form = $(obj).parents("form").get(0);
+
+      var reg = /^1[2|3|4|5|6|7|8|9][0-9]{9}$/;
+      var inputPhone = $.trim(form["phone"].value);
+      if (inputPhone == '') {
+        layer.alert("手机号不能为空", {
+          title: '提示',
+          icon: 5
+        });
+        form["phone"].focus();
+        return false;
+      }
+      if (!reg.test(inputPhone)) {
+        layer.alert("手机号码输入格式不正确", {
+          title: '提示',
+          icon: 5
+        });
+        form["phone"].focus();
+        return false;
+      }
+
+      var loadIndex = layer.load(2);
+      HttpGet("Login/FindPassSendSMS", {
+        phone: inputPhone
+      }).then(function(result) {
+        layer.close(loadIndex);
+        if (result.Code == "0") {
+          countdown = 60;
+          var btn = $(obj);
+          btn.css("cursor", "not-allowed");
+          btn.attr('disabled', true);
+          btn.text("重新发送(60s)");
+          var timer1 = window.setInterval(function() {
+            countdown--;
+            if (countdown == 0) {
+              window.clearInterval(timer1);
+              btn.css("cursor", "pointer");
+              btn.text("获取验证码");
+              btn.removeAttr("disabled");
+              return;
+            }
+            btn.text("重新发送(" + countdown + "s)");
+          }, 1000);
+        } else {
+          layer.alert(result.Message, {
+            title: '提示',
+            icon: 5
+          });
+        }
+      }).catch(function(result) {
+        layer.close(loadIndex);
+        layer.alert("发送验证码异常", {
+          title: '提示',
+          icon: 5
+        });
+      });
+    }
+    //获取用户余额
+    function GetUserBalance() {
+      console.log('获取用户余额');
+      if (_loginUserId != '') {
+        var url = 'clientuser/GetClientUserBalance';
+        HttpGet(url, {
+          userId: _loginUserId
+        }).then(function(result) {
+          //这里处理成功回调
+          if (result.Code == "0") {
+            $("#user_balance_lable").html('余额：' + result.Balance + "元");
+          } else {
+            layer.alert(result.Message, {
+              title: '提示',
+              icon: 5
+            });
+          }
+        }).catch(function(result) {
+          console.log(result);
+          //这里处理失败回调
+          layer.alert("解析数据异常", {
+            title: '提示',
+            icon: 5
+          });
+        });
+      }
+    }
+    //绑定回车事件
+    // $(document).keydown(function(event) {      
+    //   if (event.keyCode == 13) {
+    //     var boxs = $("body>div.active");
+    //     console.log(boxs)
+    //     if (boxs.length > 0) {
+    //       //$('.submit_btn').eq(0).click();
+    //       boxs.eq(0).find('.submit_btn').click();
+    //     }
+    //   }
+    // });
+    $('.form-box').keydown(function(event) {      
+      if (event.keyCode == 13) {
+        var boxs = $(".form-box.active");        
+        if (!boxs.length) return;
+        //layer.msg(boxs.length)
+        $('.submit_btn').find('button').click();
+      }
+    });
+
+    function AlertMegsBox(content, time, _icon) {
+      var closeTime = time * 1000;
+      layer.alert(content, {
+        icon: _icon,
+        btn: [],
+        time: closeTime
+      });
+    }
+
+    function ShowLayer(Message, MsgShowTime, MsgType, isCallBack) {
+      var closeTime = MsgShowTime * 1000;
+      if (MsgType == 1) { //ok
+        if (Message != "") {
+          layer.alert(Message, {
+            title: '温馨提示',
+            icon: 1,
+            time: closeTime,
+            success: function(layero, index) {
+              if (isCallBack == 1) {
+                BackSoSo();
+              }
+            }
+          }, function(index) {
+            layer.close(index);
+          });
+        }
+      } else if (MsgType == 2) { //error
+        if (Message != "") {
+          layer.alert(Message, {
+            title: '温馨提示',
+            icon: 2,
+            time: closeTime,
+            success: function(layero, index) {
+              if (isCallBack == 1) {
+                BackSoSo();
+              }
+            }
+          }, function(index) {
+            layer.close(index);
+          });
+        }
+      }
+      //else if(msgType==3)
+      //{//info
+      //    layer.alert(content, { title: title, icon: 7 });
+      //}
+    }
+
+    //打开加速器
+    function openAccelerator(){       
+      var returnValue=Extern_Form_boost();                   
+      if(!returnValue[0]){
+        layer.msg('未安装加速器');  
+      } 
+    }
+    //
+    function OpenToUrl(){
+      OpenUrl('https://www.ggzuhao.com/?from=clientweb');
+    }
+    //提交客户端信息
+    function ActiveMachine(prams) {
+      $.get("http://192.168.1.200:8002/zh/AgencyZH/ActiveMachine?" + prams, function(data) {
+        //提交成功
+      });
+    }
+
+    function OpenUrl(url) {
+      Extern_Form_open_ie_url(url);
+    }
+
+    function ShowAlert(content, icon) {
+      layer.alert(content, {
+        title: '温馨提示',
+        icon: icon
+      });
+    }
+
+    function ShowMsgBox(content, action) {
+      if (action == 'show') {
+        layerMsgIndex = layer.msg(content, {
+          shade: [0.4],
+          time: 0,
+          icon: 4
+        });
+      } else {
+        layer.closeAll();
+      }
+    }
+
+    var _msgLayerIndex = 0;
+
+    function ShowMsg(content) {
+      _msgLayerIndex = layer.msg(content, {
+        shade: 0.7,
+        time: (1000 * 60)
+      });
+    }
+
+    function CloseMsg() {
+      layer.close(_msgLayerIndex);
+    }
+
+    function ShowMsg(content, timer) {
+      var _timer = timer * 1000;
+      layer.msg(content, {
+        shade: 0.7,
+        time: _timer
+      });
+    }
+
+    var _msgConfirmIndex = 0;
+
+    function ShowConfirm(content, params, callback) {
+      _msgConfirmIndex = layer.confirm(content, params, callback);
+    }
+
+    function CloseConfirm() {
+      layer.close(_msgConfirmIndex);
+    }
+
+    var _orderObj;
+
+    function GetOrders(orderInfo) {
+      if (orderInfo != "" && orderInfo.toString().substring(0, 1) == "{") {
+        window.sfa.contentWindow.BindList(orderInfo);
+      } else {
+        layer.alert('数据格式错误', {
+          title: '提示',
+          icon: 2
+        });
+      }
+    }
+
+    function StartGame(shCode) {      
+      Extern_Form_startgame(shCode);
+    }
+
+    function StartGame(shCode, gameName, t) {     
+      Extern_Form_startgame(shCode, gameName, t);
+    }
+
+    function OneKeySHGetOrder() {
+      return _orderObj;
+    }
+
+    function SetServiceTime(timer) {
+
+    }
+
+    var _content = '';
+    var _timer = 0;
+
+    function SoSo(content, timer) {
+      _content = content;
+      _timer = timer;
+    }
+
+    function BackSoSo() {
+      var _sleepTimer = parseInt(_timer) * 1000;
+      setTimeout('Extern_Form_callback(\'' + _content + '\')', _sleepTimer);
+    }
+
+    function RefreshZuHaoOrder() {
+      window.sfa.contentWindow.LoadOrders();
+    }
+
+    function SetBtnGrayColor(shCoder) {
+      window.sfa.contentWindow.SetBtnStarGameGrayColor(shCoder);
+    }
+
+    function SetBtnRedColor(shCoder) {
+      window.sfa.contentWindow.SetBtnStarGameRedColor(shCoder);
+    }
+
+    function AddOverOrderArray(shCoder) {
+      _overOrderArray.push(shCoder);
+    }
+
+    function GoToClientOverOrder() {
+      if (_overOrderArray.length > 0) {
+        $.each(_overOrderArray, function(v, k) {
+          if (k != "") {
+            Extern_Form_end_order(k, '订单到时结束');
+            _overOrderArray.splice(v, 1);
+          }
+        });
+      }
+    }
+
+    var _ticketInfo = '';
+    var _internetBarId = ''; //网吧ID
+    function SetTick() {
+      var tickeInfo = Extern_Form_get_ticket();
+      if (tickeInfo != "" && tickeInfo.toString().substring(0, 1) == "{") {
+        var tempObj = eval('(' + tickeInfo + ')');
+        var tempContent = tempObj.Content;
+        if (tempObj.Code == true) {
+          _ticketInfo = tempContent.ticket;
+          _internetBarId = "F2BB14B3D21A48A5A5D5FB5FF26532FF"; //tempContent.partId;
+        }
+      }
+    }
+
+    function GetTicket() {
+      return _ticketInfo;
+    }
+
+    function GetInternetBarId() {
+      // _internetBarId = Extern_Form_get_partid(); //F2BB14B3D21A48A5A5D5FB5FF26532FF
+      _internetBarId = 'F2BB14B3D21A48A5A5D5FB5FF26532FF'; //F2BB14B3D21A48A5A5D5FB5FF26532FF
+      return _internetBarId;
+    }
+
+    //保存信息使用任何
+    function SaveInfo(k, v) {
+      Extern_Form_save_info(k, v);
+    }
+
+    function goBack() {
+      // if ((_currRecordIndex - 2) >= 0) {
+      //   window.sfa.src = _arrBrowseRecords[(_currRecordIndex - 2)];
+      //   //_arrBrowseRecords.splice((_currRecordIndex - 2), 1);
+      //   _currRecordIndex = _currRecordIndex - 1;
+      // }              
+      // if(_currRecordIndex>0){
+      //   _currRecordIndex = --_currRecordIndex;
+      //   //window.sfa.src = _arrBrowseRecords[_currRecordIndex];
+      // }      
+      history.back(); 
+    }
+
+    function goForward() {                
+      // if(_currRecordIndex<_arrBrowseRecords.length-1){
+      //   _currRecordIndex = ++_currRecordIndex;
+      //   //window.sfa.src = _arrBrowseRecords[_currRecordIndex];
+      // }  
+      history.forward(); 
+    }
+
+    function goRefresh() {
+     // window.sfa.src = window.sfa.src;      
+      var path=window.sfa.contentWindow.location.pathname.toLocaleLowerCase();  
+      if(path.indexOf('pay_state.html')>-1){
+        history.back(); 
+      }else{
+        window.sfa.contentWindow.location.reload();
+      }
+    }
+
+    function locationReplace(url){
+      window.sfa.contentWindow.location.replace(url);
+    }
+
+    function GoToUrl(url,index) {     
+      window.sfa.src = url;
+      // if(index||index===0){
+      //   _currRecordIndex++;
+      //   _arrBrowseRecords.push(index);
+      // }      
+    }
+
+    function AddRecord(url) {
+      var isExists = 0;
+      _arrBrowseRecords.forEach(function(v, k) {
+        if (v == url) {
+          isExists = 1;
+        }
+      });
+      if (isExists == 0) {
+        _arrBrowseRecords.push(url);
+        _currRecordIndex = _arrBrowseRecords.length;
+      }
+      //console.log(_currRecordIndex);
+    }
+
+
+    function Copy(value) {
+      try {
+        var aux = document.createElement("input");
+        aux.setAttribute("value", value);
+        document.body.appendChild(aux);
+        aux.select();
+        document.execCommand("copy");
+        document.body.removeChild(aux);
+
+        ShowAlert("复制成功", 6);
+      } catch (e) {
+        ShowAlert('复制失败', 5);
+      }
+
+    }
+
+    var openIndex = 0;
+
+    function Open(title, url, width, heigh,customClass,callback) {     
+      openIndex = layer.open({
+        skin:customClass,
+        title: title,
+        type: 2,
+        content: url,
+        area: [width, heigh],
+        success:function(){
+          // console.log($('.to-pay-modal #ifr_fill'))    
+          // $('.to-pay-modal #ifr_fill').attr('height',260);  
+          if(callback && typeof callback === 'function')  callback();  
+        }
+      });
+    }
+
+    function CloseOpen() {
+      layer.close(openIndex);
+    }
+
+    function StartOrStopSetInterval() {
+      if (_status == 0) {
+        clearInterval(_intervalHandle);
+      } else {
+        if (_loginUserId != '') {
+          _intervalHandle = setInterval(GetUserBalance, 1000 * 2);
+
+        }
+      }
+    }
+
+    function btnSearch() {
+      var searchKey = $("#searchKey").val();
+      GoToUrl("/Html/hall/hall.html?where=" + searchKey+"&random="+Math.random());
+    }
+
+    function OpenWindowIEUrl(url) {
+      Extern_Form_open_ie_url(url);
+    }
+    //获取url参数
+    function getQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+    //后台调取跳转方法
+    function JumpPageUrl(Code) {
+      window.sfa.src = '../launch/launch_game.html?code=' + Code;
+    }
+  </script>
+  <script type="text/javascript">  
+    function btnLoginOutClientXBox() {
+        Extern_Form_beforeexit();
+        layer.confirm("退出客户端会使已登录的游戏掉线", {
+            title: '确定退出GG租号客户端么？',
+            icon: 3
+        }, function (index) {
+            //exit(event);
+            Extern_Form_exit();
+        });
+    };
+    $(document).ready(function() {      
+      $("#btnSetting").click(function(event) {
+        if ($(this).parent().find("div").hasClass("active")) {
+          $(this).parent().find("div").removeClass("active");
+        } else {
+          $(this).parent().find("div").addClass("active");
+        }
+      });
+      $("#setting_body").mouseleave(function() {
+        $(this).removeClass("active");
+      });
+
+      $("#btnLoginOutClient").click(function(event) {
+        layer.confirm("退出客户端会使已登录的游戏掉线", {
+          title: '确定退出GG租号客户端么？',
+          icon: 3
+        }, function(index) {
+          exit(event);
+        });
+      });
+
+      $("#btnLoginOutClientX").click(function(event) {
+        btnLoginOutClientXBox();
+      });
+
+
+      $(".sub-left li").not("#btnLianXiKeFu").click(function() {
+        $(".sub-left li").not("#btnLianXiKeFu").removeClass("active");
+        $(this).addClass("active");
+      });
+
+      $("#btnGoBack").click(function() {
+        //Extern_Form_page_goback();
+        goBack()
+      });
+
+      $("#btnGoForward").click(function() {
+        //Extern_Form_page_goforward();
+        goForward()
+      });
+      $("#btnRefresh").click(function(e) {
+        goRefresh();
+      });
+      $("#btnSearch").click(function() {
+        btnSearch();
+      });
+      $("#searchKey").on('keypress',function() {
+        if (event.keyCode == 13) {            
+             btnSearch();
+        }        
+      });
+
+      $("#btnClickLianXiKeFu").click(function() {
+        // OpenWindowIEUrl("https://clientweb.ggzuhao.com/xiaoneng.html");  
+        if(window.location.hostname==='testclientweb.ggzuhao.com'){
+          OpenWindowIEUrl("https://testclientweb.ggzuhao.com/Html/web/kefu.html");   
+        }else{
+          OpenWindowIEUrl("https://clientweb.ggzuhao.com/Html/web/kefu.html");  
+        }           
+      });
+
+      $("#btnBaZheBuyChiJi").click(function() {
+       
+        OpenWindowIEUrl("http://www.taohaobang.com/?from=clientweb");
+      });
+
+      $("#btnBaXiazaiApp").click(function() {
+        OpenWindowIEUrl("http://index.ggzuhao.com/app/download/pc/?from=clientweb");
+      });
+
+      $("#btnBaZheBuyzhanghao").click(function() {
+        // OpenWindowIEUrl("https://www.ggzuhao.com/member/product/pushgoods");
+        OpenWindowIEUrl('https://clientweb.ggzuhao.com/Html/web/index.html')
+      });
+    
+
+      window.onload = function() {
+        //SetTick();
+        var Code = getQueryString('Code');
+        //判断是否传入上号码
+        if (Code) {
+          JumpPageUrl(Code);
+        } else {
+          GetInternetBarId(); //获取网吧id
+          GetLoginUser(); //判断是否登陆
+          setInterval(GoToClientOverOrder, 1000); //订单倒计时
+
+          StartOrStopSetInterval();
+        }
+        //if (ticketInfo != "") {
+        //    _sellerId = GetSellerId();
+        //    GetLoginUser();
+        //    setInterval(GoToClientOverOrder, 1000);
+        //}
+      }
+    });
+
+    function openKefu(){
+      //OpenWindowIEUrl("https://clientweb.ggzuhao.com/Html/web/kefu.html"); 
+      if(window.location.hostname==='testclientweb.ggzuhao.com'){
+          OpenWindowIEUrl("https://testclientweb.ggzuhao.com/Html/web/kefu.html");   
+        }else{
+          OpenWindowIEUrl("https://clientweb.ggzuhao.com/Html/web/kefu.html");  
+        } 
+    }
+
+    function clickAction(e){     
+      var duration = 750;
+
+        // 样式string拼凑
+        var forStyle = function(position){
+            var cssStr = '';
+            for( var key in position){
+                if(position.hasOwnProperty(key)) cssStr += key+':'+position[key]+';';
+            };
+            return cssStr;
+        }
+
+        // 获取鼠标点击位置
+        var forRect = function(target){
+            var position = {
+                top:0,
+                left:0
+            }, ele = document.documentElement;
+            'undefined' != typeof target.getBoundingClientRect && (position = target.getBoundingClientRect());
+            return {
+                top: position.top + window.pageYOffset - ele.clientTop,
+                left: position.left + window.pageXOffset - ele.clientLeft
+            }
+        }
+
+        var show = function(event){
+            var pDiv = event.target,
+                cDiv = document.createElement('div');
+            pDiv.appendChild(cDiv);
+            var rectObj = forRect(pDiv),
+                _height = event.pageY - rectObj.top,
+                _left = event.pageX - rectObj.left,
+                _scale = 'scale(' + pDiv.clientWidth / 100 * 10 + ')';
+            var position = {
+                top: _height+'px',
+                left: _left+'px'
+            };
+            cDiv.className = cDiv.className + " waves-animation",
+                cDiv.setAttribute("style", forStyle(position)),
+                position["-webkit-transform"] = _scale,
+                position["-moz-transform"] = _scale,
+                position["-ms-transform"] = _scale,
+                position["-o-transform"] = _scale,
+                position.transform = _scale,
+                position.opacity = "1",
+                position["-webkit-transition-duration"] = duration + "ms",
+                position["-moz-transition-duration"] = duration + "ms",
+                position["-o-transition-duration"] = duration + "ms",
+                position["transition-duration"] = duration + "ms",
+                position["-webkit-transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)",
+                position["-moz-transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)",
+                position["-o-transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)",
+                position["transition-timing-function"] = "cubic-bezier(0.250, 0.460, 0.450, 0.940)",
+                cDiv.setAttribute("style", forStyle(position));
+            var finishStyle = {
+                opacity: 0,
+                "-webkit-transition-duration": duration + "ms",
+                "-moz-transition-duration": duration + "ms",
+                "-o-transition-duration": duration + "ms",
+                "transition-duration": duration + "ms",
+                "-webkit-transform" : _scale,
+                "-moz-transform" : _scale,
+                "-ms-transform" : _scale,
+                "-o-transform" : _scale,
+                top: _height + "px",
+                left: _left + "px",
+            };
+            setTimeout(function(){
+                cDiv.setAttribute("style", forStyle(finishStyle));
+                setTimeout(function(){
+                    pDiv.removeChild(cDiv);
+                },duration);
+            },100)
+        }
+        show(e)
+    }
+  </script>
+
+  <!--<script charset="utf-8" src="http://wpa.b.qq.com/cgi/wpa.php"></script>
+      <script>
+          BizQQWPA.addCustom([{
+              aty: '0', //指定工号类型,0-自动分流，1-指定工号，2-指定分组
+              nameAccount: '4000691500', //营销 QQ 号码
+              selector: 'btnLianXiKeFu' //WPA 被放置的元素
+          }]);
+      </script>-->
+
+</body>
+
+</html>

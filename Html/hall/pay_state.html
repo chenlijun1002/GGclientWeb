@@ -1,0 +1,296 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+  <link rel="stylesheet" href="/Content/public/icon/iconfont.css">
+  <link rel="stylesheet" href="css/pay.css" />
+  <title>支付成功</title>
+  <style media="screen">
+    #model{
+      height: 635px;
+      overflow-y: auto;
+       overflow-x: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="pay-state self-scroll-bar" id="model" v-cloak>
+    <div v-if="Code===''" style="text-align: center;display: flex;height: 100%;align-items: center;justify-content: center;">
+      <div>
+          <img src="/Content/public/img/page-load.png" />
+          <p style="padding: 20px 0;">页面加载中...</p>
+      </div>
+    </div>
+    <div v-else>
+        <div class="" v-if="Code===0">
+            <div class="state-title" style="padding-bottom: 0;">
+              <img src="/Content/public/icons/checked_1.png" />
+              <span>恭喜您下单成功！</span>
+              <p>您可以<a href="../mine/my_zuhao.html">查看更多订单>></a></p>
+            </div>
+            <div class="state-info">
+              <dl class="info-left" style="width: 200px;">
+                <dt><img :src="order.GameImg" style="width: 100px;height:100px;"/></dt>
+                <dd class="ellipsis-2">游戏名称：{{order.GameName}}</dd>
+                <dd class="ellipsis-2">游戏区服：{{order.GameClassNameQ}} / {{order.GameClassNameF}}</dd>
+                <dd class="ellipsis-2">角色名称：{{order.ProductName}}</dd>
+              </dl>
+              <ul class="info-right">
+                <li style="margin-bottom: 15px;color:#ff9800;" v-if="order.GameTypeID==2">请使用账号密码自行登录</li>
+                <li v-if="order.GameTypeID==2">账号： <span class="color-red">{{order.AccountNumber}}</span>&nbsp;&nbsp;<a class="copy" style="padding:2px 10px;" v-on:click="copyToClipboard(order.AccountNumber)">复制</a></li>
+                <li v-if="order.GameTypeID==2">密码： <span class="color-red">{{order.Passed}}</span>&nbsp;&nbsp;<a class="copy" style="padding:2px 10px;" v-on:click="copyToClipboard(order.Passed)">复制</a></li>
+                <li class="li_a">订单开始时间： <span>{{order.CreateDateStr}}</span></li>
+                <li class="li_a">订单结束时间： <span>{{order.UpdateDateStr}}</span></li>
+                <li class="li_a" v-if="order.GameTypeID !=2">上号码： <span>{{order.Code}}</span> &nbsp;&nbsp;&nbsp;<a class="copy" v-on:click="copyToClipboard(order.Code)">复制上号码</a> </li>
+                <li class="li_box">
+                  <i class="icon iconfont icon-naozhong"></i>
+                  <span class="time-box">
+                    <b class="box">{{time.dd}}</b>天
+                    <b class="box">{{time.hh}}</b>时
+                    <b class="box">{{time.mm}}</b>分
+                    <b class="box">{{time.ss}}</b>秒
+                  </span>
+                </li>
+                <!-- <li class="li_input"><label for="checkbox"><input type="checkbox" id="checkbox" v-model="checked">使用加速器<span class="color-red">（开启加速器体验更佳）</label></span></li> -->
+                <!-- 端游 -->
+                <li v-if="order.GameTypeID==1" class="has-btn">
+                  <a href="javascript:;" @click="GoToStartGame(order.Code,order.GameName)" class="btn btn-red btn-lg">登录游戏</a>
+                  <a href="javascript:;" :onclick="'xz(\''+order.OrderformID+'\')'" class="btn btn-red-outline btn-lg">续租</a>
+                  <a href="javascript:;" class="color-red" @click="ApplyForafterSale(order.OrderformID)">售后/退单</a>
+                </li>
+                <!-- 手游 -->
+                <li v-else-if="order.GameTypeID==2" class="has-btn">
+                  <a href="javascript:;" :onclick="'xz(\'' + order.OrderformID +'\')'" class="btn btn-lg btn-red-outline">续租</a>
+                  <a href="javascript:;" class="color-red" @click="ApplyForafterSale(order.OrderformID)">售后/退单</a>
+                </li>
+              </ul>
+      
+            </div>      
+            <div style="margin-top: 0;">
+              <p class="line-title"><span>上号帮助</span></p>
+              <p v-if="order.GameTypeID==2" style="color:#333">请使用账号密码自行登录游戏，谢谢</p>
+              <p v-else><span v-html="getname(order.GameName)" style="color:#333"></span></p>
+              <p v-if="order.GameTypeID==1" class="rt-btn">
+                <a href="javascript:;" onclick="show('https://clientweb.ggzuhao.com/html//lc/shang_hao_flow.html')" class="btn btn-red btn-lg ic ic-1">查看上号流程</a>
+                <a href="javascript:;" onclick="show('http://index.ggzuhao.com/ggshq/videopage/gg-video.html')" class="btn btn-red btn-lg ic ic-2">查看上号视频</a>
+              </p>
+            </div>
+            <div v-if="sendval==1" style="padding-bottom:1px; text-align:center;margin-top: 36px;margin-bottom: 20px;">
+              <a href="javascript:parent.window.OpenWindowIEUrl('http://www.taohaobang.com/?from=clientgg');" target="_blank" onclick="_hmt.push(['_trackEvent', '去淘号帮官网', '点击', '租号客户端下单成功']);">
+                <img src="http://www.ggzuhao.com/Content/common/images/advimg_pc.gif" width="535" height="125" />
+              </a>
+            </div>
+        </div>
+        <div v-else>
+          <div class="state-title state-title-no">
+            <img src="/Content/public/icons/err.png" />
+            <span>下单失败！</span>
+            <!-- <p style="color:#2B2A2E">账号已被出租，下单失败！您也可以<a href="../hall/hall.html"> 重新选择商品>> </a></p> -->
+            <p style="color:#2B2A2E;"><span id="errorMsg" style="font-size: 14px;">{{Message||''}}</span>您也可以<a href="../hall/hall.html"> 重新选择商品>> </a></p>
+          </div>
+          <div class="state-title-imgCode">
+            <img src="/Content/public/icons/imgCode.png" />
+            <p>下载GG租号APP，下单更方便哦！</p>
+          </div>
+        </div>
+      </div>
+    
+
+
+
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script>
+    var orderid;
+    var Interval;
+    $(function() {
+      var _userInfo = GetLoginUserCookie();
+      if (_userInfo == null) {
+        window.parent.$('#loginBox').addClass('active').find(":password").val('');
+        return;
+      }
+      var params = new Object();
+      params.wb = parent.window.GetInternetBarId(); //GetSellerId(); // "F2BB14B3D21A48A5A5D5FB5FF26532FF";
+      if (_userInfo != null)
+        params.userid = _userInfo.UserID;
+      params.id = GetQueryString('id');
+
+      //下单时判断是否参与网费兑换
+      params.netbarid = "";
+      params.activityid = "";
+      var netber_activity_list = $.cookie("netberactivityno");
+      if (netber_activity_list != undefined && netber_activity_list != "") {
+        var netberact = netber_activity_list.split(',');
+        if (netberact.length > 1) {
+          params.netbarid = netberact[0];
+          params.activityid = netberact[1];
+        }
+      }
+      var _index = layer.msg('正在下单中，请稍候', {
+        icon: 16,
+        time: false,
+        shade: 0.1
+      });
+      HttpGet("/product/PaySuccess", params).then(function(result) {
+        console.log(result,8899)
+        model.Code = result.Code;
+        if (result.Code == "0") {
+          console.log(result);
+          parent.window.GetUserBalance();
+          model.order = result.model;
+          model.time = result.time;
+          total = model.time.sum;
+          model.sendval = result.sendval; //显示淘号帮券
+          Interval = setInterval(function() {
+            daojs();
+          }, 1000);
+        } else {
+          model.Message = result.Message;
+        }
+        layer.close(_index);
+      }).catch(function(result) {});
+    });
+
+    var model = new Vue({
+      el: '#model',
+      data: {
+        items: [],
+        order: '',
+        Code: '',
+        Message: '',
+        time: '',
+        sendval: '',
+        checked: false,
+      },
+      methods: {
+        getname: function(m) {
+          if ("守望先锋,炉石传说,暗黑破坏神III,魔兽世界,风暴英雄,星际争霸II".indexOf(m) > -1) {
+            return "打开战网>点击“登陆游戏”系统会自动输入账号密码进行登陆";
+          } else if ("使命召唤,穿越火线,DNF,逆战,QQ飞车,斗战神 ,上古世纪,疾风之刃,天涯明月刀 ,NBA2KOnline ,枪神纪  ,极品飞车".indexOf(m) > -1) {
+            return "打开WeGame>点击“登陆游戏”系统会自动输入账号密码进行登陆";
+          } else if ("黎明杀机,绝地求生,侠盗猎车手,CS全球攻势,彩虹六号,方舟,腐蚀 ,求生之路2,SOS-终极大逃杀,人类一败涂地".indexOf(m) > -1) {
+            return "打开Steam>点击“登陆游戏”系统会自动输入账号密码进行登陆";
+          } else {
+            return "请根据游戏类型进行上号：打开WeGame/Steam/战网>点击“登陆游戏”系统会自动输入账号密码进行登陆。<br/>使用上号器登陆请先复制上号码>点击“获取订单”打开WeGame/Steam/战网其中一个平台>点击“登陆游戏”系统会自动输入账号密码进行登陆。";
+          }
+        },
+        GoToStartGame: function(shCode, gameName) {
+          parent.window.StartGame(shCode, gameName, 1);
+        },
+        //复制
+        copyToClipboard: function(value) {
+          console.log(value);
+          var aux = document.createElement("input");
+          aux.setAttribute("value", value);
+          document.body.appendChild(aux);
+          aux.select();
+          document.execCommand("copy");
+          document.body.removeChild(aux);
+          layer.msg("复制成功!");
+        },
+        //申请售后
+        ApplyForafterSale: function(orderNo) {
+          parent.window.Open("申请售后", "/html/mine/ApplyForafterSale.html?orderno=" + orderNo +'&from=paysuccess', '600px', '580px','');
+        },
+      }
+    });
+
+    function show(url) {
+      parent.window.OpenWindowIEUrl(url);
+    }
+
+    function xz(t) {
+      parent.window.Open("续租商品", "/html/mine/my_xuzu.html?orderno=" + t + "", '320px', '450px');
+    }
+
+    function xz1(t) {
+      HttpGet("/product/GetOrderInfo", {
+        "id": t
+      }).then(function(result) {
+        if (result.Code == "0") {
+          parent.window.GetUserBalance();
+          model.order = result.model;
+          model.time = result.time;
+          total = model.time.sum;
+        }
+      }).catch(function() {
+
+      });
+    }
+
+    var total;
+
+    function daojs() {
+      total = total - 1;
+      var day = parseInt(total / (24 * 60 * 60)); //计算整数天数
+      var afterDay = total - day * 24 * 60 * 60; //取得算出天数后剩余的秒数
+      var hour = parseInt(afterDay / (60 * 60)); //计算整数小时数
+      var afterHour = total - day * 24 * 60 * 60 - hour * 60 * 60; //取得算出小时数后剩余的秒数
+      var min = parseInt(afterHour / 60); //计算整数分
+      var afterMin = parseInt(total - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60); //取得算出分后剩余的秒数
+      if (hour <= 0)
+        hour = 0;
+      if (min <= 0)
+        min = 0;
+      if (afterMin <= 0)
+        afterMin = 0;
+      model.time.dd = day;
+      if (day < 10) {
+        model.time.dd = "0" + day;
+      }
+      model.time.hh = hour;
+      if (hour < 10) {
+        model.time.hh = "0" + hour;
+      }
+      model.time.mm = min;
+      if (min < 10) {
+        model.time.mm = "0" + min;
+      }
+      model.time.ss = afterMin;
+      if (afterMin < 10) {
+        model.time.ss = "0" + afterMin;
+      }
+      if (total <= 0) clearInterval(Interval);
+      //console.log(total);
+    }
+
+    function GoToUrl(e){
+      console.log(window.parent)
+      window.parent.GoToUrl($(e).attr('data-href'));
+      //window.parent.sfa.src=$(id).attr('data-href');
+    }
+    
+  </script>
+</body>
+
+</html>

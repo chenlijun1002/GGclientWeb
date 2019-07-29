@@ -1,0 +1,229 @@
+.pay-state .state-title {
+  padding: 15px 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.copy {
+  background: rgba(255, 0, 0, 1);
+  border-radius: 2px;
+  font-size: 12px;
+  color: #fff; 
+  padding: 4px 10px;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+  left: 8px;
+}
+
+.pay-state .state-title img {
+  width: 53px;
+  height: 53px;
+  position: relative;
+  top: -5px;
+}
+
+.pay-state .state-title span {
+  font-size: 25px;
+  font-family: 'Microsoft YaHei';
+  font-weight: 400;
+  color: rgba(43, 42, 46, 1);
+  margin-left: 24px;
+}
+
+.pay-state .state-title p {
+  line-height: 45px;
+  font-size: 14px;
+  font-family: 'Microsoft YaHei';
+  font-weight: 400;
+  color: rgba(43, 42, 46, 1);
+}
+
+.pay-state .state-title p a {
+  color: #00A8F7;
+}
+
+.pay-state .state-info {
+  border: 1px solid #ddd;
+  /* margin-bottom: 20px; */
+}
+
+.pay-state .state-info:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.pay-state .info-left {
+  float: left;
+  width: 240px;
+  padding: 20px 20px 12px;
+  margin-right: 20px;
+  background: #F7F7F7;
+  border-right: 1px solid #ddd;
+}
+
+.pay-state .info-left img {
+  width: 200px;
+  height: 200px;
+}
+
+.pay-state .info-left dd {
+  padding-top: 10px;
+  font-size: 12px;
+  color: #333333;
+  height: 30px;
+}
+
+.pay-state .info-right {
+  float: left;
+  padding: 10px 0;
+}
+
+.pay-state .info-right li {
+  margin: 5px 0;
+  color: #333;
+}
+
+.pay-state .info-right li.li_a {
+  margin: 5px 0;
+  /* height: 30px; */
+  font-size: 14px;
+  /* font-family: PingFang-SC-Regular; */
+  font-weight: 400;
+  color: #333;
+}
+
+.pay-state .info-right li.li_input {
+  font-size: 12px;
+  /* font-family: PingFang-SC-Regular; */
+  font-weight: 400;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 8px
+}
+
+.pay-state .info-right li.li_input input {
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+
+.pay-state .info-right li.li_box {
+  position: relative;
+}
+
+.pay-state .info-right li.li_box i.icon-naozhong {
+  position: absolute;
+  font-size: 24px;
+  top: 8px;
+  left: 15px;
+  color: rgba(199, 48, 48, 1);
+}
+
+.pay-state .info-right .see-order {
+  position: absolute;
+  font-size: 24px;
+  top: 8px;
+  left: 15px;
+  color: rgba(199, 48, 48, 1);
+}
+
+.pay-state .info-right .time-box {
+  display: inline-block;
+  padding: 3px 25px 2px 50px;
+  border: 1px solid #C73030;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: 'Microsoft YaHei';
+  font-weight: 400;
+  color: rgba(199, 48, 48, 1);
+}
+
+.pay-state .info-right .box {
+  position: relative;
+  display: inline-block;
+  line-height: 34px;
+  padding: 0 5px;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: 'Microsoft YaHei';
+  font-weight: 400;
+  color: rgba(199, 48, 48, 1);
+}
+
+/* .pay-state .info-right .box:nth-child(2n) {
+  left: -3px;
+}
+
+.pay-state .info-right .box:nth-child(2n+1) {
+  margin-left: 3px;
+} */
+.pay-state .info-right .has-btn {
+  margin-top: 15px;
+}
+
+.pay-state .info-right .has-btn .btn {
+  width: 128px;
+  line-height: 28px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=pay.css.map */
+.pay-state .rt-btn {
+  margin-top: 8px;
+  text-align: right;
+}
+
+.pay-state .rt-btn .btn {
+  position: relative;
+  padding: 8px 10px 8px 36px;
+  margin-right: 15px;
+}
+
+.pay-state .rt-btn .ic:before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+}
+
+.pay-state .rt-btn .ic.ic-1:before {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQxJREFUeNrs1D9rwkAcxnGjAV+N+g78g0tnN6UI7eAg7l1UBBcXFZwdhHYo2MnBsdCCi4rFbu3cUhSE0qVokfN78AvETBcJdPHgA+FCnjsuD2cppUJBDhsW6ojhDx3MUEESEcOsN1R1YBR5NHGFtARe4gkvBmF6U2so2zUR9ewmjLGEGg/90Ra3uMAnHuVdHx9+z9AK+qeEQwGPwAOd2lQRxw5dzFFGymdtak5tdEVaKCIjgfp5gqVh4FFtlJR67zmO0am1uUcOG1fAQGp0ro1ZbW6QkPPsYYGSj9tGZ7yj4dRG3zJtqU9WAq8xxavh5lbe2nzjV1ZzVn3A8ym1GaKAH1dt7vD177U5CDAAnpNHgMhJJRgAAAAASUVORK5CYII=");
+}
+
+.pay-state .rt-btn .ic.ic-2:before {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAV1JREFUeNrM1L8vg0EYwPFelSoVA5FuHSQSTcRGxCxGLLUYTCwSCxIxSkxWf4FExGQRJv+ASIhglujUWPxKNNXzfeRpcr28P6gOnuST9O1dn3vu+txrrLWJVkYy0eJwE3agM2JuG7p+mnABN7jFasC8aVziHjuaPDg4wwIqtjEm5GxVH8re+Lwz3kAqHEK7t86w8zmHfm98NKrCHB6c1Z8x6KyawYVX4WRYhUbbpoAVpLCHa29dqXADAzjEWViBxulD+VGvJs148yr4UI+RfzMJJek23mx8VHGMbMB2e5CWD2P297GsSVJYwjlKmJHt5Zu4EHntxSPMOd+npW1qTSR8wbiX7PsEk3+4su9BA7Jl4zyfohySRO76rN73LK6wizX3vkvCO3zqmezrc1DIi2FKE9b7dB0nKGIET/U+XMSW9mItZpsH2EQ1rrFl5e6Ys5PGfo2aYP79G/tLgAEAXAFRcWem1dwAAAAASUVORK5CYII=");
+}
+
+.state-title-no {
+  padding: 25px 0 35px !important;
+  border-bottom: 1px solid #ccc;
+}
+
+.state-title-imgCode {
+  text-align: center;
+  padding-top: 55px;
+}
+
+.state-title-imgCode img {
+  width: 221px;
+  height: 221px;
+  padding: 12px;
+  background: rgba(253, 253, 253, 1);
+  border: 1px solid rgba(211, 211, 211, 1);
+}
+
+.state-title-imgCode p {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Microsoft YaHei';
+  font-weight: 400;
+  color: rgba(0, 168, 247, 1);
+  height: 45px;
+  line-height: 45px;
+}

@@ -1,0 +1,383 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="icon" href="/Content/img/zu.png" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+  <link rel="stylesheet" href="/Content/public/icon/iconfont.css">
+  <link rel="stylesheet" href="css/hall.css" />
+  <title>大厅</title>
+  <style>
+    .switchAction li{
+      cursor: pointer;
+      color: #333;
+    }
+    .switchAction li:hover{
+      color: #03A1EB;
+    }
+    .switchActive{
+      color: #03A1EB !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="self-scroll-bar" style="height: 635px;overflow-y: auto;">
+    <div class="hot-tag"><span class="tag fl">热门游戏</span><i class="hot"> HOTGAME </i></div>
+    <div class="hall-up clearfix" id="gameListTop" v-cloak style="padding-top: 5px;">
+      <ul class="list list_hallbox">
+        <li v-for="(item,index) in HotGameList" v-if="index<6">
+          <a href="javascript:;" @click="sltGame(item.GameID,item.GameName);"><img :src="item.img" />
+            <p class="ellipsis">{{item.GameName}}</p>
+          </a>
+        </li>
+      </ul>
+      <div class="more-game">
+        <div class="game-line"><span>更多+</span></div>
+        <div class="game-content hide ">
+          <div class="tabs-items">
+            <div style="float: left;;width: 80px;line-height: 50px;text-align: center;color:#333;background-color: #e7e7e7;font-size: 18px;cursor: pointer;" onclick="selectHot()">HOT</div>
+            <div style="float: right;width: calc(100% - 80px);height: 50px;background-color: #f4f4f4;">
+              <ul style="display: flex;width: calc(100% - 75px);line-height: 50px;text-align: center;margin-left: 21px;" class="switchAction action-search">
+                <li style="flex:1;" onclick="select(this)">A</li>
+                <li style="flex:1;" onclick="select(this)">B</li>
+                <li style="flex:1;" onclick="select(this)">C</li>
+                <li style="flex:1;" onclick="select(this)">D</li>
+                <li style="flex:1;" onclick="select(this)">E</li>
+                <li style="flex:1;" onclick="select(this)">F</li>
+                <li style="flex:1;" onclick="select(this)">G</li>
+                <li style="flex:1;" onclick="select(this)">H</li>
+                <li style="flex:1;" onclick="select(this)">I</li>
+                <li style="flex:1;" onclick="select(this)">J</li>
+                <li style="flex:1;" onclick="select(this)">K</li>
+                <li style="flex:1;" onclick="select(this)">L</li>
+                <li style="flex:1;" onclick="select(this)">M</li>
+                <li style="flex:1;" onclick="select(this)">N</li>
+                <li style="flex:1;" onclick="select(this)">O</li>
+                <li style="flex:1;" onclick="select(this)">P</li>
+                <li style="flex:1;" onclick="select(this)">Q</li>
+                <li style="flex:1;" onclick="select(this)">R</li>
+                <li style="flex:1;" onclick="select(this)">S</li>
+                <li style="flex:1;" onclick="select(this)">T</li>
+                <li style="flex:1;" onclick="select(this)">U</li>
+                <li style="flex:1;" onclick="select(this)">V</li>
+                <li style="flex:1;" onclick="select(this)">W</li>
+                <li style="flex:1;" onclick="select(this)">X</li>
+                <li style="flex:1;" onclick="select(this)">Y</li>
+                <li style="flex:1;" onclick="select(this)">Z</li>
+              </ul>
+            </div>
+            <!-- <span class="tab active">端游</span>
+            <span class="tab">手游</span>
+            <span class="tab">影视专区</span> -->
+          </div>
+          <div class="tabs-content">
+            <div class="game-box active">
+              <span v-for="item in GameList"  @click="sltGame(item.GameID,item.GameName)" v-show="GameList.length">{{item.GameName}}</span>
+              <div v-show="!GameList.length" style="text-align: center;line-height: 100px;">暂无数据</div>
+            </div>
+            <!-- <div class="game-box">
+              <span v-for="item in GameList" v-if="item.GameTypeID==2" @click="sltGame(item.GameID,item.GameName)">{{item.GameName}}</span>
+            </div>
+            <div class="game-box">
+              <span v-for="item in TV" @click="sltGQF(item.GameID, item.ParentID, item.GameClassID, item.GameClassName)">{{item.GameClassName}}</span>
+            </div> -->
+          </div>
+        </div>
+        <div class="game-modal hide "></div>
+      </div>
+    </div>
+
+    <div class="filter">
+      <div class="f-row" id="gqf">
+        <label>游戏区服：</label>
+        <div class="select-item">
+          <span class="item-tag"><span id="spanItemG">游戏</span><i class="triangle"></i></span>
+          <div class="item-content" id="GameList">
+            <div class="tabs-items" style="overflow: hidden;margin-top: -10px;margin-left: -10px;margin-right: -10px;">
+              <div style="float: left;;width: 80px;line-height: 50px;text-align: center;color:#333;background-color: #e7e7e7;font-size: 18px;cursor: pointer;" onclick="selectHot2(event)">HOT</div>
+              <div style="float: right;width: calc(100% - 80px);height: 50px;background-color: #f4f4f4;">
+                <ul style="display: flex;width: calc(100% - 75px);line-height: 50px;text-align: center;margin-left: 21px;" class="switchAction action-search2">
+                  <li style="flex:1;" onclick="select2(this,event)">A</li>
+                  <li style="flex:1;" onclick="select2(this,event)">B</li>
+                  <li style="flex:1;" onclick="select2(this,event)">C</li>
+                  <li style="flex:1;" onclick="select2(this,event)">D</li>
+                  <li style="flex:1;" onclick="select2(this,event)">E</li>
+                  <li style="flex:1;" onclick="select2(this,event)">F</li>
+                  <li style="flex:1;" onclick="select2(this,event)">G</li>
+                  <li style="flex:1;" onclick="select2(this,event)">H</li>
+                  <li style="flex:1;" onclick="select2(this,event)">I</li>
+                  <li style="flex:1;" onclick="select2(this,event)">J</li>
+                  <li style="flex:1;" onclick="select2(this,event)">K</li>
+                  <li style="flex:1;" onclick="select2(this,event)">L</li>
+                  <li style="flex:1;" onclick="select2(this,event)">M</li>
+                  <li style="flex:1;" onclick="select2(this,event)">N</li>
+                  <li style="flex:1;" onclick="select2(this,event)">O</li>
+                  <li style="flex:1;" onclick="select2(this,event)">P</li>
+                  <li style="flex:1;" onclick="select2(this,event)">Q</li>
+                  <li style="flex:1;" onclick="select2(this,event)">R</li>
+                  <li style="flex:1;" onclick="select2(this,event)">S</li>
+                  <li style="flex:1;" onclick="select2(this,event)">T</li>
+                  <li style="flex:1;" onclick="select2(this,event)">U</li>
+                  <li style="flex:1;" onclick="select2(this,event)">V</li>
+                  <li style="flex:1;" onclick="select2(this,event)">W</li>
+                  <li style="flex:1;" onclick="select2(this,event)">X</li>
+                  <li style="flex:1;" onclick="select2(this,event)">Y</li>
+                  <li style="flex:1;" onclick="select2(this,event)">Z</li>
+                </ul>
+              </div>                
+            </div>
+            <span v-for="item in items" @click="sltGame(item.GameID,item.GameName)" :style="{color:selectId===item.GameID?'red':''}" :data-id="selectId">{{item.GameName}}</span>
+            <div v-show="!items.length" style="text-align: center;line-height: 100px;">暂无数据</div>
+          </div>
+        </div>
+        <div class="select-item">
+          <span class="item-tag"><span id="spanItemQ">游戏区</span><i class="triangle"></i></span>
+          <div class="item-content " id="QList">
+            <span v-for="item in items" @click="sltQ(item.GameClassID)">{{item.GameClassName}}</span>
+          </div>
+        </div>
+        <div class="select-item">
+          <span class="item-tag"><span id="spanItemF">游戏服</span><i class="triangle"></i></span>
+          <div class="item-content" id="FList">
+            <span v-for="item in items" @click="sltF(item.GameClassID)">{{item.GameClassName}}</span>
+          </div>
+        </div>
+        <div class="select-item">
+          <span class="item-tag">
+            <input type="text" class="sub-sch" id="where" placeholder="关键字" />
+            <i class="search" onclick="search()"></i>
+          </span>
+        </div>
+        <p class="rt">
+          <a href="javascript:onclick()" class="btn btn-red-outline">清除筛选</a>
+        </p>
+      </div>
+      <div class="f-row" id="attributeList">
+        <label>筛选条件：</label>
+        <div class="filter-item">
+          <span class="item-tag"><span value="押金">押金</span> <i class="close">X</i></span>
+          <div class="item-content">
+            <span onclick="sltAttribute('2', '1')" data-type="2_1">有</span>
+            <span onclick="sltAttribute('2', '2')" data-type="2_2">无</span>
+          </div>
+        </div>
+
+        <div class="filter-item">
+          <span class="item-tag"><span value="起租限制">起租次数限制</span> <i class="close">X</i></span>
+          <div class="item-content">
+            <span onclick="sltAttribute('3', '1')" data-type="3_1">全部</span>
+            <span onclick="sltAttribute('3', '2')" data-type="3_2">无</span>
+          </div>
+        </div>
+
+        <div class="filter-item" v-for="item in items">
+          <span class="item-tag"><span :value="item.AttributeName">{{item.Value}}</span> <i class="close">X</i></span>
+          <div v-if="item.Values!=null" class="item-content">
+            <span v-for="item1 in item.Values" @click="sltAttribute(item.AttributeName,item1.GameAttributeValue)">{{item1.GameAttributeValue}}</span>
+          </div>
+          <div v-else class="item-content">
+            <span v-for="item1 in item.Valuestr" @click="sltAttribute(item.AttributeName,item1)">{{item1}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hall-down">
+      <div class="sort">
+        <span class="lf">
+          <i class="s-tag no-arrow" onclick="sequence(this, 1);">综合排序</i>
+          <i class="s-tag" onclick="sequence(this,2);">价格</i>
+        </span>
+        <span class="rt">
+          <a style="margin-right: 20px;font-size: 15px;color: #272727;" id="lableNumber1" v-cloak>共 {{Count}} 条数据</a>
+          <a class="page_ivon" href="javascript:;"  id="btnPrev"> <i class="icon iconfont icon-fanhui"></i> </a>
+          <a id="lableNumber" v-cloak> 1/{{pageCount}} </a>
+          <a class="page_ivon" href="javascript:;" id="btnNext"><i class="icon iconfont icon-gengduo"></i> </a>
+        </span>
+      </div>
+      <ul id="ProductList" class="list self-scroll-bar" v-cloak>
+        <li v-for="item in items" @click="linkTo(item.ProductNumber)" style="cursor: pointer;">
+          <img :src="'http://img.ggzuhao.com/img/ImgProc/ProcImg/'+item.GameID+'.jpg'" class="ven" />
+          <dl class="list-a">
+            <dt class="ellipsis" :title="item.Description"><a :href="'hall_detail.html?id='+item.ProductNumber">{{ item.Description }}</a></dt>
+            <dd>
+              <span class="sapot">游戏区服：{{item.GameName}}/{{item.GameClassNameQ}}/{{item.GameClassNameF}}</span>
+              <span v-if="item.System!='' && item.System!=null">
+                <b v-if="item.System=='安卓'" class="color-green"><img src="../../Content/public/icons/android.png" class="system" />安卓</b>
+                <b v-else class="color-red"><img src="../../Content/public/icons/ios.png" class="system" />苹果</b>
+              </span>
+            </dd>
+            <dd>
+              <i v-if="item.ErrorReparation>0" class="tip orange">赔</i><i v-if="item.IsSeller==1" class="tip orange"><span v-if="item.ErrorReparation>0">/</span>商</i><i v-if="item.ReachTime=='允许'" class="tip orange"><span v-if="item.IsSeller==1||item.ErrorReparation>0">/</span>到时不下线</i><i v-if="item.Song!=''&&item.IsSong==1" class="tip orange"><span v-if="item.IsSeller==1||item.ErrorReparation>0||item.ReachTime=='允许'">/</span>{{ a(item.Song)}}</i>
+            </dd>
+          </dl>
+          <dl class="list-b">
+            <dd>租金：<b class="color-red">{{item.AddPrice}} 元/小时</b></dd>
+            <dd>押金：<b class="color-red">{{item.Bail}} 元</b></dd>
+            <dd>起租：<b class="color-red">{{item.QzTime}} </b>小时</dd>
+          </dl>
+          <p class="rt-cent"><a :href="'../hall/hall_detail.html?id='+item.ProductNumber" onclick="_hmt.push(['_trackEvent', '租号大厅', '点击量', '立即租号']);" class="btn btn-lg btn-red">立即租号</a></p>
+        </li>
+        <div v-if="!items.length" style="height: 120px;text-align: center;line-height: 120px;font-size: 18px;font-size: 15px;color: #999;">没有找到您要的商品</div>
+      </ul>     
+      <div class="pages" id="pages" style="display: none;">
+        <!-- <a href="">上一页</a>
+        <a href="">1</a>
+        <a href="" class="active">2</a>
+        <a href="">3</a>
+        <a href="">4</a>
+        <a href="">5</a>
+        <a href="">下一页</a> -->
+      </div>
+    </div>
+    <input type="hidden"  id="inputHidden"/>
+  </div>
+
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script src="/Content/libs/zuhao/zuhao.js"></script>
+  <script type="text/javascript">    
+    function GoToUrl(e){
+      console.log(window.parent)
+      window.parent.GoToUrl($(e).attr('data-href'));
+      //window.parent.sfa.src=$(id).attr('data-href');
+    }   
+    var gameTypeId = GetQueryString("gtypeid");
+    var gameId= $('#inputHidden').val().split(',')[0];
+    var gameName= $('#inputHidden').val().split(',')[1];
+    if (gameTypeId == "1") {
+      sltGame1('8518B1AD-5AA5-40C0-95C2-57305B699684', 'PUBG吃鸡');
+    }
+    if (gameTypeId == "2") {
+      sltGame1('6F9619FF-8B86-D011-B42D-00C04FC964FF', '撸阿撸');
+    }
+    if (gameTypeId == "3") {
+      sltGame1('2D9E2A8A-1D8C-4206-B976-9D4FA40B41F9', '穿跃火线');
+    }
+    if (gameTypeId == "4") {
+      sltGame1('91CF0E46-B1D8-44A9-B28D-B328FA49DD43', '屰站');
+    }
+    
+    if(gameTypeId == '5'){
+      
+      sltGame1('5A24CDD5-0AB9-4D45-A363-BD176297417F', '侠盗猎车手Online');
+    }
+    if(gameId&&gameName){
+      sltGame1(gameId, gameName);
+    }    
+
+    //获取地址栏参数
+    function GetQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+
+    function selectHot(){
+      var lis=$(".action-search li");
+      for(var i=0;i<lis.length;i++){
+        lis.eq(i).removeClass('switchActive');
+      }
+      console.log(gameListTop)
+      gameListTop.GameList = gameListTop.AllGameList.filter(function(v){ return v.GameTypeID==1;});
+    }
+
+    function selectHot2(event){
+      event.stopPropagation();
+      var lis=$(".action-search2 li");
+      for(var i=0;i<lis.length;i++){
+        lis.eq(i).removeClass('switchActive');
+      }
+      console.log(gameListTop)
+      gameList.items = gameListTop.AllGameList.filter(function(v){ return v.GameTypeID==1;});
+    }
+
+    function select(e){
+      //debugger;
+      var lis=$(".action-search li");
+      for(var i=0;i<lis.length;i++){
+        lis.eq(i).removeClass('switchActive');
+      }
+      $(e).addClass('switchActive');
+      //console.log(e.innerText,gameListTop,gameListTop.AllGameList[0].ABC,$.trim(gameListTop.AllGameList[0].ABC),gameListTop.AllGameList[0].ABC)
+      if(e.innerText){
+        var filterArr= gameListTop.AllGameList.filter(function(v){ return $.trim(v.ABC)===e.innerText;});
+
+       gameListTop.GameList = filterArr;
+       console.log(e.innerText,gameListTop)
+       console.log(filterArr)
+      }
+      //LoadProductList(0,e.innerText);      
+    }
+
+    function select2(e,event){
+      event.stopPropagation();
+      //debugger;
+      var lis=$(".action-search2 li");
+      for(var i=0;i<lis.length;i++){
+        lis.eq(i).removeClass('switchActive');
+      }
+      $(e).addClass('switchActive');
+      //console.log(e.innerText,gameListTop,gameListTop.AllGameList[0].ABC,$.trim(gameListTop.AllGameList[0].ABC),gameListTop.AllGameList[0].ABC)
+      if(e.innerText){
+        var filterArr= gameListTop.AllGameList.filter(function(v){ return $.trim(v.ABC)===e.innerText;});
+
+        gameList.items = filterArr;
+       console.log(e.innerText,gameListTop)
+       console.log(filterArr)
+      }
+      //LoadProductList(0,e.innerText);
+    }
+
+    function sltGame1(gid, n) {
+      if (gid == _GID) return;
+      _GID = gid;
+      _QID = _FID = _QJ = _Where = "";
+      params.attribute = "";
+      params.pageIndex = 1;
+      $("#spanItemG").text(n);
+      $("#spanItemQ").text("游戏区");
+      $("#spanItemF").text("游戏服");
+      $("#where").val("");
+      $("#attributeList .item-content span").parent().siblings().removeClass('active');
+      // $("#QList").addClass('active');
+
+      $("#gameListTop").attr("class", "hall-up hide");
+      $(".filter").attr("class", "filter active");
+      $("#ProductList").attr("style", "height: 472px;");
+      parent.zuhaoHallState();  
+      $("#inputHidden").val(gid+','+n);            
+      LoadProductList(1);
+    }      
+  </script>
+</body>
+
+</html>

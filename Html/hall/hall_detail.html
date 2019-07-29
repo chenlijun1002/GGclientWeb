@@ -1,0 +1,414 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="Keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/Content/public/css/public.css" />
+
+  <link rel="stylesheet" href="css/hall_detail.css" />
+  <title>商品详情</title>
+  <style>
+    .select-box{
+        /* //用div的样式代替select的样式 */
+        width: 140px;
+        height: 35px;
+        line-height: 30px;
+        padding: 0 6px;
+        /* border-radius: 5px; */
+        /* //盒子阴影修饰作用,自己随意 */
+        /* box-shadow: 0 0 5px #ccc; */
+        position: relative;
+        display: inline-block;
+        box-sizing: border-box;
+        border: 1px solid #a9a9a9;
+        font-size: 12px;
+    }    
+    /* 使用伪类给select添加自己想用的图标 */
+    .select-box::after{
+        content: "";
+        width: 14px;
+        height: 8px;
+        background: url('/Content/public/img/arrow_down.png') no-repeat center;
+        /* 通过定位将图标放在合适的位置 */
+        position: absolute;
+        right: 10px;
+        top: 41%;
+        /* 给自定义的图标实现点击下来功能 */
+        pointer-events: none;
+        background-size: 100%;
+    }
+    .option-item:hover{
+      background-color: #509df0;
+      color:#fff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="hall-detail  self-scroll-bar" id="productInfo" v-cloak>
+    <p class="bread"><a href="../hall/hall.html">租号大厅</a> &gt;<a>商品详情</a></p>
+
+    <div class="goods-info">
+      <dl class="goods-info-left">
+        <dt style="width: 223px;height: 223px;"><img src="" id="img" alt="" /></dt>
+        <dd>
+          <a href="javascript:;" class="jubao"><img src="/Content/public/icons/jubao.png" alt="" />举报</a>
+          <!--<a href=""><img src="/Content/public/icons/shoucang.png" alt=""/>收藏</a>-->
+        </dd>
+      </dl>
+      <ul class="goods-info-right">
+        <li class="preoduct_a ellipsis" :title="productInfo.Description">{{productInfo.Description}}</li>
+        <li class="preoduct_b">
+          <span>游戏区服：</span>
+          <span>{{productInfo.GameName}} / {{productInfo.GameClassNameQ}} / {{productInfo.GameClassNameF}}</span>
+        </li>
+        <li>
+          <ul class="time-money">
+            <li class="active">
+              <p class="m-money"><sup>￥</sup>{{productInfo.AddPrice}}/小时</p>
+              <p class="m-time" data-key="1">时租</p>
+            </li>
+            <li>
+              <p class="m-money"><sup>￥</sup>{{productInfo.BaoYePrice}}</p>
+              <p class="m-time" data-key="2">5小时</p>
+            </li>
+            <li>
+              <p class="m-money"><sup>￥</sup>{{productInfo.BaoTimePrice}}</p>
+              <p class="m-time" data-key="3">10小时</p>
+            </li>
+            <li>
+              <p class="m-money"><sup>￥</sup>{{productInfo.BaoDayPrice}}</p>
+              <p class="m-time" data-key="4">一天（24小时）</p>
+            </li>
+            <li>
+              <p class="m-money"><sup>￥</sup>{{productInfo.BaoWeekPrice}}</p>
+              <p class="m-time" data-key="5">一周（168小时）</p>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <i style="display:inline-block;height:19px;"></i>
+          <i v-if="productInfo.ReachTime=='允许'" class="tip qing">到时不下线</i>
+          <i v-if="productInfo.Song!=''&&productInfo.IsSong==1" class="tip orange">{{ a(productInfo.Song)}}</i>
+        </li>
+        <li class="preoduct_b">
+          租号押金：
+          <span v-if="productInfo.Bail>0" class="color-orange">{{productInfo.Bail}} </span>
+          <span v-else class="color-orange">0 </span>元 ，租号<span class="color-orange"> {{productInfo.RiseRentCount}}</span> 次及以上才可租用此号
+        </li>
+
+        <li class="rt-bm">
+          <!-- 二显一 -->
+          <a v-if="productInfo.States==2" href="javascript:;" @click="tiaoClick();_hmt.push(['_trackEvent', '商品详情页', '点击量', '立即租号']);" class="btn btn-red">立即租号</a>
+          <a v-else-if="productInfo.States==0" href="javascript:;" class="btn btn-red">已下架</a>
+          <a v-else href="javascript:;" class="btn btn-red">已出租</a>
+          <span class="info">请文明游戏，使用外挂将扣除租金和押金！</span>
+        </li>
+      </ul>
+    </div>
+    <div class="account-tab">
+      <p class="tab-item">
+        <span class="item active">账号信息</span>
+        <span class="item">租号须知</span>
+      </p>
+      <div class="tab-content">
+        <div class="content active">
+          <p class="cont-title"><span>账号概要：</span></p>
+          <ul class="cont-list-a">
+            <li v-for="item in attributeValue">
+              <p>{{item.AttributeName}}</p>
+              <p>{{item.AttributeValue}}</p>
+            </li>
+          </ul>
+          <!--<ul class="cont-list-b">
+                      <li v-for="item in attributeValue">
+                           <span>{{item.AttributeName}}</span><i>{{item.AttributeValue}}</i>
+                      </li>
+                    </ul>-->
+          <p class="text-detail">游戏简介： {{productInfo.Description1}}</p>
+          <p class="cont-title"><span>账号截图：</span></p>
+          <div class="cont-img">
+            <img v-for="item in img" :src="item.Image" />
+          </div>
+        </div>
+        <div class="content content_daterr">
+          <p style="height:15px;"></p>
+          <p>湖南南澳网络科技有限公司（以下简称&ldquo;GG租号&rdquo;）依据出租协议的规定为用户提供服务，出租协议在用户和GG租号之间具有合同上的法律效力。我们在此特别提醒您认真阅读、充分理解出租协议各条款，特别是其中所涉及的免除及限制GG租号责任的条款以及对用户权利限制条款。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第一章 GG租号提供的服务内容</strong></p>
+          <p>第一条 GG租号提供的服务是由湖南南澳网络科技有限公司基于APP或网站为技术平台所产生，具体服务内容：信息租借，例如：游戏账号或者影视账号。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第二章 用户需要满足哪些条件。</strong></p>
+          <p>第三条 GG租号用户是指符合中华人民共和国法律规定的具有完全民事权利和民事行为能力，能够独立承担民事责任的自然人。在使用GG租号服务前，用户必须先在GG租号平台上进行注册。</p>
+          <p>第四条 用户承诺以下事项：</p>
+          <p>1、用户必须依照GG租号要求提供最新、真实、有效及完整的资料。</p>
+          <p>2、用户有义务维护并更新资料，确保其最新、真实、有效及完整。若用户提供任何过时、错误、虚假或不完整的资料，GG平台将暂停或终止用户的账户，并拒绝用户使用GG租号服务的部份或全部的功能。针对这种情况，如果出现任何损失，GG租号不会承担任何责任，一律由用户承担。</p>
+          <p>3、如果因为用户未及时更新相关资料，导致GG租号平台无法提供服务时发生错误所造成的损失，一律由用户承担，GG租号平台或者其他任何互联网平台不承担任何责任。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第三章 用户的守法义务及承诺</strong></p>
+          <p>第五条 用户必须承诺绝不为任何非法目的或方式使用GG租号服务，并且必须遵守中国相关法律、法规及一切使用互联网的国际惯例，遵守所有与GG租号服务有关的网络协议、规则和程序。</p>
+          <p>第六条 用户同意并保证不得利用GG租号服务从事侵害他人权益或违法的行为，若有违反者应负所有法律责任。上述行为包括：</p>
+          <p>1、反对宪法所确定的基本原则，危害国家安全、泄漏国家秘密、颠覆国家政权、破坏国家统一的。</p>
+          <p>2、侵害他人名誉、隐私权、商业秘密、商标权、著作权、专利权、其他知识产权及其他权益。</p>
+          <p>3、违反依法律或合约所应负之保密义务。</p>
+          <p>4、冒用他人名义使用GG租号服务。</p>
+          <p>5、从事任何不法交易行为，如贩卖枪支、毒品、禁药、盗版软件或其他违禁物。</p>
+          <p>6、提供赌博资讯或以任何方式引诱他人参与赌博。</p>
+          <p>7、涉嫌洗钱、套现或进行传销活动的。</p>
+          <p>8、 从事任何可能含有电脑病毒或是可能侵害GG租号平台系統、资料等行为。</p>
+          <p>9、 利用GG租号平台进行可能对互联网或移动网正常运转造成不利影响之行为。</p>
+          <p>10、 侵犯GG租号的商业利益，包括发布非经许可的商业广告。</p>
+          <p>11、 利用GG租号平台上传、展示或传播虚假的、骚扰性的、中伤他人的、辱骂性的、恐吓性的、庸俗淫秽的或其他任何非法的信息资料。</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第四章 隐私权保护及授权条款</strong></p>
+          <p>第七条 GG租号平台提供的是虚拟物品的租借，依靠互联网信息技术平台，为广大用户提供租借服务，其中租借的内容涉及到个人游戏账号和密码，用户自愿把账号和密码提供给GG租号平台，GG租号平台有义务和责任对用户提供的信息进行保密不透露给其他任何人！</p>
+          <p>第八条 GG租号平台依据租号协议，把相关订单信息展示给该订单相关的用户，其中包括游戏账号和密码！</p>
+          <p>第九条 由于账号租借的特殊性，出租的用户自愿承担使用GG租号平台进行出租的所带来的风险，包括账号密码被盗取、账号里的虚拟物品被破坏，游戏账号被破坏等事项，出租用户愿意承担一切可能遭受到的损失，与GG租号平台或者apple store等其它互联网平台无关！</p>
+          <p>
+            <br>
+          </p>
+          <p><strong>第五章 知识产权的保护</strong></p>
+          <p>第十条 GG租号平台上所有内容，包括著作、图片、档案、资讯、资料、平台架构、平台画面的安排、网页设计，均由GG租号或其他权利人依法拥有其知识产权，包括商标权、专利权、著作权、商业秘密等。</p>
+          <p>第十一条 非经GG租号平台或者相关用户的同意，任何人不得擅自使用、修改、复制、公开传播、改变、散布、发行侵犯他人权利的内容。</p>
+          <p>第十二条 尊重知识产权是用户应尽的义务，GG租号平台将尽力保护每个用户的知识产权或版权内容。</p>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-jubao hide">
+      <div class="jubao-content">
+        <div class="jubao-header">
+          <span class="text">举报</span>
+          <img src="/Content/public/img/icon-close-1.jpg" class="close" />
+          <img src="/Content/public/img/icon-line-1.jpg" class="line" />
+        </div>
+        <div class="jubao-body">
+          <form>
+            <div class="f-row">
+               <label for="typeSelect">举报类型：</label>
+              <!-- <select name="" id="sltComplaintType" class="jubao-sel">
+                <option value="1">虚假或广告宣传</option>
+                <option value="2">已封号或冻结</option>
+                <option value="3">价格炒作</option>
+                <option value="4">恶意刷单</option>
+              </select> -->             
+              <div class="select-box">
+                  <!-- <select id="selComplainType" class="txt-sel" style="width: 140px;height: 33px;">
+                      <option value="1">虚假或广告宣传</option>
+                      <option value="2">已封号或冻结</option>
+                      <option value="3">价格炒作</option>
+                      <option value="4">恶意刷单</option>
+                    </select> -->
+                    <span id="selComplainType" value="1">虚假或广告宣传</span>
+                    <div style="display:none;width: 140px;position: absolute;left: -1px;top:33px;border:1px solid #ccc;background-color: #fff;box-sizing: border-box;" id="select-box">
+                      <div value="1" style="padding: 4px;line-height: 16px;" class="option-item">虚假或广告宣传</div>
+                      <div value="2" style="padding: 4px;line-height: 16px;" class="option-item">已封号或冻结</div>
+                      <div value="3" style="padding: 4px;line-height: 16px;" class="option-item">价格炒作</div>
+                      <div value="4" style="padding: 4px;line-height: 16px;" class="option-item">恶意刷单</div>
+                    </div>
+              </div>
+            </div>
+            <div class="f-row">
+              <label for="jubaoReason">举报理由：</label>
+              <span class="color-red">限100字以内</span>
+              <textarea name="" id="txtComplaintContent" class="jubao-text"></textarea>
+            </div>
+            <div class="f-row t-center">
+              <input type="button" class="btn btn-lg btn-red" onclick="Save()" value="立即举报">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:none">
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6a7d2e41bb98f0b7650a4150d9565646";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </div>
+  <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+  <script src="/Content/libs/vue.js"></script>
+  <script src="/Content/libs/axios.js"></script>
+  <script src="/Content/libs/jquery.cookie.js"></script>
+  <script src="/Content/libs/Common.js"></script>
+  <script src="/Content/libs/Cryptojs/src/core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/md5.js"></script>
+  <script src="/Content/libs/Cryptojs/src/enc-base64.js"></script>
+  <script src="/Content/libs/Cryptojs/src/cipher-core.js"></script>
+  <script src="/Content/libs/Cryptojs/src/aes.js"></script>
+  <script src="/Content/libs/Cryptojs/src/mode-ecb.js"></script>
+  <script src="/Content/libs/layer/layer.js"></script>
+  <script>
+    var _userInfo;
+    var id = "";
+    var type = "1";
+    $(function() {
+
+      $('#select-box').on('click','div',function(e){
+        e.stopPropagation();
+        console.log(e)
+       // debugger
+        $('#select-box').hide();
+        $("#selComplainType").attr('value',$(e.currentTarget).attr('value'));
+        console.log($(e.currentTarget).attr('value'))
+        $('#selComplainType').text(e.currentTarget.innerText);
+      })
+
+
+      $('.select-box').click(function(e){ 
+        e.stopPropagation();           
+        if($('#select-box').css('display') !=='none'){
+          $('#select-box').hide();
+        }else{
+          $('#select-box').show();
+        }
+      })
+      $(document).click(function(){
+        $('#select-box').hide();
+      })
+
+      //点击选择租赁类型
+      $('.time-money').on('click', 'li', function(e) {
+        $(this).addClass('active').siblings().removeClass('active');
+        type = $(this).children('.m-time').data("key");
+      });
+      $(".jubao").click(function() {
+        $(".modal-jubao").show();
+      });
+      $('.close').on('click', function(e) {
+        $(".modal-jubao").hide();
+      })
+      $(".tab-item").on("click", ".item", function(e) {
+        $(this).addClass("active").siblings().removeClass("active");
+        $($(".tab-content .content")[$(this).index()]).addClass("active").siblings().removeClass("active");
+
+      });
+      LoadProduct();
+    });
+
+    var IsRiseRent = 0;
+
+    function LoadProduct() {
+      var params = new Object();
+      _userInfo = GetLoginUserCookie();
+      if (_userInfo != null)
+        params.userid = _userInfo.UserID;
+      params.id = GetQueryString('id');
+      console.log(params);
+      HttpGet("/product/ProductDetail", params).then(function(result) {
+        console.log(result,'商品详情');
+        if (result.Code == "0") {
+          product.productInfo = result.productInfo;
+          product.attributeValue = result.attributeValue;
+          product.img = result.img;
+          // $("#img").attr("src", product.img[0].Image);
+          $("#img").attr("src", 'http://img.ggzuhao.com/img/ImgProc/ProcImg/'+product.productInfo.GameID+'.jpg');
+          
+          id = product.productInfo.ProductID;
+          if (result.orderCount < product.productInfo.RiseRentCount) {
+            IsRiseRent = product.productInfo.RiseRentCount;
+          }
+        }
+      }).catch(function(result) {
+        //alert(result.Message); to_pay.html
+      });
+    }
+
+    var product = new Vue({
+      el: '#productInfo',
+      data: {
+        items: [],
+        productInfo: '',
+        attributeValue: [],
+        img: []
+      },
+      methods: {
+        tiaoClick: function(v) {
+          tiaoClick(v);
+        },
+        a: function(t) {
+          var ja = JSON.parse(t);
+          var song = "";
+          $(ja).each(function(k, v) {
+            if (song == "") {
+              song = "租" + v.split(':')[0] + "送" + v.split(':')[1];
+            } else {
+              song = song + "/租" + v.split(':')[0] + "送" + v.split(':')[1];
+            }
+          })
+          return song;
+        }
+      }
+    });
+
+    function tiaoClick() {
+      if (_userInfo == null) {
+        window.parent.$('#loginBox').addClass('active').find(":password").val('');        
+        return;
+      }
+      if (IsRiseRent != 0) {
+        layer.msg(IsRiseRent + "次可租用此号");
+        return;
+      }      
+       location.href = 'to_pay.html?id=' + id + "," + type;
+      //window.parent.GoToUrl('/Html/hall/to_pay.html?id=' + id + "," + type);     
+    }
+
+    function Save() {
+      _userInfo = GetLoginUserCookie();
+      if (_userInfo == null) {
+        window.parent.$('#loginBox').addClass('active').find(":password").val('');
+        return;
+      }
+      if ($("#txtComplaintContent").val() == "") {
+        layer.msg("内容不能为空！");
+        return;
+      }
+      if ($("#txtComplaintContent").val().length >= 100) {
+        layer.msg("内容不能超过100");
+        return;
+      }
+      var params = new Object();
+      // params.type = $("#sltComplaintType").val();
+      params.type = $("#selComplainType").attr('value');
+      params.id = id;
+      params.userID = _userInfo.UserID;
+      params.txt = $("#txtComplaintContent").val();
+      //debdebugger
+      HttpGet("/product/ProductComplaint", params).then(function(result) {
+        if (result.Code == "0") {
+          $(".modal-jubao").hide();
+          layer.msg(result.Message);
+
+        }
+      });
+    }
+
+    function GoToUrl(e){
+      console.log(window.parent)
+      window.parent.GoToUrl($(e).attr('data-href'));
+      //window.parent.sfa.src=$(id).attr('data-href');
+    }
+  </script>
+</body>
+
+</html>

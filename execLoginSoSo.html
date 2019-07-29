@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <script src="/Content/libs/jquery-1.11.3.min.js"></script>
+    <script src="/Content/libs/layer/layer.js"></script>
+    <script src="/Content/libs/Common.js"></script>
+    <script src="/Content/libs/jquery.cookie.js"></script>
+    <script type="text/javascript">
+        var _status = GetQueryString('status');
+        var _openid = GetQueryString('openid');
+
+        if (_status == "30003") {
+            window.location = '/html/login/login_access.html?openid=' + _openid;
+        }else if (_status == '0') {
+            var _userInfo = GetQueryString("user");
+            //alert("_UserInfo=" + _userInfo);
+            var escapeUser = escape(_userInfo);
+
+            SetLoginUserCookie(_userInfo);
+            parent.window.GetLoginUser();
+            window.location = '/html/usual/index.html';
+        }
+    </script>
+</body>
+</html>

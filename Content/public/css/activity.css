@@ -1,0 +1,421 @@
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.el-message-box__wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2004;
+}
+
+@keyframes bounceInUp {
+  0%, 60%, 75%, 90%, to {
+    animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 3000px, 0)
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, -20px, 0)
+  }
+
+  75% {
+    transform: translate3d(0, 10px, 0)
+  }
+
+  90% {
+    transform: translate3d(0, -5px, 0)
+  }
+
+  to {
+    transform: translateZ(0)
+  }
+}
+
+.bounceInUp {
+  animation-name: bounceInUp
+}
+
+.el-message-box__wrapper:after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  vertical-align: middle;
+}
+
+.v-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+  background: #000;
+}
+
+.el-message-box {
+  display: inline-block;
+  width: 300px;
+  height: 449px;
+  padding-bottom: 10px;
+  vertical-align: top;
+  margin-top: 8%;
+  background: url("../../public/img/activity/hb01.png") no-repeat;
+  background-size: 100%;
+  border-radius: 4px;
+  font-size: 18px;
+  text-align: left;
+  overflow: hidden;
+  backface-visibility: hidden;
+  position: relative;
+  -webkit-animation: bounceInUp 1s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.el-staeor-box {
+  display: inline-block;
+  width: 338px;
+  height: 280px;
+  padding-bottom: 10px;
+  vertical-align: top;
+  margin-top: 8%;
+  background: url("../../public/img/activity/hb02.png") no-repeat;
+  background-size: 100%;
+  border-radius: 4px;
+  font-size: 18px;
+  text-align: left;
+  backface-visibility: hidden;
+  position: relative;
+  -webkit-animation: bounceInUp 1s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.el-foure-box {
+  display: inline-block;
+  width: 280px;
+  height: 320px;
+  padding-bottom: 10px;
+  vertical-align: top;
+  margin-top: 8%;
+  background: url("../../public/img/activity/hb04.png") no-repeat;
+  background-size: 100%;
+  border-radius: 4px;
+  font-size: 18px;
+  text-align: left;
+  backface-visibility: hidden;
+  position: relative;
+  -webkit-animation: bounceInUp 1s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.el-saoma-box {
+  display: inline-block;
+  width: 320px;
+  height: 325px;
+  padding-top: 30px;
+  vertical-align: top;
+  margin-top: 8%;
+  background-color: #fff;
+  background-size: 100%;
+  border-radius: 4px;
+  font-size: 18px;
+  backface-visibility: hidden;
+  text-align: center;
+  position: relative;
+  -webkit-animation: bounceInUp 1s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes bounceInUp {
+  0%, 60%, 75%, 90%, to {
+    animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0)
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0)
+  }
+
+  75% {
+    transform: translate3d(0, -10px, 0)
+  }
+
+  90% {
+    transform: translate3d(0, 5px, 0)
+  }
+
+  to {
+    transform: none
+  }
+}
+@-webkit-keyframes bounceInUp {
+  0%, 60%, 75%, 90%, to {
+    animation-timing-function: cubic-bezier(.215, .61, .355, 1)
+  }
+
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3000px, 0)
+  }
+
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 25px, 0)
+  }
+
+  75% {
+    transform: translate3d(0, -10px, 0)
+  }
+
+  90% {
+    transform: translate3d(0, 5px, 0)
+  }
+
+  to {
+    transform: none
+  }
+}
+
+
+
+.bounceInUp {
+  animation-name: bounceInUp
+}
+
+.activity_box {
+  padding: 225px 14% 0;
+}
+
+.activity_box {
+  padding: 225px 14% 0;
+}
+
+.activity_box_input {
+  width: 100%;
+  height: 35px;
+  border: none;
+  padding-left: 5%;
+}
+
+.activity_box .row label {
+  position: relative;
+  display: inline-block;
+}
+
+.activity_box .box-vali {
+  width: 116px;
+  height: 35px;
+  padding-left: 10px;
+}
+
+.activity_box .box-msg {
+  width: 88px;
+  height: 34px;
+  font-size: 12px;
+  cursor: pointer;
+  border-color: transparent;
+  background: #ffed49;
+  color: #59000f;
+  margin-left: 6px;
+}
+
+.activity_box .box-activity {
+  width: 130px;
+  height: 35px;
+  border-radius: 22px;
+  font-size: 15px;
+  cursor: pointer;
+  border-color: transparent;
+  background: #ffed49;
+  color: #59000f;
+}
+
+.activity_p {
+  text-align: center;
+  font-size: 12px;
+  color: #730038;
+}
+
+.activity_close {
+  width: 35px;
+  height: 35px;
+  background: url(../../public/img/activity/guangbi.png) no-repeat;
+  background-size: 100%;
+  position: absolute;
+  top: 12px;
+  right: 0;
+  cursor: pointer;
+}
+
+.Redenvelopes_close {
+  width: 25px;
+  height: 25px;
+  background: url(../../public/img/activity/guangbi.png) no-repeat;
+  background-size: 100%;
+  position: absolute;
+  bottom: -44px;
+  left: 46%;
+  cursor: pointer;
+}
+
+.Redenvelopesvip_close {
+  width: 25px;
+  height: 25px;
+  background: url(../../public/img/activity/guangbi.png) no-repeat;
+  background-size: 100%;
+  position: absolute;
+  bottom: -44px;
+  left: 45%;
+  cursor: pointer;
+}
+
+.Redenvelopes {
+  margin-top: 77px;
+  padding: 0 8px;
+}
+
+.Redenvelopes .Redenvelopes_li {
+  float: left;
+  width: 33.3%;
+  text-align: center;
+}
+
+.Redenvelopes .Redenvelopes_li .Redenvelopes_li_top {
+  font-size: 14px;
+  line-height: 18px;
+  color: #ff4a3c;
+}
+
+.Redenvelopes .Redenvelopes_li .Redenvelopes_li_body {
+  font-size: 37px;
+  font-weight: bold;
+  color: #fe3e17;
+}
+
+.Redenvelopes_actire {
+  width: 140px;
+  height: 50px;
+  margin: 0 auto;
+  background: url(../../public/img/activity/an05.png) no-repeat;
+  background-size: 100%;
+  position: absolute;
+  bottom: 27px;
+  left: 31%;
+  cursor: pointer;
+}
+
+.Redenvelopesvip_actire {
+  width: 140px;
+  height: 50px;
+  margin: 0 auto;
+  background: url(../../public/img/activity/an05.png) no-repeat;
+  background-size: 100%;
+  position: absolute;
+  bottom: 27px;
+  left: 25%;
+  cursor: pointer;
+}
+
+.Redenvelopesvip {
+  text-align: center;
+  margin-top: 90px;
+}
+
+.Redenvelopesvip .Redenvelopesvip_li_top {
+  font-size: 14px;
+  line-height: 18px;
+  color: #ff4a3c;
+}
+
+.Redenvelopesvip .Redenvelopesvip_li_body {
+  font-size: 48px;
+  font-weight: bold;
+  color: #fe3e17;
+}
+
+.boxMureu {
+  position: fixed;
+  top: 15px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 3004;
+}
+
+.boxMureu .boxMureu_m {
+  display: inline-block;
+  background-color: #fff;
+  padding: 12px 35px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #fa1132;
+  box-shadow: 0 2px 10px #e4d1d1;
+  opacity: 0.95;
+  -webkit-animation: opacityBt 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes opacityBt {
+  0% {
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0.7;
+  }
+
+  75% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.el-saoma-box .saoma_titei {
+  font-size: 16px;
+  line-height: 50px;
+  color: #8e0017;
+}
+
+.el-saoma-box .saoma_img {}
+
+.el-saoma-box .saoma_img img {
+  width: 45%;
+}
+
+.el-saoma-box .saoma_close {
+  display: inline-block;
+  font-size: 15px;
+  padding: 5px 20px 6px;
+  background-color: #ccc;
+  border-radius: 7px;
+  margin-top: 11%;
+  color: #fff;
+  cursor: pointer;
+}
